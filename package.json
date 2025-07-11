@@ -1,7 +1,7 @@
 {
   "name": "thrivetrack",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.2.0",
   "type": "module",
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css,md,json}": [
