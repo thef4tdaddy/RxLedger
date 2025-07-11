@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Lint",
+      "type": "shell",
+      "command": "npm run lint",
+      "group": "build",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "Format",
+      "type": "shell",
+      "command": "npm run format",
+      "group": "build"
+    },
+    {
+      "label": "Release (Patch)",
+      "type": "shell",
+      "command": "npm run release",
+      "group": "build"
+    },
+    {
+      "label": "Release (Minor)",
+      "type": "shell",
+      "command": "npm run release:minor",
+      "group": "build"
+    },
+    {
+      "label": "Release (Major)",
+      "type": "shell",
+      "command": "npm run release:major",
+      "group": "build"
+    }
+  ]
+}
