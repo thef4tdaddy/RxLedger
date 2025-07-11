@@ -15,7 +15,6 @@ jobs:
 
     steps:
       - uses: google-github-actions/release-please-action@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           release-type: node
+          token: ${{ secrets.GH_TOKEN }}
