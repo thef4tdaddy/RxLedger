@@ -18,7 +18,8 @@ This roadmap outlines planned development phases.
 - [ ] [#8](https://github.com/thef4tdaddy/RxLedger/issues/8) Create Application Navigation and Layout
 - [ ] [#9](https://github.com/thef4tdaddy/RxLedger/issues/9) Implement User Authentication
 - [ ] [#10](https://github.com/thef4tdaddy/RxLedger/issues/10) Implement Email Verification Enforcement and Verification Page
-
+- [ ] [#17](https://github.com/thef4tdaddy/RxLedger/issues/17) Implement Error Handling and Tracking
+- [ ] [#18](https://github.com/thef4tdaddy/RxLedger/issues/18) Create Onboarding Guide
 - [x] Initial GitHub Actions CI
 - [x] Conventional Commits enforcement
 
@@ -27,9 +28,9 @@ This roadmap outlines planned development phases.
 ## 🌐 Phase 2 – Community & Sharing
 
 - [ ] [#5](https://github.com/thef4tdaddy/RxLedger/issues/5) Implement Community Insights Screen
-
-- [ ] Anonymous aggregation of logs
-- [ ] Sharing toggles per medication
+- [ ] [#19](https://github.com/thef4tdaddy/RxLedger/issues/19) Implement Anonymous Aggregation of Logs
+- [ ] [#20](https://github.com/thef4tdaddy/RxLedger/issues/20) Add Sharing Toggles Per Medication
+- [ ] [#21](https://github.com/thef4tdaddy/RxLedger/issues/21) Develop Moderation Dashboard with Abuse Protection
 - [x] Release automation (Release Please)
 
 ---
@@ -37,21 +38,18 @@ This roadmap outlines planned development phases.
 ## 🌐 Phase 3 – Infrastructure & Launch
 
 - [x] [#11](https://github.com/thef4tdaddy/RxLedger/issues/11) Design and Implement Branding Icons
-- [ ] [#12](https://github.com/thef4tdaddy/RxLedger/issues/12) Set Up Custom Domain
-- [ ] [#13](https://github.com/thef4tdaddy/RxLedger/issues/13) Configure Branded Email Address
-- [ ] [#14](https://github.com/thef4tdaddy/RxLedger/issues/14) Configure Vercel Deployment
+- [x] [#12](https://github.com/thef4tdaddy/RxLedger/issues/12) Set Up Custom Domain
+- [x] [#13](https://github.com/thef4tdaddy/RxLedger/issues/13) Configure Branded Email Address
+- [x] [#14](https://github.com/thef4tdaddy/RxLedger/issues/14) Configure Vercel Deployment
 
 ---
 
 ## ✨ Phase 4 – Polishing & Mobile
 
 - [ ] [#6](https://github.com/thef4tdaddy/RxLedger/issues/6) Implement Account Settings Screen
-
-- [ ] Mobile PWA enhancements
-- [ ] Accessibility improvements
-- [ ] Visual UI refinements (Tailwind)
-- [ ] Advanced charting
-- [ ] VS Code Tasks and local tooling
+- [ ] [#22](https://github.com/thef4tdaddy/RxLedger/issues/22) Develop Mobile PWA
+- [ ] [#23](https://github.com/thef4tdaddy/RxLedger/issues/23) Improve Accessibility
+- [ ] [#24](https://github.com/thef4tdaddy/RxLedger/issues/24) Implement Advanced Charting
 
 ---
 
