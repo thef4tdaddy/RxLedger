@@ -36,7 +36,7 @@ This roadmap outlines planned development phases.
 
 ## 🌐 Phase 3 – Infrastructure & Launch
 
-- [ ] [#11](https://github.com/thef4tdaddy/RxLedger/issues/11) Design and Implement Branding Icons
+- [x] [#11](https://github.com/thef4tdaddy/RxLedger/issues/11) Design and Implement Branding Icons
 - [ ] [#12](https://github.com/thef4tdaddy/RxLedger/issues/12) Set Up Custom Domain
 - [ ] [#13](https://github.com/thef4tdaddy/RxLedger/issues/13) Configure Branded Email Address
 - [ ] [#14](https://github.com/thef4tdaddy/RxLedger/issues/14) Configure Vercel Deployment
