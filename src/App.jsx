@@ -5,6 +5,7 @@ import LogEntryPage from './pages/LogEntryPage';
 import TrendsPage from './pages/TrendsPage';
 import CommunityPage from './pages/CommunityPage';
 import AccountPage from './pages/AccountPage';
+import RegisterPage from './pages/RegisterPage';
 
 export default function App() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
           <Route path="/trends" element={<TrendsPage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/account" element={<AccountPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </BrowserRouter>
     </div>

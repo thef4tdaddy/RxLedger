@@ -17,6 +17,7 @@ This roadmap outlines planned development phases.
 - [ ] [#7](https://github.com/thef4tdaddy/ThriveTrack/issues/7) Implement Client-Side Encryption
 - [ ] [#8](https://github.com/thef4tdaddy/ThriveTrack/issues/8) Create Application Navigation and Layout
 - [ ] [#9](https://github.com/thef4tdaddy/ThriveTrack/issues/9) Implement User Authentication
+- [ ] [#10](https://github.com/thef4tdaddy/ThriveTrack/issues/10) Implement Email Verification Enforcement and Verification Page
 
 - [x] Initial GitHub Actions CI
 - [x] Conventional Commits enforcement
@@ -29,11 +30,20 @@ This roadmap outlines planned development phases.
 
 - [ ] Anonymous aggregation of logs
 - [ ] Sharing toggles per medication
-- [ ] Release automation (Release Please)
+- [x] Release automation (Release Please)
 
 ---
 
-## ✨ Phase 3 – Polishing & Mobile
+## 🌐 Phase 3 – Infrastructure & Launch
+
+- [ ] [#11](https://github.com/thef4tdaddy/ThriveTrack/issues/11) Design and Implement Branding Icons
+- [ ] [#12](https://github.com/thef4tdaddy/ThriveTrack/issues/12) Set Up Custom Domain
+- [ ] [#13](https://github.com/thef4tdaddy/ThriveTrack/issues/13) Configure Branded Email Address
+- [ ] [#14](https://github.com/thef4tdaddy/ThriveTrack/issues/14) Configure Vercel Deployment
+
+---
+
+## ✨ Phase 4 – Polishing & Mobile
 
 - [ ] [#6](https://github.com/thef4tdaddy/ThriveTrack/issues/6) Implement Account Settings Screen
 
