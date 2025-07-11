@@ -1,6 +1,6 @@
-# ThriveTrack
+# RxLedger
 
-ThriveTrack is a secure medication tracking app built with React, Vite, and Tailwind CSS. It allows users to:
+RxLedger is a secure medication tracking app built with React, Vite, and Tailwind CSS. It allows users to:
 
 - Track medications and manufacturers
 - Log how they feel and any side effects

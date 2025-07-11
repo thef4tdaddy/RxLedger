@@ -1,12 +1,12 @@
-# Contributing to ThriveTrack
+# Contributing to RxLedger
 
-Thank you for considering contributing to ThriveTrack! We welcome contributions from the community to help make ThriveTrack better for everyone.
+Thank you for considering contributing to RxLedger! We welcome contributions from the community to help make RxLedger better for everyone.
 
 ## How to Contribute
 
 ### Reporting Bugs
 
-If you find a bug in ThriveTrack, please open an issue in the GitHub repository. Include:
+If you find a bug in RxLedger, please open an issue in the GitHub repository. Include:
 
 - A clear and descriptive title.
 - Steps to reproduce the bug.
@@ -51,4 +51,4 @@ By participating in this project, you agree to abide by our [Code of Conduct](CO
 
 If you have any questions, feel free to open an issue or contact the maintainers directly.
 
-Thank you for helping improve ThriveTrack!
+Thank you for helping improve RxLedger!

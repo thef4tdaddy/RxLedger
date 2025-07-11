@@ -16,7 +16,7 @@ export default function RequireAuth({ children }) {
         <h2 className="text-lg font-semibold mb-2">Verify Your Email</h2>
         <p className="mb-4">
           Please check your inbox and click the verification link before using
-          ThriveTrack.
+          RxLedger.
         </p>
         <button
           onClick={async () => {

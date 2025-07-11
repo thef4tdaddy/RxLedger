@@ -1,5 +1,6 @@
 {
-  "name": "thrivetrack",
+  "name": "rxledger",
+  "description": "Secure medication tracking and anonymized sharing of experiences.",
   "private": true,
   "version": "0.2.1",
   "type": "module",

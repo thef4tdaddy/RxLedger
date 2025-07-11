@@ -1,8 +1,6 @@
+# RxLedger Wireframes
 
-
-# ThriveTrack Wireframes
-
-Below are the wireframes for the six main screens of the ThriveTrack application. Each section includes an ASCII wireframe and a brief explanation of the screen's purpose and elements.
+Below are the wireframes for the six main screens of the RxLedger application. Each section includes an ASCII wireframe and a brief explanation of the screen's purpose and elements.
 
 ---
 
@@ -10,7 +8,7 @@ Below are the wireframes for the six main screens of the ThriveTrack application
 
 ```
 -------------------------------------------------------
-|  ThriveTrack                       [User Avatar]    |
+|  RxLedger                       [User Avatar]    |
 -------------------------------------------------------
 |  [Today] [Week] [Month]                              |
 -------------------------------------------------------
@@ -30,6 +28,7 @@ Below are the wireframes for the six main screens of the ThriveTrack application
 |  - Slept 7h last night                            |
 -------------------------------------------------------
 ```
+
 **Explanation:**  
 The Dashboard is the main landing screen, providing a summary of the user's day, quick logging options, and recent activity.
 
@@ -51,6 +50,7 @@ The Dashboard is the main landing screen, providing a summary of the user's day,
 |  Reminders: [On/Off Toggle]                        |
 -------------------------------------------------------
 ```
+
 **Explanation:**  
 Lists all medications, dosages, scheduled times, and whether they've been taken today. Users can add, edit, or delete medications and toggle reminders.
 
@@ -73,6 +73,7 @@ Lists all medications, dosages, scheduled times, and whether they've been taken 
 |  [Save Entry]                                      |
 -------------------------------------------------------
 ```
+
 **Explanation:**  
 Allows users to log daily mood, energy, sleep, and add notes. Entries are timestamped and saved for tracking.
 
@@ -95,6 +96,7 @@ Allows users to log daily mood, energy, sleep, and add notes. Entries are timest
 |  [Export Data]                                     |
 -------------------------------------------------------
 ```
+
 **Explanation:**  
 Displays graphs visualizing trends over days/weeks/months for mood, sleep, medication adherence, and energy levels.
 
@@ -115,6 +117,7 @@ Displays graphs visualizing trends over days/weeks/months for mood, sleep, medic
 |  [Share My Progress]                               |
 -------------------------------------------------------
 ```
+
 **Explanation:**  
 Provides anonymized, aggregated insights from the community, highlighting trends, tips, and positive outcomes.
 
@@ -134,5 +137,6 @@ Provides anonymized, aggregated insights from the community, highlighting trends
 |  - Logout                                          |
 -------------------------------------------------------
 ```
+
 **Explanation:**  
 User settings for managing profile, notifications, data export, privacy, and account actions.
