@@ -33,7 +33,7 @@ Please see `CONTRIBUTING.md` for guidelines.
 
 ## License
 
-MIT
+Proprietary — This project is public for transparency, but not licensed for reuse or redistribution.
 
 ## Project Docs
 
