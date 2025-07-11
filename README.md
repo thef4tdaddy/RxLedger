@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="src/assets/branding/logo-horizontal.png" alt="RxLedger logo" width="300" />
+</p>
+
 # RxLedger
 
 RxLedger is a secure medication tracking app built with React, Vite, and Tailwind CSS. It allows users to:
@@ -40,3 +44,13 @@ Proprietary — This project is public for transparency, but not licensed for re
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Project Roadmap](ROADMAP.md)
 - [Changelog](CHANGELOG.md)
+
+## Branding Assets
+
+- **favicon.ico** – Browser tab icon
+- **icon-512-maskable.png** – PWA maskable icon (future use)
+- **logo-512-tight-crop.png** – Tightly cropped icon for app icons and small contexts
+- **logo-horizontal.png** – Main logo with icon and text side by side
+- **logo-icon.svg** – Scalable vector version of the icon only
+- **logo-vertical.png** – Logo with icon above text
+- **social-preview.png** – Image used for social sharing previews
