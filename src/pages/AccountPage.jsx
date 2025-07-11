@@ -1,8 +1,5 @@
+import Account from '../components/Account';
+
 export default function AccountPage() {
-  return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Account</h1>
-      <p>This is the account screen.</p>
-    </div>
-  );
+  return <Account />;
 }
