@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.2.1...v0.3.0) (2025-07-11)
+
+
+### Features
+
+* header and footer components fully designed for web ([bf0fa36](https://github.com/thef4tdaddy/RxLedger/commit/bf0fa366db5ad535167d2300f6be4582d6700d41))
+* scaffolding of basic pages ([d4fae54](https://github.com/thef4tdaddy/RxLedger/commit/d4fae546482351204608105e96260a9005389414))
+
 ## [0.2.1](https://github.com/thef4tdaddy/RxLedger/compare/v0.2.0...v0.2.1) (2025-07-11)
 
 ### Bug Fixes
