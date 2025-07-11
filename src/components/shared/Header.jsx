@@ -1,7 +1,6 @@
 import logoIcon from '../../assets/branding/logo-512-tight-crop.png';
 import { Link } from 'react-router-dom';
 import { UserIcon } from '@heroicons/react/24/solid';
-/** TODO: Font Color: #1B59AE  */
 export default function Header() {
   return (
     <header
@@ -12,7 +11,7 @@ export default function Header() {
         <img src={logoIcon} alt="RxLedger Logo" className="h-16 w-16" />
         <a
           href="https://rxledger.app"
-          className="text-2xl font-semibold text-blue-700"
+          className="text-2xl font-semibold text-[#1B59AE]"
         >
           RxLedger
         </a>
@@ -21,25 +20,25 @@ export default function Header() {
         <nav className="hidden md:flex space-x-3 ml-auto">
           <Link
             to="/dashboard"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-blue-700 border-2 border-blue-700 hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
           >
             Dashboard
           </Link>
           <Link
             to="/medications"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-blue-700 border-2 border-blue-700 hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
           >
             My Medications
           </Link>
           <Link
             to="/trends"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-blue-700 border-2 border-blue-700 hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
           >
             Trends
           </Link>
           <Link
             to="/community"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-blue-700 border-2 border-blue-700 hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
           >
             Community
           </Link>

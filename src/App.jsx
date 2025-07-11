@@ -13,7 +13,7 @@ import TermsOfService from './components/shared/TOS';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white text-gray-800 font-sans antialiased">
+    <div className="min-h-screen bg-[#A3B5AC] text-gray-800 font-sans antialiased">
       <BrowserRouter>
         <Header />
 
