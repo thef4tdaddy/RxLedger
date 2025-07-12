@@ -203,3 +203,43 @@ The Community Insights screen provides aggregated trends and peer data. Broad In
 
 **Explanation:**  
 The Account Settings screen provides tools for profile management, including user avatar, name, and email. Notifications can be customized per reminder type. Data & Privacy offers exporting and anonymizing logs. Community Sharing controls participation in anonymized insights. Integrations connect health apps and pharmacies. Danger Zone clearly separates account deletion.
+
+---
+
+## 7. Admin Dashboard
+
+```
+-------------------------------------------------------
+|  Admin Dashboard                                   |
+-------------------------------------------------------
+|  Overview                                          |
+|  - Total Users: 1,532                              |
+|  - Active Users This Month: 480                    |
+|  - Logs Recorded: 12,942                           |
+|  - Reports Reviewed: 36                            |
+-------------------------------------------------------
+|  User Management                                   |
+|  [Search users by email or ID] [🔍]               |
+|  - [User List with Suspend/Delete actions]         |
+-------------------------------------------------------
+|  Content Moderation                                |
+|  - Pending Reports: [12]                           |
+|  - [View Reports]                                  |
+-------------------------------------------------------
+|  System Monitoring                                 |
+|  - Error Logs (Sentry)                             |
+|  - Deployment Status (Vercel)                      |
+|  - Data Sync Health (Firebase)                     |
+-------------------------------------------------------
+|  Data & Privacy                                    |
+|  - Export User Logs                                |
+|  - Purge Inactive Accounts                         |
+|  - Manage Data Retention Policies                  |
+-------------------------------------------------------
+|  Audit Logs                                        |
+|  - [View all admin actions and timestamps]         |
+-------------------------------------------------------
+```
+
+**Explanation:**  
+The Admin Dashboard provides tools to manage users, moderate reported content, and monitor system health. The Overview section summarizes key metrics. User Management enables searching, suspending, or deleting accounts. Content Moderation displays pending reports. System Monitoring surfaces error logs and deployment health. Data & Privacy controls allow exporting or purging user data and adjusting retention policies. Audit Logs track all admin actions for accountability.
