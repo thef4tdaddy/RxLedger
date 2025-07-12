@@ -1,3 +1,4 @@
+import { demoSideEffectsOptions } from '../../demo-data/sideEffects';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { demoMedications } from '../../demo-data/medications/Medications';
@@ -48,12 +49,7 @@ export default function QuickLogEntry() {
           </label>
           <Select
             isMulti
-            options={[
-              { value: 'nausea', label: 'Nausea' },
-              { value: 'headache', label: 'Headache' },
-              { value: 'dizziness', label: 'Dizziness' },
-              { value: 'fatigue', label: 'Fatigue' },
-            ]}
+            options={demoSideEffectsOptions}
             className="basic-multi-select"
             classNamePrefix="select"
           />

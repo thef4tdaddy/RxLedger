@@ -1,13 +1,16 @@
 import { demoMedications } from '../medications/Medications';
 
-// Manufacturer counts
+// Manufacturer counts aggregated over manufacturerHistory
 export const manufacturerCounts = demoMedications.reduce((acc, med) => {
-  const existing = acc.find((m) => m.manufacturer === med.manufacturer);
-  if (existing) {
-    existing.count += 1;
-  } else {
-    acc.push({ manufacturer: med.manufacturer, count: 1 });
-  }
+  const history = med.manufacturerHistory ?? [];
+  history.forEach((name) => {
+    const existing = acc.find((m) => m.manufacturer === name);
+    if (existing) {
+      existing.count += 1;
+    } else {
+      acc.push({ manufacturer: name, count: 1 });
+    }
+  });
   return acc;
 }, []);
 

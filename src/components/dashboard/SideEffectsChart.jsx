@@ -9,23 +9,14 @@ import {
 } from 'recharts';
 import { demoSideEffectsData } from '../../demo-data/dashboard/DashboardData';
 
-export default function SideEffectsChart({ range, onRangeChange }) {
+export default function SideEffectsChart() {
   const today = new Date();
 
-  let cutoffDate;
-  if (range === 'Day') {
-    cutoffDate = new Date();
-    cutoffDate.setDate(today.getDate() - 1);
-  } else if (range === 'Week') {
-    cutoffDate = new Date();
-    cutoffDate.setDate(today.getDate() - 7);
-  } else if (range === 'Month') {
-    cutoffDate = new Date();
-    cutoffDate.setDate(today.getDate() - 30);
-  }
+  const cutoffDate = new Date();
+  cutoffDate.setDate(today.getDate() - 7);
 
   const filtered = demoSideEffectsData.filter((d) => {
-    const entryDate = new Date(d.date);
+    const entryDate = new Date(d.dateISO);
     return entryDate >= cutoffDate;
   });
 
@@ -50,21 +41,6 @@ export default function SideEffectsChart({ range, onRangeChange }) {
         <h2 className="text-xl font-semibold text-[#1B59AE]">
           Side Effects Tracking
         </h2>
-        <div className="flex gap-2">
-          {['Day', 'Week', 'Month'].map((r) => (
-            <button
-              key={r}
-              onClick={() => onRangeChange(r)}
-              className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                range === r
-                  ? 'bg-[#1B59AE] text-white'
-                  : 'bg-gray-200 text-black hover:bg-[#10B981]'
-              }`}
-            >
-              {r}
-            </button>
-          ))}
-        </div>
       </div>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -76,6 +52,12 @@ export default function SideEffectsChart({ range, onRangeChange }) {
             <Bar dataKey="count" fill="#1B59AE" />
           </BarChart>
         </ResponsiveContainer>
+        <p className="mt-2 text-sm text-gray-500">
+          Showing last 7 days.{' '}
+          <a href="/trends" className="text-[#1B59AE] underline">
+            View full chart
+          </a>
+        </p>
       </div>
     </div>
   );

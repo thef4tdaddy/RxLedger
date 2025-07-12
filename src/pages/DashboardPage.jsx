@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
-import TimeRangeSelector from '../components/dashboard/TimeRangeSelector';
 import StatsRow from '../components/dashboard/StatsRow';
 import ManufacturerChart from '../components/dashboard/ManufacturerChart';
 import MoodEnergyChart from '../components/dashboard/MoodEnergyChart';
@@ -9,17 +8,9 @@ import QuickLogEntry from '../components/dashboard/QuickLogEntry';
 import RecentActivity from '../components/dashboard/RecentActivity';
 
 export default function EnhancedDashboard() {
-  const [selectedTimeRange, setSelectedTimeRange] = useState('Today');
-  const [sideEffectsRange, setSideEffectsRange] = useState('Week');
-
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <DashboardHeader />
-
-      <TimeRangeSelector
-        selected={selectedTimeRange}
-        onSelect={setSelectedTimeRange}
-      />
 
       <StatsRow />
 
@@ -28,10 +19,7 @@ export default function EnhancedDashboard() {
         <MoodEnergyChart />
       </div>
 
-      <SideEffectsChart
-        range={sideEffectsRange}
-        onRangeChange={setSideEffectsRange}
-      />
+      <SideEffectsChart />
 
       <QuickLogEntry />
 

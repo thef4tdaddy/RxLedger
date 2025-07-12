@@ -10,13 +10,29 @@ export default function ManufacturerChart() {
     value: m.count,
   }));
 
-  const medsData = demoMedications.map((med) => ({
-    medication: med.commonName,
-    manufacturers: med.manufacturers.map((m) => ({
-      name: m.name,
-      value: m.percentage,
-    })),
-  }));
+  const medsData = demoMedications.map((med) => {
+    const counts = {};
+    const history = med.manufacturerHistory ?? [];
+    if (history.length === 0) {
+      return {
+        medication: med.commonName,
+        manufacturers: [],
+      };
+    }
+    history.forEach((name) => {
+      counts[name] = (counts[name] || 0) + 1;
+    });
+    const total = history.length || 1;
+    const manufacturers = Object.entries(counts).map(([name, count]) => ({
+      name,
+      value: Math.round((count / total) * 100),
+    }));
+
+    return {
+      medication: med.commonName,
+      manufacturers,
+    };
+  });
 
   const COLORS = ['#1B59AE', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -78,28 +94,34 @@ export default function ManufacturerChart() {
             <h3 className="text-lg font-semibold text-[#1B59AE] mb-2">
               {med.medication}
             </h3>
-            <div className="h-48">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={med.manufacturers}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={50}
-                    dataKey="value"
-                    label={({ name, value }) => `${name}: ${value}%`}
-                  >
-                    {med.manufacturers.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+            {med.manufacturers.length === 0 ? (
+              <p className="text-gray-500">
+                No data available for this medication.
+              </p>
+            ) : (
+              <div className="h-48">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={med.manufacturers}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={50}
+                      dataKey="value"
+                      label={({ name, value }) => `${name}: ${value}%`}
+                    >
+                      {med.manufacturers.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </div>
         ))}
     </div>
