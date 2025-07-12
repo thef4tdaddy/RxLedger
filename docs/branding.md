@@ -42,8 +42,8 @@ This image is used for social sharing meta tags:
 | ------------ | --------- | ----------------- |
 | Primary Blue | `#2563EB` | Buttons, headings |
 | Teal Accent  | `#10B981` | Highlights, links |
-| Neutral Gray | `#F9FAFB` | Background        |
-| Dark Text    | `#111827` | Main text color   |
+| Neutral Gray | `#A3B5AC` | Background        |
+| Dark Text    | `#1B59AE` | Main text color   |
 
 ---
 

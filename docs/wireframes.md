@@ -4,7 +4,7 @@ Below are the wireframes for the six main screens of the RxLedger application. E
 
 ---
 
-## 1. Dashboard
+## 1a. Updated Dashboard Wireframe
 
 ```
 -------------------------------------------------------
@@ -12,25 +12,25 @@ Below are the wireframes for the six main screens of the RxLedger application. E
 -------------------------------------------------------
 |  [Today] [Week] [Month]                              |
 -------------------------------------------------------
-|  Mood: 😊    |  Meds: ✔️   |  Sleep: 7h  |  Energy: 🔋 |
+|  [Medication Manufacturer Chart]                    |
+|  - Current manufacturer: Pfizer                     |
+|  - Notice: New manufacturer detected!               |
 -------------------------------------------------------
-|                                                   |
-|  [Quick Log Entry]                                |
-|  Mood: [😊] [😐] [😞]                              |
-|  Take Meds: [✔️]                                  |
-|  Notes: [_____________________]                   |
-|  [Log Entry Button]                               |
-|                                                   |
+|  [Overall Feeling / Mood / Energy Chart]            |
 -------------------------------------------------------
-|  Recent Activity                                  |
-|  - Mood: 😊  9:00am                               |
-|  - Meds taken 8:00am                              |
-|  - Slept 7h last night                            |
+|  [Side Effects Tracking Chart]                      |
+|  - Time range selector: Day / Week / Month          |
+-------------------------------------------------------
+|  [Quick Log Entry]                                  |
+|  Mood: [😊] [😐] [😞]                                |
+|  Take Meds: [✔️]                                    |
+|  Notes: [_____________________]                     |
+|  [Log Entry Button]                                 |
 -------------------------------------------------------
 ```
 
 **Explanation:**  
-The Dashboard is the main landing screen, providing a summary of the user's day, quick logging options, and recent activity.
+The updated Dashboard adds new visual charts to enhance user insights. The Medication Manufacturer Chart displays the current medication manufacturer and alerts users if a new manufacturer is detected. The Overall Feeling / Mood / Energy Chart provides a combined view of key wellbeing metrics. The Side Effects Tracking Chart allows users to monitor side effects over selectable time ranges (Day, Week, Month), providing deeper tracking capabilities alongside the existing quick log entry features.
 
 ---
 
@@ -40,19 +40,20 @@ The Dashboard is the main landing screen, providing a summary of the user's day,
 -------------------------------------------------------
 |  My Medications                [Add Medication +]   |
 -------------------------------------------------------
-|  Name         |  Dosage   |  Time   |  Taken?       |
-|-----------------------------------------------------|
-|  Sertraline   |  50mg     |  8:00am |  [✔️]         |
-|  Vitamin D    |  2000IU   |  9:00am |  [ ]          |
-|-----------------------------------------------------|
-|  [Edit] [Delete]                                   |
--------------------------------------------------------
-|  Reminders: [On/Off Toggle]                        |
+|  Common Name   | Medical Name   | Brand/Generic     |
+|  Manufacturer  | Pharmacy       | Dose Amount       |
+|  Schedule      | Refill Schedule|                   |
+-------------------------------------------------------|
+|  Sertraline    | Sertraline HCl | Generic           |
+|  Pfizer        | CVS Pharmacy   | 50mg              |
+|  Daily 8:00am  | Every 30 days  |                   |
+-------------------------------------------------------|
+|  [View History] [Archive] [Delete] [Reminders Toggle]|
 -------------------------------------------------------
 ```
 
 **Explanation:**  
-Lists all medications, dosages, scheduled times, and whether they've been taken today. Users can add, edit, or delete medications and toggle reminders.
+This layout displays each medication's full details, including common and medical names, brand/generic status, manufacturer, pharmacy, dose, and schedules. Clicking "View History" opens the medication's past records. Users can also archive, delete, and toggle reminders for both taking the medication and refills.
 
 ---
 
