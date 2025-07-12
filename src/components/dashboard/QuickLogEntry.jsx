@@ -1,4 +1,5 @@
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
 export default function QuickLogEntry() {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border-2 border-black mb-8">
@@ -65,6 +66,14 @@ export default function QuickLogEntry() {
         <button className="w-full md:w-auto px-6 py-3 bg-[#1B59AE] text-white rounded-lg font-medium hover:bg-[#10B981] transition-colors">
           Log Entry
         </button>
+        <div className="mt-4 text-center">
+          <Link
+            to="/log-entry"
+            className="inline-block text-[#1B59AE] font-semibold hover:underline"
+          >
+            Start Full Log Entry
+          </Link>
+        </div>
       </div>
     </div>
   );
