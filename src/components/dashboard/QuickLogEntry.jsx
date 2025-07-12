@@ -1,5 +1,14 @@
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
+import { demoMedications } from '../../demo-data/medications/Medications';
+
+const medicationOptions = [
+  { value: 'all', label: 'All' },
+  ...demoMedications.map((med) => ({
+    value: med.commonName.toLowerCase(),
+    label: med.commonName,
+  })),
+];
 export default function QuickLogEntry() {
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border-2 border-black mb-8">
@@ -28,11 +37,7 @@ export default function QuickLogEntry() {
           </label>
           <Select
             isMulti
-            options={[
-              { value: 'all', label: 'All' },
-              { value: 'sertraline', label: 'Sertraline' },
-              { value: 'metformin', label: 'Metformin' },
-            ]}
+            options={medicationOptions}
             className="basic-multi-select"
             classNamePrefix="select"
           />

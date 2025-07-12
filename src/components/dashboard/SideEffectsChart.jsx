@@ -7,13 +7,41 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { demoSideEffectsData } from '../../demo-data/dashboard/DashboardData';
 
 export default function SideEffectsChart({ range, onRangeChange }) {
+  const today = new Date();
+
+  let cutoffDate;
+  if (range === 'Day') {
+    cutoffDate = new Date();
+    cutoffDate.setDate(today.getDate() - 1);
+  } else if (range === 'Week') {
+    cutoffDate = new Date();
+    cutoffDate.setDate(today.getDate() - 7);
+  } else if (range === 'Month') {
+    cutoffDate = new Date();
+    cutoffDate.setDate(today.getDate() - 30);
+  }
+
+  const filtered = demoSideEffectsData.filter((d) => {
+    const entryDate = new Date(d.date);
+    return entryDate >= cutoffDate;
+  });
+
   const data = [
-    { name: 'Nausea', count: 2 },
-    { name: 'Headache', count: 1 },
-    { name: 'Dizziness', count: 3 },
-    { name: 'Fatigue', count: 1 },
+    {
+      name: 'Headache',
+      count: filtered.reduce((sum, d) => sum + d.headache, 0),
+    },
+    {
+      name: 'Nausea',
+      count: filtered.reduce((sum, d) => sum + d.nausea, 0),
+    },
+    {
+      name: 'Insomnia',
+      count: filtered.reduce((sum, d) => sum + d.insomnia, 0),
+    },
   ];
 
   return (

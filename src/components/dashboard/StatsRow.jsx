@@ -1,9 +1,17 @@
+import {
+  demoMoodEnergyData,
+  demoSleepData,
+} from '../../demo-data/dashboard/DashboardData';
+
 export default function StatsRow() {
+  const latestMoodEnergy = demoMoodEnergyData[demoMoodEnergyData.length - 1];
+  const latestSleep = demoSleepData[demoSleepData.length - 1];
+
   const stats = [
-    { label: 'Mood', value: '😊' },
+    { label: 'Mood', value: latestMoodEnergy.mood },
+    { label: 'Energy', value: `${latestMoodEnergy.energy}%` },
+    { label: 'Sleep', value: `${latestSleep.hours}h` },
     { label: 'Meds', value: '✓' },
-    { label: 'Sleep', value: '7h' },
-    { label: 'Energy', value: '🔋' },
   ];
 
   return (

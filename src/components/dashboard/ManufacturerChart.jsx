@@ -1,28 +1,22 @@
 import { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { manufacturerCounts } from '../../demo-data/dashboard/AggegateData';
+import { demoMedications } from '../../demo-data/medications/Medications';
 
 export default function ManufacturerChart() {
-  // Placeholder overall data
-  const overallData = [
-    { name: 'Pfizer', value: 60 },
-    { name: 'Teva', value: 25 },
-    { name: 'Sandoz', value: 15 },
-  ];
+  // Wire in demo data
+  const overallData = manufacturerCounts.map((m) => ({
+    name: m.manufacturer,
+    value: m.count,
+  }));
 
-  // Placeholder per-medication data
-  const medsData = [
-    {
-      medication: 'Sertraline',
-      manufacturers: [
-        { name: 'Pfizer', value: 80 },
-        { name: 'Teva', value: 20 },
-      ],
-    },
-    {
-      medication: 'Metformin',
-      manufacturers: [{ name: 'Sandoz', value: 100 }],
-    },
-  ];
+  const medsData = demoMedications.map((med) => ({
+    medication: med.commonName,
+    manufacturers: med.manufacturers.map((m) => ({
+      name: m.name,
+      value: m.percentage,
+    })),
+  }));
 
   const COLORS = ['#1B59AE', '#10B981', '#F59E0B', '#EF4444'];
 

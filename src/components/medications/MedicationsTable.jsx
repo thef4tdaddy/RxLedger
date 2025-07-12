@@ -50,7 +50,7 @@ export default function MedicationsTable({
                   </span>
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-700">
-                  {med.manufacturer}
+                  {med.manufacturers?.[0]?.name || '—'}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-700">
                   {med.pharmacy}
