@@ -5,6 +5,7 @@ import {
   sendEmailVerification,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
+import { updateUserInfo } from '../services/medicationService.js';
 
 export default function RegisterForm() {
   const [email, setEmail] = useState('');
@@ -20,6 +21,7 @@ export default function RegisterForm() {
         email,
         password,
       );
+      await updateUserInfo(userCredential.user);
       await sendEmailVerification(userCredential.user);
       alert('Verification email sent. Please check your inbox.');
     } catch (err) {
@@ -30,7 +32,8 @@ export default function RegisterForm() {
   const handleGoogleRegister = async () => {
     setError('');
     try {
-      await signInWithPopup(auth, googleProvider);
+      const cred = await signInWithPopup(auth, googleProvider);
+      await updateUserInfo(cred.user);
     } catch (err) {
       setError(err.message);
     }
