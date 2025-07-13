@@ -22,31 +22,47 @@ export async function fetchRxNavSuggestions(query) {
           const detailsRes = await fetch(
             `https://rxnav.nlm.nih.gov/REST/rxcui/${rxcui}/conceptProperties.json`,
           );
-          const detailsData = await detailsRes.json();
 
+          if (detailsRes.status === 404) {
+            // No concept details for this RXCUI—skip silently
+            return {
+              rxcui,
+              commonName: candidate.term || '',
+              medicalName: candidate.term || '',
+            };
+          }
+
+          if (!detailsRes.ok) {
+            console.error(
+              `RXNav error ${detailsRes.status} for rxcui ${rxcui}`,
+            );
+            return {
+              rxcui,
+              commonName: candidate.term || '',
+              medicalName: candidate.term || '',
+            };
+          }
+
+          const detailsData = await detailsRes.json();
           const concepts = detailsData?.conceptProperties || [];
 
-          // Prefer Ingredient (TTY=IN) for medicalName
           const ingredient = concepts.find((c) => c.tty === 'IN');
           if (ingredient) {
             medicalName = ingredient.name;
           } else {
-            // Fallback to SCD (Semantic Clinical Drug)
             const scd = concepts.find((c) => c.tty === 'SCD');
             if (scd) {
               medicalName = scd.name;
             } else if (concepts.length > 0) {
-              // Fallback to any available
               medicalName = concepts[0].name;
             }
           }
 
-          // Always set commonName to the preferred name if available
           if (concepts.length > 0) {
             commonName = concepts[0].name;
           }
         } catch (err) {
-          console.error('Error fetching RXCUI details:', err);
+          console.error(`Error fetching RXCUI details for ${rxcui}:`, err);
         }
       }
 

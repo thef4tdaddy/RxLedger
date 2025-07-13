@@ -1,9 +1,8 @@
-import rxnavService from './rxnavService';
-import medlineService from './medlineService';
-import openFdaService from './openFdaService';
+import { fetchRxNavSuggestions } from './rxnavService';
+import { fetchMedlineSuggestions } from './medlineService';
+import { fetchOpenFdaSuggestions } from './openFdaService';
 import dedupeAndRankSuggestions from '../../utils/dedupeAndRankSuggestions';
-import { getOrSetCache } from '../../utils/memoryCache';
-
+import { getOrSetCache } from '../../utils/cache/memoryCache';
 /**
  * Get medication suggestions from multiple sources, dedupe and rank.
  * Uses memoryCache util with 24-hour TTL for caching.
@@ -11,18 +10,25 @@ import { getOrSetCache } from '../../utils/memoryCache';
  * @returns {Promise<Array>} suggestions
  */
 export async function getMedicationSuggestions(query) {
-  return getOrSetCache(`med-suggestions-${query}`, async () => {
+  const normalizedQuery = query.trim().toLowerCase();
+  return getOrSetCache(`med-suggestions-${normalizedQuery}`, async () => {
     const results = await Promise.allSettled([
-      rxnavService.fetchRxNavSuggestions(query),
-      medlineService.fetchMedlineSuggestions(query),
-      openFdaService.fetchOpenFdaSuggestions(query),
+      fetchRxNavSuggestions(query),
+      fetchMedlineSuggestions(query),
+      fetchOpenFdaSuggestions(query),
     ]);
     const allSuggestions = [];
     for (const result of results) {
       if (result.status === 'fulfilled' && Array.isArray(result.value)) {
-        allSuggestions.push(...result.value);
+        // Filter out falsy or missing-name suggestions before collecting
+        const filtered = result.value.filter((s) => s && s.name);
+        allSuggestions.push(...filtered);
+      } else if (result.status === 'rejected') {
+        console.error('Suggestion fetch failed:', result.reason);
       }
     }
-    return dedupeAndRankSuggestions(allSuggestions);
+    // Dedupe and rank, then slice to 10 results
+    return dedupeAndRankSuggestions(allSuggestions).slice(0, 10);
   });
 }
+export { getMedicationSuggestions as fetchMedicationSuggestions };

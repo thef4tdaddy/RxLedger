@@ -1,22 +1,29 @@
 // Fetch medication suggestions from MedlinePlus Connect API
 // Returns: Array of { commonName, medicalName }
 export async function fetchMedlineSuggestions(query) {
-  const apiUrl = `https://connect.medlineplus.gov/rxcui?input=${encodeURIComponent(query)}&inputType=GENERIC&searchType=contains`;
+  const apiUrl = `/api/medline-suggestions?mainSearchCriteria.v.cs=2.16.840.1.113883.6.88&mainSearchCriteria.v.dn=${encodeURIComponent(query)}&knowledgeResponseType=application/json`;
   try {
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
     const data = await response.json();
-    // Simulate extraction of suggestions from MedlinePlus Connect API response
-    // This is a placeholder; actual API shape may differ.
-    if (data && Array.isArray(data.suggestions)) {
-      return data.suggestions.map((s) => ({
-        commonName: s.name || s.commonName || '',
-        medicalName: s.medicalName || s.name || '',
+
+    // Log the raw data to see what structure you get
+    console.log('Medline API raw response:', data);
+    console.log('Medline API raw feed:', JSON.stringify(data.feed, null, 2));
+
+    // Attempt to extract suggestions from MedlinePlus Connect response format
+    if (data && data.feed && Array.isArray(data.feed.entry)) {
+      return data.feed.entry.map((entry) => ({
+        commonName: entry.title?._value || '',
+        medicalName: entry.id?._value || '',
+        summary: entry.summary?._value || '',
+        link: entry.link?.[0]?.href || '',
       }));
     }
-    // Fallback if suggestions array is missing
+
+    // Fallback if expected structure missing
     return [];
   } catch (error) {
     console.error('Medline API fetch error:', error);
