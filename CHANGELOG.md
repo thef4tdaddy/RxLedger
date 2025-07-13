@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.4.0...v0.5.0) (2025-07-13)
+
+
+### Features
+
+* Add medication autofill with Medline , openFDA, and RxNav integration ([a1b6d5e](https://github.com/thef4tdaddy/RxLedger/commit/a1b6d5e1bc645c4992dfbe079504be2a3223a359))
+
+
+### Bug Fixes
+
+* termporarily making it possible to commit so then i can merge my feature branch into main ([cf1cfb5](https://github.com/thef4tdaddy/RxLedger/commit/cf1cfb58cbf23175d833ac1354dd915eafe0d6b3))
+
 ## [0.4.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.3.0...v0.4.0) (2025-07-12)
 
 
