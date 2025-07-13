@@ -31,6 +31,17 @@
       "type": "shell",
       "command": "npm run release:major",
       "group": "build"
+    },
+    {
+      "label": "🚀 Create & Push Branch",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "read -p 'Enter new branch name: ' branch; git checkout -b \"$branch\" && git push -u origin \"$branch\""
+      ],
+      "problemMatcher": [],
+      "group": "build"
     }
   ]
 }
