@@ -1,0 +1,7 @@
+extends: default
+
+rules:
+  truthy:
+    level: warning  # or "disable"
+    # You could set "disable" globally if you prefer
+    # Or leave this alone if you only want to disable by path
