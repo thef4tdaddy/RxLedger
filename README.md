@@ -31,6 +31,13 @@ Start the dev server:
 npm run dev
 ```
 
+### Turnstile Setup
+
+Set the `VITE_TURNSTILE_SITE_KEY` environment variable in your `.env` file and
+create an API route at `/api/verify-turnstile` that validates the token with
+Cloudflare. The registration form will block sign up until the captcha is
+completed and verified.
+
 ## Contributing
 
 Please see `CONTRIBUTING.md` for guidelines.
