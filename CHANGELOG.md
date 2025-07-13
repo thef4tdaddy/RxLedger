@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/thef4tdaddy/RxLedger/compare/v0.5.0...v0.5.1) (2025-07-13)
+
+
+### Bug Fixes
+
+* ensure Medline API proxy disables websockets to prevent 404 errors ([#38](https://github.com/thef4tdaddy/RxLedger/issues/38)) ([12e63f8](https://github.com/thef4tdaddy/RxLedger/commit/12e63f82066c1dc8fb15a2b65c33f5377b360234))
+
 ## [0.5.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.4.0...v0.5.0) (2025-07-13)
 
 
