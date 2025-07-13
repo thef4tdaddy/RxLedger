@@ -20,6 +20,7 @@ export default defineConfig({
         target: 'https://connect.medlineplus.gov',
         changeOrigin: true,
         secure: true,
+        ws: false,
         rewrite: (path) =>
           path.replace(/^\/api\/medline-suggestions/, '/service'),
       },
