@@ -1,8 +1,15 @@
+import { demoMedications } from '../../demo-data/medications/Medications';
+
 export default function MedicationsTable({
   medications,
   onToggleTaken,
   onToggleReminders,
 }) {
+  // Use demo data if no medications prop is provided (e.g. in dev/demo)
+  const meds =
+    Array.isArray(medications) && medications.length > 0
+      ? medications
+      : demoMedications;
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
       <div className="overflow-x-auto">
@@ -30,7 +37,7 @@ export default function MedicationsTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {medications.map((med) => (
+            {meds.map((med) => (
               <tr key={med.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 text-sm text-gray-900 font-medium">
                   {med.commonName}

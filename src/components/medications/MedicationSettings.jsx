@@ -25,7 +25,16 @@ export default function MedicationSettings() {
               <h3 className="font-medium text-gray-900">{setting.title}</h3>
               <p className="text-sm text-gray-600">{setting.desc}</p>
             </div>
-            <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-600 transition-colors">
+            <button
+              className="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+              style={{ backgroundColor: '#1B59AE' }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor = '#3DB9A4')
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor = '#1B59AE')
+              }
+            >
               <span className="sr-only">Toggle {setting.title}</span>
               <span className="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6" />
             </button>
