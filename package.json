@@ -2,7 +2,7 @@
   "name": "rxledger",
   "description": "Secure medication tracking and anonymized sharing of experiences.",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.5.1",
   "type": "module",
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,css,md,json}": [
