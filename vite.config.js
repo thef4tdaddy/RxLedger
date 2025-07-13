@@ -22,7 +22,7 @@ export default defineConfig({
         secure: true,
         ws: false,
         rewrite: (path) =>
-          path.replace(/^\/api\/medline-suggestions/, '/service'),
+          path.replace(/^\/api\/medline-suggestions/, '/application'),
       },
     },
   },
