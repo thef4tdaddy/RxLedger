@@ -35,7 +35,7 @@ This roadmap outlines planned development phases.
 ### Demo & Development _(In Progress)_
 
 - [ ] **[NEW]** Create Full Demo Mode for Landing Page Showcase
-- [ ] **[NEW]** Implement Firebase Database Integration
+- [ ] **[NEW]** Implement Firebase Database Integration for full user experience
 
 ### ✅ Completed
 
