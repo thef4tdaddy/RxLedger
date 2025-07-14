@@ -32,6 +32,19 @@ else
   echo -e "${GREEN}✅ Code already formatted.${NC}"
 fi
 
+# Run ESLint autofix
+echo -e "${YELLOW}🔧 Running ESLint autofix...${NC}"
+npx eslint --fix "src/**/*.{js,jsx,ts,tsx}"
+
+# Check if ESLint made changes
+if ! git diff-index --quiet HEAD --; then
+  git add .
+  git commit -m "style: auto-fix ESLint issues"
+  echo -e "${GREEN}✅ ESLint fixes committed.${NC}"
+else
+  echo -e "${GREEN}✅ No ESLint fixes needed.${NC}"
+fi
+
 # Prompt for the new branch name
 echo -e "${YELLOW}🔹 Enter new branch name:${NC}"
 read branch
