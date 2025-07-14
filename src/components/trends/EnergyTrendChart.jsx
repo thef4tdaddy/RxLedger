@@ -33,7 +33,12 @@ export default function EnergyTrendChart() {
             />
             <YAxis />
             <Tooltip />
-            <Line type="monotone" dataKey="energy" stroke="#F59E0B" strokeWidth={2} />
+            <Line
+              type="monotone"
+              dataKey="energy"
+              stroke="#F59E0B"
+              strokeWidth={2}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>

@@ -34,7 +34,9 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
     const demo = getRandomDemoMedication();
     if (demo.commonName || demo.medicalName) {
       setPlaceholders({
-        commonName: demo.commonName ? `e.g. ${demo.commonName}` : 'e.g. Tylenol',
+        commonName: demo.commonName
+          ? `e.g. ${demo.commonName}`
+          : 'e.g. Tylenol',
         medicalName: demo.medicalName
           ? `e.g. ${demo.medicalName}`
           : 'e.g. Acetaminophen',

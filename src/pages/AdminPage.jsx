@@ -8,19 +8,27 @@ export default function AdminPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-sm text-gray-500">Total Users</p>
-          <p className="text-2xl font-semibold">{demoAdminMetrics.totalUsers}</p>
+          <p className="text-2xl font-semibold">
+            {demoAdminMetrics.totalUsers}
+          </p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-sm text-gray-500">Active This Month</p>
-          <p className="text-2xl font-semibold">{demoAdminMetrics.activeUsers}</p>
+          <p className="text-2xl font-semibold">
+            {demoAdminMetrics.activeUsers}
+          </p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-sm text-gray-500">Logs Recorded</p>
-          <p className="text-2xl font-semibold">{demoAdminMetrics.logsRecorded}</p>
+          <p className="text-2xl font-semibold">
+            {demoAdminMetrics.logsRecorded}
+          </p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <p className="text-sm text-gray-500">Reports Reviewed</p>
-          <p className="text-2xl font-semibold">{demoAdminMetrics.reportsReviewed}</p>
+          <p className="text-2xl font-semibold">
+            {demoAdminMetrics.reportsReviewed}
+          </p>
         </div>
       </div>
 
@@ -42,12 +50,16 @@ export default function AdminPage() {
 
       <section className="bg-white p-4 rounded-lg shadow mb-6">
         <h2 className="text-xl font-semibold mb-2">System Monitoring</h2>
-        <p className="text-sm text-gray-500">Placeholder for monitoring widgets</p>
+        <p className="text-sm text-gray-500">
+          Placeholder for monitoring widgets
+        </p>
       </section>
 
       <section className="bg-white p-4 rounded-lg shadow mb-6">
         <h2 className="text-xl font-semibold mb-2">Data &amp; Privacy</h2>
-        <p className="text-sm text-gray-500">Placeholder controls for data export and retention</p>
+        <p className="text-sm text-gray-500">
+          Placeholder controls for data export and retention
+        </p>
       </section>
 
       <section className="bg-white p-4 rounded-lg shadow">
