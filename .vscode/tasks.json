@@ -35,11 +35,7 @@
     {
       "label": "🚀 Create & Push Branch",
       "type": "shell",
-      "command": "bash",
-      "args": [
-        "-c",
-        "read -p 'Enter new branch name: ' branch; git checkout -b \"$branch\" && git push -u origin \"$branch\""
-      ],
+      "command": "${workspaceFolder}/scripts/commit-new-branch",
       "problemMatcher": [],
       "group": "build"
     }
