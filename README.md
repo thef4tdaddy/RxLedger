@@ -31,6 +31,19 @@ Start the dev server:
 npm run dev
 ```
 
+### Auth Bypass (Development Only)
+
+To test the app without logging in, set `VITE_AUTH_BYPASS=true` in your `.env`
+file. The app will act as if a user is logged in so you can navigate the
+dashboard without authenticating. **Never enable this in production.**
+
+### Turnstile Setup
+
+Set the `VITE_TURNSTILE_SITE_KEY` environment variable in your `.env` file and
+create an API route at `/api/verify-turnstile` that validates the token with
+Cloudflare. The registration form will block sign up until the captcha is
+completed and verified.
+
 ## Contributing
 
 Please see `CONTRIBUTING.md` for guidelines.

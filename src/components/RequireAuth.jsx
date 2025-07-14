@@ -1,11 +1,10 @@
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { Navigate } from 'react-router-dom';
-import { auth } from '../firebase';
+import useAuth from '../hooks/useAuth';
 
 export default function RequireAuth({ children }) {
-  const [user, loading] = useAuthState(auth);
+  const { user, initializing } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
+  if (initializing) return <div>Loading...</div>;
   if (!user) return <Navigate to="/login" replace />;
 
   // If using email/password, enforce email verification
