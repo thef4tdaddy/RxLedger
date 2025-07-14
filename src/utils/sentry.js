@@ -1,11 +1,10 @@
-import { APP_VERSION } from './version.js';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import { Replay } from '@sentry/replay';
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN, // Replace with your actual DSN
-  release: 'rxledger@' + APP_VERSION,
+  release: 'rxledger@' + __APP_VERSION__,
   environment: 'production',
   _experiments: {
     profilesSampleRate: 1.0,
