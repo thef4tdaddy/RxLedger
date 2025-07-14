@@ -21,90 +21,25 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
   });
   const [suggestions, setSuggestions] = useState([]);
   const [suggestedFields, setSuggestedFields] = useState({});
-  const [medlineError, setMedlineError] = useState(false);
+  const [placeholders, setPlaceholders] = useState({
+    commonName: 'e.g. Tylenol',
+    medicalName: 'e.g. Acetaminophen',
+  });
   const [inputFocused, setInputFocused] = useState({
     commonName: false,
     medicalName: false,
   });
 
   useEffect(() => {
-    async function fetchDefaultSuggestions() {
-      try {
-        const commonMedications = [
-          'Tylenol',
-          'Ibuprofen',
-          'Metformin',
-          'Adderall',
-        ];
-        const randomQuery =
-          commonMedications[
-            Math.floor(Math.random() * commonMedications.length)
-          ];
-        const fetchedSuggestions =
-          await fetchMedicationSuggestions(randomQuery);
-        if (fetchedSuggestions && fetchedSuggestions.length > 0) {
-          const randomIdx = Math.floor(
-            Math.random() * fetchedSuggestions.length,
-          );
-          const randomSuggestion = fetchedSuggestions[randomIdx];
-          setFormData({
-            commonName: randomSuggestion.commonName || '',
-            medicalName: randomSuggestion.medicalName || '',
-            manufacturer: randomSuggestion.manufacturer || '',
-            pharmacy: randomSuggestion.pharmacy || '',
-            doseAmount: randomSuggestion.doseAmount || '',
-            schedule: randomSuggestion.schedule || '',
-            refillSchedule: randomSuggestion.refillSchedule || '',
-            brandGeneric: randomSuggestion.brandGeneric || '',
-          });
-          setSuggestedFields({
-            commonName: true,
-            medicalName: true,
-            manufacturer: true,
-            pharmacy: true,
-            doseAmount: true,
-            schedule: true,
-            refillSchedule: true,
-          });
-          setMedlineError(false);
-          setSuggestions([]); // Do not show suggestions on initial load
-        } else {
-          // No suggestions found, fallback to demo medication and clear suggestions
-          setMedlineError(true);
-          const demoMedication = getRandomDemoMedication();
-          setFormData({
-            commonName: demoMedication.commonName || '',
-            medicalName: demoMedication.medicalName || '',
-            manufacturer: demoMedication.manufacturer || '',
-            pharmacy: demoMedication.pharmacy || '',
-            doseAmount: demoMedication.doseAmount || '',
-            schedule: demoMedication.schedule || '',
-            refillSchedule: demoMedication.refillSchedule || '',
-            brandGeneric: demoMedication.brandGeneric || '',
-          });
-          setSuggestedFields({});
-          setSuggestions([]);
-        }
-      } catch (err) {
-        // RxNav fetch failed
-        console.error('RxNav fetch failed:', err);
-        setMedlineError(true);
-        const demoMedication = getRandomDemoMedication();
-        setFormData({
-          commonName: demoMedication.commonName || '',
-          medicalName: demoMedication.medicalName || '',
-          manufacturer: demoMedication.manufacturer || '',
-          pharmacy: demoMedication.pharmacy || '',
-          doseAmount: demoMedication.doseAmount || '',
-          schedule: demoMedication.schedule || '',
-          refillSchedule: demoMedication.refillSchedule || '',
-          brandGeneric: demoMedication.brandGeneric || '',
-        });
-        setSuggestedFields({});
-        setSuggestions([]);
-      }
+    const demo = getRandomDemoMedication();
+    if (demo.commonName || demo.medicalName) {
+      setPlaceholders({
+        commonName: demo.commonName ? `e.g. ${demo.commonName}` : 'e.g. Tylenol',
+        medicalName: demo.medicalName
+          ? `e.g. ${demo.medicalName}`
+          : 'e.g. Acetaminophen',
+      });
     }
-    fetchDefaultSuggestions();
   }, []);
 
   // Debounce logic for both name fields
@@ -384,11 +319,6 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
-      {medlineError && (
-        <div className="mb-4 p-2 bg-yellow-100 border border-yellow-300 rounded text-yellow-800">
-          Unable to fetch suggestions from RxNav. Using example data.
-        </div>
-      )}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-[#1B59AE]">
           Add New Medication
@@ -402,12 +332,12 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
           {
             label: 'Common Name',
             key: 'commonName',
-            placeholder: 'e.g. Tylenol',
+            placeholder: placeholders.commonName,
           },
           {
             label: 'Medical Name',
             key: 'medicalName',
-            placeholder: 'e.g. Acetaminophen',
+            placeholder: placeholders.medicalName,
           },
           {
             label: 'Manufacturer',
@@ -536,9 +466,6 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
           Cancel
         </button>
       </div>
-      <p className="mt-4 text-center text-xs text-gray-400">
-        Random Prefilled Medication from RxNav. Edit with yours.
-      </p>
     </div>
   );
 }
