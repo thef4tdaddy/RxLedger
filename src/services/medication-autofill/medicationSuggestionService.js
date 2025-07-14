@@ -20,8 +20,10 @@ export async function getMedicationSuggestions(query) {
     const allSuggestions = [];
     for (const result of results) {
       if (result.status === 'fulfilled' && Array.isArray(result.value)) {
-        // Filter out falsy or missing-name suggestions before collecting
-        const filtered = result.value.filter((s) => s && s.name);
+        // Filter out entries lacking both common and medical names before collecting
+        const filtered = result.value.filter(
+          (s) => s && (s.commonName || s.medicalName),
+        );
         allSuggestions.push(...filtered);
       } else if (result.status === 'rejected') {
         console.error('Suggestion fetch failed:', result.reason);

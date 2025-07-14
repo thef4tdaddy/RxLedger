@@ -32,12 +32,7 @@ export async function fetchMedlineSuggestions(query) {
     return [];
   } catch (error) {
     console.error('Medline API fetch error:', error);
-    // Fallback: informative static suggestions
-    return [
-      { commonName: 'Tylenol', medicalName: 'Acetaminophen' },
-      { commonName: 'Advil', medicalName: 'Ibuprofen' },
-      { commonName: 'Aleve', medicalName: 'Naproxen' },
-      { commonName: 'Benadryl', medicalName: 'Diphenhydramine' },
-    ];
+    // Do not surface fallback suggestions on error
+    return [];
   }
 }
