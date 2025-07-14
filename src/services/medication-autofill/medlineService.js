@@ -3,7 +3,11 @@
 export async function fetchMedlineSuggestions(query) {
   const apiUrl = `/api/medline-suggestions?mainSearchCriteria.v.cs=2.16.840.1.113883.6.88&mainSearchCriteria.v.dn=${encodeURIComponent(query)}&knowledgeResponseType=application/json`;
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiUrl, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
     }
