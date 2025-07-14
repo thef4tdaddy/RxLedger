@@ -6,6 +6,7 @@ import TrendsPage from './pages/TrendsPage';
 import CommunityPage from './pages/CommunityPage';
 import AccountPage from './pages/AccountPage';
 import RegisterPage from './pages/RegisterPage';
+import AdminPage from './pages/AdminPage';
 import Header from './components/shared/Header';
 import Footer from './components/shared/Footer';
 import PrivacyPolicy from './components/shared/PrivacyPolicy';
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
         </Routes>

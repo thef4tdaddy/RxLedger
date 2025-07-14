@@ -1,67 +1,79 @@
-import {
-  demoMoodEnergyData,
-  demoSleepData,
-} from '../../demo-data/dashboard/DashboardData';
-import { demoMedications } from '../../demo-data/medications/Medications';
+import { useEffect, useState } from 'react';
+import { getLogEntries } from '../../services/logService.js';
+import { getMedications } from '../../services/medicationService.js';
 
 export default function StatsRow() {
-  const latestMoodEnergy = demoMoodEnergyData[demoMoodEnergyData.length - 1];
-  const latestSleep = demoSleepData[demoSleepData.length - 1];
-  const allMedsTaken = demoMedications.every((m) => m.takenToday);
+  const [stats, setStats] = useState({ mood: 0, energy: 0, sleep: 0, missed: 0 });
 
-  const stats = [
+  useEffect(() => {
+    async function load() {
+      try {
+        const logs = await getLogEntries();
+        if (logs.length) {
+          const last = logs.sort((a, b) => new Date(a.created) - new Date(b.created)).at(-1);
+          setStats((s) => ({ ...s, mood: last.mood ?? 0, energy: last.energy ?? 0, sleep: last.sleepHours ?? 0 }));
+        }
+        const meds = await getMedications();
+        const missed = meds.filter((m) => !m.takenToday).length;
+        setStats((s) => ({ ...s, missed }));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    load();
+  }, []);
+
+  const statsData = [
     {
       label: 'Mood',
-      value: `${latestMoodEnergy.mood}/10`,
+      value: `${stats.mood}/10`,
       icon:
-        latestMoodEnergy.mood <= 2
+        stats.mood <= 2
           ? '😢'
-          : latestMoodEnergy.mood <= 4
+          : stats.mood <= 4
             ? '😟'
-            : latestMoodEnergy.mood <= 6
+            : stats.mood <= 6
               ? '😐'
-              : latestMoodEnergy.mood <= 8
+              : stats.mood <= 8
                 ? '🙂'
                 : '😁',
     },
     {
       label: 'Energy',
-      value: `${latestMoodEnergy.energy}%`,
+      value: `${stats.energy}%`,
       icon:
-        latestMoodEnergy.energy <= 20
+        stats.energy <= 20
           ? '🪫'
-          : latestMoodEnergy.energy <= 40
+          : stats.energy <= 40
             ? '🔋'
-            : latestMoodEnergy.energy <= 60
+            : stats.energy <= 60
               ? '⚡'
-              : latestMoodEnergy.energy <= 80
+              : stats.energy <= 80
                 ? '💪'
                 : '🚀',
     },
     {
       label: 'Sleep',
-      value: `${latestSleep.hours}h`,
+      value: `${stats.sleep}h`,
       icon:
-        latestSleep.hours <= 4
+        stats.sleep <= 4
           ? '😴'
-          : latestSleep.hours <= 6
+          : stats.sleep <= 6
             ? '🌙'
-            : latestSleep.hours <= 8
+            : stats.sleep <= 8
               ? '🛌'
               : '💤',
     },
     {
       label: 'Meds',
-      value: allMedsTaken
-        ? '✓ All taken'
-        : `${demoMedications.filter((m) => !m.takenToday).length} MISSED`,
-      icon: allMedsTaken ? '✅' : '❗',
+      value: stats.missed === 0 ? '✓ All taken' : `${stats.missed} MISSED`,
+      icon: stats.missed === 0 ? '✅' : '❗',
     },
   ];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-      {stats.map((stat) => (
+      {statsData.map((stat) => (
         <div
           key={stat.label}
           className="bg-white p-4 rounded-lg shadow-sm border-2 border-black"

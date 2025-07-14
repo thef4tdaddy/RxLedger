@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
+import { updateUserInfo } from '../services/medicationService.js';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -11,7 +12,8 @@ export default function LoginForm() {
     e.preventDefault();
     setError('');
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+      await updateUserInfo(cred.user);
     } catch (err) {
       setError(err.message);
     }
@@ -20,7 +22,8 @@ export default function LoginForm() {
   const handleGoogleLogin = async () => {
     setError('');
     try {
-      await signInWithPopup(auth, googleProvider);
+      const cred = await signInWithPopup(auth, googleProvider);
+      await updateUserInfo(cred.user);
     } catch (err) {
       setError(err.message);
     }

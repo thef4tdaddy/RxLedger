@@ -7,33 +7,36 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { demoSideEffectsData } from '../../demo-data/dashboard/DashboardData';
+import { useEffect, useState } from 'react';
+import { getLogEntries } from '../../services/logService.js';
 
 export default function SideEffectsChart() {
-  const today = new Date();
+  const [data, setData] = useState([
+    { name: 'Headache', count: 0 },
+    { name: 'Nausea', count: 0 },
+    { name: 'Insomnia', count: 0 },
+  ]);
 
-  const cutoffDate = new Date();
-  cutoffDate.setDate(today.getDate() - 7);
-
-  const filtered = demoSideEffectsData.filter((d) => {
-    const entryDate = new Date(d.dateISO);
-    return entryDate >= cutoffDate;
-  });
-
-  const data = [
-    {
-      name: 'Headache',
-      count: filtered.reduce((sum, d) => sum + d.headache, 0),
-    },
-    {
-      name: 'Nausea',
-      count: filtered.reduce((sum, d) => sum + d.nausea, 0),
-    },
-    {
-      name: 'Insomnia',
-      count: filtered.reduce((sum, d) => sum + d.insomnia, 0),
-    },
-  ];
+  useEffect(() => {
+    getLogEntries()
+      .then((logs) => {
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - 7);
+        const filtered = logs.filter((l) => new Date(l.created) >= cutoff);
+        const counts = { Headache: 0, Nausea: 0, Insomnia: 0 };
+        for (const l of filtered) {
+          for (const s of l.symptoms || []) {
+            if (counts[s] !== undefined) counts[s] += 1;
+          }
+        }
+        setData([
+          { name: 'Headache', count: counts.Headache },
+          { name: 'Nausea', count: counts.Nausea },
+          { name: 'Insomnia', count: counts.Insomnia },
+        ]);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border-2 border-black mb-8">

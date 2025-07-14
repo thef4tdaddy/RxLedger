@@ -1,4 +1,50 @@
+import { useState } from 'react';
+import { addLogEntry } from '../services/logService.js';
+
 export default function LogEntryPage() {
+  const today = new Date();
+  const [date, setDate] = useState(today.toISOString().split('T')[0]);
+  const [time, setTime] = useState(today.toTimeString().slice(0, 5));
+  const [mood, setMood] = useState(null);
+  const [energy, setEnergy] = useState(5);
+  const [sleep, setSleep] = useState('');
+  const symptomsList = [
+    'Headache',
+    'Nausea',
+    'Dizziness',
+    'Fatigue',
+    'Anxiety',
+    'Insomnia',
+    'Appetite loss',
+    'Dry mouth',
+    'Drowsiness',
+  ];
+  const [symptoms, setSymptoms] = useState([]);
+  const [notes, setNotes] = useState('');
+
+  const toggleSymptom = (s) => {
+    setSymptoms((cur) => (cur.includes(s) ? cur.filter((x) => x !== s) : [...cur, s]));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await addLogEntry({
+        type: 'full',
+        created: new Date(`${date}T${time}`).toISOString(),
+        mood,
+        energy: Number(energy) * 10,
+        sleepHours: sleep ? Number(sleep) : null,
+        symptoms,
+        notes,
+      });
+      setNotes('');
+      setSymptoms([]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="p-6 max-w-2xl mx-auto">
       {/* Header */}
@@ -9,7 +55,7 @@ export default function LogEntryPage() {
 
       {/* Log Entry Form */}
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Date and Time */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -19,7 +65,8 @@ export default function LogEntryPage() {
               <input
                 type="date"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                defaultValue={new Date().toISOString().split('T')[0]}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
               />
             </div>
             <div>
@@ -29,7 +76,8 @@ export default function LogEntryPage() {
               <input
                 type="time"
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                defaultValue={new Date().toTimeString().slice(0, 5)}
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
               />
             </div>
           </div>
@@ -40,42 +88,23 @@ export default function LogEntryPage() {
               Mood
             </label>
             <div className="flex gap-3">
-              <button
-                type="button"
-                className="p-4 text-3xl hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                😊
-              </button>
-              <button
-                type="button"
-                className="p-4 text-3xl hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                😐
-              </button>
-              <button
-                type="button"
-                className="p-4 text-3xl hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                😞
-              </button>
-              <button
-                type="button"
-                className="p-4 text-3xl hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                😠
-              </button>
-              <button
-                type="button"
-                className="p-4 text-3xl hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                😱
-              </button>
-              <button
-                type="button"
-                className="p-4 text-3xl hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                😴
-              </button>
+              {[
+                { e: '😊', v: 5 },
+                { e: '😐', v: 3 },
+                { e: '😞', v: 1 },
+                { e: '😠', v: 0 },
+                { e: '😱', v: 2 },
+                { e: '😴', v: 4 },
+              ].map(({ e, v }) => (
+                <button
+                  key={e}
+                  type="button"
+                  onClick={() => setMood(v)}
+                  className={`p-4 text-3xl rounded-lg transition-colors ${mood === v ? 'bg-gray-200' : 'hover:bg-gray-100'}`}
+                >
+                  {e}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -89,7 +118,8 @@ export default function LogEntryPage() {
                 type="range"
                 min="1"
                 max="10"
-                defaultValue="5"
+                value={energy}
+                onChange={(e) => setEnergy(e.target.value)}
                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
               <div className="flex justify-between text-sm text-gray-600 mt-1">
@@ -112,6 +142,8 @@ export default function LogEntryPage() {
                 max="24"
                 step="0.5"
                 placeholder="8"
+                value={sleep}
+                onChange={(e) => setSleep(e.target.value)}
                 className="w-24 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <span className="text-gray-600">hours</span>
@@ -124,23 +156,15 @@ export default function LogEntryPage() {
               Symptoms (select all that apply)
             </label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {[
-                'Headache',
-                'Nausea',
-                'Dizziness',
-                'Fatigue',
-                'Anxiety',
-                'Insomnia',
-                'Appetite loss',
-                'Dry mouth',
-                'Drowsiness',
-              ].map((symptom) => (
+              {symptomsList.map((symptom) => (
                 <label
                   key={symptom}
                   className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
                 >
                   <input
                     type="checkbox"
+                    checked={symptoms.includes(symptom)}
+                    onChange={() => toggleSymptom(symptom)}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700">{symptom}</span>
@@ -158,6 +182,8 @@ export default function LogEntryPage() {
               className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               rows="4"
               placeholder="Any additional notes about how you're feeling, side effects, or other observations..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
             />
           </div>
 

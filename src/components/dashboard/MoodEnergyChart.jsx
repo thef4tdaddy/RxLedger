@@ -1,4 +1,5 @@
-import { demoMoodEnergyData } from '../../demo-data/dashboard/DashboardData';
+import { useEffect, useState } from 'react';
+import { getLogEntries } from '../../services/logService.js';
 import {
   LineChart,
   Line,
@@ -10,17 +11,23 @@ import {
 } from 'recharts';
 
 export default function MoodEnergyChart() {
-  const parsedData = demoMoodEnergyData
-    .map((entry) => ({
-      ...entry,
-      mood: (entry.mood ?? 0) * 20,
-      feeling: Math.round(((entry.mood ?? 0) * 20 + (entry.energy ?? 0)) / 2),
-      parsedDate: new Date(entry.dateISO),
-    }))
-    .filter((entry) => !isNaN(entry.parsedDate))
-    .sort((a, b) => a.parsedDate - b.parsedDate);
+  const [data, setData] = useState([]);
 
-  const last7 = parsedData.slice(-7);
+  useEffect(() => {
+    getLogEntries()
+      .then((logs) => {
+        const parsed = logs
+          .map((l) => ({
+            dateISO: l.created,
+            mood: (l.mood ?? 0) * 20,
+            energy: l.energy ?? 0,
+            feeling: Math.round(((l.mood ?? 0) * 20 + (l.energy ?? 0)) / 2),
+          }))
+          .sort((a, b) => new Date(a.dateISO) - new Date(b.dateISO));
+        setData(parsed.slice(-7));
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border-2 border-black pt-6 md:pt-0">
@@ -29,7 +36,7 @@ export default function MoodEnergyChart() {
       </h2>
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={last7}>
+          <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="dateISO"
