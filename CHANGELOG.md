@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.6.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.5.1...v0.6.0) (2025-07-14)
+
+
+### Features
+
+* scaffold settings and admin pages ([#31](https://github.com/thef4tdaddy/RxLedger/issues/31)) ([24d02ed](https://github.com/thef4tdaddy/RxLedger/commit/24d02ed8026f35c135f4c40c9a59ac81a3894a3f))
+* scaffold trends pages with demo data ([#29](https://github.com/thef4tdaddy/RxLedger/issues/29)) ([f62301b](https://github.com/thef4tdaddy/RxLedger/commit/f62301b44a79bf825502f9a09014608ef900c972))
+
+
+### Bug Fixes
+
+* correct log entry route ([#41](https://github.com/thef4tdaddy/RxLedger/issues/41)) ([f654c9e](https://github.com/thef4tdaddy/RxLedger/commit/f654c9edfb5a9ec50eeb477bb5f7b68035a1997e))
+
+## [0.5.1](https://github.com/thef4tdaddy/RxLedger/compare/v0.5.0...v0.5.1) (2025-07-13)
+
+
+### Bug Fixes
+
+* ensure Medline API proxy disables websockets to prevent 404 errors ([#38](https://github.com/thef4tdaddy/RxLedger/issues/38)) ([12e63f8](https://github.com/thef4tdaddy/RxLedger/commit/12e63f82066c1dc8fb15a2b65c33f5377b360234))
+
+## [0.5.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.4.0...v0.5.0) (2025-07-13)
+
+
+### Features
+
+* Add medication autofill with Medline , openFDA, and RxNav integration ([a1b6d5e](https://github.com/thef4tdaddy/RxLedger/commit/a1b6d5e1bc645c4992dfbe079504be2a3223a359))
+
+
+### Bug Fixes
+
+* termporarily making it possible to commit so then i can merge my feature branch into main ([cf1cfb5](https://github.com/thef4tdaddy/RxLedger/commit/cf1cfb58cbf23175d833ac1354dd915eafe0d6b3))
+
 ## [0.4.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.3.0...v0.4.0) (2025-07-12)
 
 

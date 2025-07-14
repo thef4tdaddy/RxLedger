@@ -69,7 +69,7 @@ export default function QuickLogEntry() {
         </button>
         <div className="mt-4 text-center">
           <Link
-            to="/log-entry"
+            to="/log"
             className="inline-block text-[#1B59AE] font-semibold hover:underline"
           >
             Start Full Log Entry
