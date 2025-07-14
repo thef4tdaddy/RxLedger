@@ -127,6 +127,9 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
           let fetchedSuggestions = [];
           try {
             fetchedSuggestions = await fetchMedicationSuggestions(value);
+            if (fetchedSuggestions && fetchedSuggestions.length > 0) {
+              setMedlineError(false);
+            }
           } catch (err) {
             // handle fetch error
             console.error('Error fetching suggestions:', err);

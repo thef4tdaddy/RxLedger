@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import DashboardPage from './pages/DashboardPage';
 import MedicationsPage from './pages/MedicationsPage';
 import LogEntryPage from './pages/LogEntryPage';
@@ -14,7 +14,7 @@ import TermsOfService from './components/shared/TOS';
 export default function App() {
   return (
     <div className="min-h-screen bg-[#A3B5AC] text-gray-800 font-sans antialiased">
-      <BrowserRouter>
+      <HashRouter>
         <Header />
 
         <Routes>
@@ -30,7 +30,7 @@ export default function App() {
           <Route path="/terms" element={<TermsOfService />} />
         </Routes>
         <Footer />
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
