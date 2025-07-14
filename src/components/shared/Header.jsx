@@ -25,7 +25,7 @@ export default function Header() {
             Dashboard
           </Link>
           <Link
-            to="/log-entry"
+            to="/log"
             className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
           >
             Log Entry
