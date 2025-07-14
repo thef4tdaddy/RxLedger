@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.6.0...v0.7.0) (2025-07-14)
+
+
+### Features
+
+* **auth:** allow bypass via env ([#53](https://github.com/thef4tdaddy/RxLedger/issues/53)) ([1235a0e](https://github.com/thef4tdaddy/RxLedger/commit/1235a0e74d254ef3d505caa047b399e25d60da2a))
+
 ## [0.6.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.5.1...v0.6.0) (2025-07-14)
 
 
