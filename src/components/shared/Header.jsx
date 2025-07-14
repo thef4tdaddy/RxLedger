@@ -65,7 +65,10 @@ export default function Header() {
           </Link>
         </nav>
         <div className="flex items-center space-x-2">
-          <Link to="/settings" className="text-sm text-gray-600 hover:text-gray-800">
+          <Link
+            to="/settings"
+            className="text-sm text-gray-600 hover:text-gray-800"
+          >
             Settings
           </Link>
           <UserIcon className="w-8 h-8 text-gray-500" />

@@ -33,6 +33,13 @@
       "group": "build"
     },
     {
+      "label": "✨ Finalize Edits on Branch",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/edits-on-branch",
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
       "label": "🚀 Create & Push Branch",
       "type": "shell",
       "command": "${workspaceFolder}/scripts/commit-new-branch",

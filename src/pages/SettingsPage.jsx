@@ -28,7 +28,9 @@ export default function SettingsPage() {
         <ul className="space-y-2">
           {Object.entries(demoNotificationSettings).map(([key, value]) => (
             <li key={key} className="flex justify-between items-center">
-              <span className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+              <span className="capitalize">
+                {key.replace(/([A-Z])/g, ' $1')}
+              </span>
               <span className="text-sm text-gray-600">
                 {value ? 'On' : 'Off'}
               </span>
@@ -52,7 +54,9 @@ export default function SettingsPage() {
         <ul className="space-y-2">
           {Object.entries(demoIntegrationSettings).map(([key, value]) => (
             <li key={key} className="flex justify-between items-center">
-              <span className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</span>
+              <span className="capitalize">
+                {key.replace(/([A-Z])/g, ' $1')}
+              </span>
               <span className="text-sm text-gray-600">
                 {value ? 'Connected' : 'Not Connected'}
               </span>

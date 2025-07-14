@@ -19,6 +19,19 @@ if ! git diff-index --quiet HEAD --; then
   exit 1
 fi
 
+# Run Prettier formatting
+echo -e "${YELLOW}✨ Running Prettier to format code...${NC}"
+npx prettier --write "src/**/*.{js,jsx,ts,tsx,json,css,md}"
+
+# Check if Prettier made changes
+if ! git diff-index --quiet HEAD --; then
+  git add .
+  git commit -m "style: format code with Prettier"
+  echo -e "${GREEN}✅ Prettier changes committed.${NC}"
+else
+  echo -e "${GREEN}✅ Code already formatted.${NC}"
+fi
+
 # Prompt for the new branch name
 echo -e "${YELLOW}🔹 Enter new branch name:${NC}"
 read branch
