@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-} from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '../utils/firebase';
 import { createUserProfile } from '../utils/user';
 import Turnstile from './Turnstile';
 import { verifyTurnstile } from '../utils/turnstile';

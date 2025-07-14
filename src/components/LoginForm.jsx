@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
+import { auth, googleProvider } from '../utils/firebase';
 
 export default function LoginForm({ onRegister }) {
   const [email, setEmail] = useState('');
