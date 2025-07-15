@@ -8,93 +8,191 @@ By using the Service, you agree to the collection and use of information in acco
 
 ---
 
+## 🔒 **Data Encryption & Security - Medical Grade Protection**
+
+**Your medical information is our highest priority.** RxLedger uses **client-side encryption** to protect your sensitive health data:
+
+- **All medication information** is encrypted on your device before being sent to our servers
+- **Personal health data** (mood, energy, side effects, notes) is encrypted with your unique key
+- **Even we cannot read** your encrypted medical information
+- **Zero-knowledge architecture** - we never have access to your unencrypted health data
+- **HIPAA-aligned practices** for medical data protection
+
+---
+
 ## Information We Collect
 
-We collect several types of information for various purposes to provide and improve our Service, including:
+We collect several types of information for various purposes to provide and improve our Service:
 
-- **Personal Information**: When you sign up to be notified, we collect your email address and any other information you provide.
-- **Usage Data**: We may collect information about how the Service is accessed and used. This may include:
-  - Your IP address
-  - Browser type and version
-  - Pages you visit
-  - Time and date of your visit
-  - Unique device identifiers
-  - Other diagnostic data
-- **Cookies**: We use cookies and similar tracking technologies to track activity and store certain information.
+### **Non-Medical Information** (Standard Collection):
+
+- **Account Information**: Email address, display name, age range (optional), timezone
+- **Usage Data**: How you interact with the app (anonymized)
+- **Technical Data**: Device type, browser version, IP address
+- **Cookies**: For authentication and app functionality
+
+### **Medical Information** (Encrypted Only):
+
+- **Medication data**: Names, dosages, schedules, manufacturers (encrypted)
+- **Health tracking**: Mood, energy levels, sleep patterns (encrypted)
+- **Side effects**: Symptoms and reactions (encrypted)
+- **Personal notes**: Your private observations (encrypted)
+
+**Important:** All medical information is encrypted on your device. We store only encrypted data that we cannot read.
 
 ---
 
 ## How We Use Your Information
 
-We use the collected data for purposes such as:
+### **Non-Medical Data Usage:**
 
 - Providing and maintaining the Service
-- Notifying you about changes or updates
-- Communicating with you, including responding to inquiries
-- Monitoring usage to improve the Service
-- Detecting and resolving technical issues
-- Sending you information you have requested (such as product updates)
+- Communicating with you about updates
+- Monitoring app performance and fixing issues
+- Improving user experience
+
+### **Encrypted Medical Data:**
+
+- **Stored securely** for your personal tracking
+- **Synchronized** across your devices (encrypted)
+- **Never analyzed** or accessed by our team
+- **Anonymous insights only** - aggregated, non-identifiable trends for community features
+
+---
+
+## 🤝 **Community Features & Anonymization**
+
+RxLedger includes community features that help users learn from shared experiences:
+
+- **Completely anonymous** - no personal identifiers
+- **Medication hashes** instead of names in community data
+- **Age ranges only** (e.g., "25-35") if you opt to share
+- **Broad categories** (e.g., "cardiovascular") instead of specific conditions
+- **You control** what gets shared through privacy settings
+- **No way to trace** community posts back to individuals
 
 ---
 
 ## Analytics and Tracking Tools
 
-To operate and improve the Service, we use third-party services that may collect information:
+To operate and improve the Service, we use third-party services:
 
-- **Google Analytics**: Helps us understand how visitors use our site. Google Analytics collects usage data and may use cookies. You can learn more about Google's practices here: https://policies.google.com/privacy
-- **Sentry**: Used to monitor errors and performance issues. Sentry may collect anonymized diagnostic information such as error traces and browser data.
-- **Vercel**: Our hosting provider logs standard information (IP address, request headers) for operational purposes.
-- **Firebase**: May be used for authentication, hosting, and performance monitoring.
+- **Google Analytics**: Anonymous usage patterns (no medical data)
+- **Sentry**: Error monitoring and performance (no medical data)
+- **Vercel**: Hosting with standard server logs
+- **Firebase**: Authentication and encrypted data storage
 
-**Our goal is to anonymize any data collected outside of usernames, IP addresses, and basic information about what actions are performed in the app. We do not intentionally collect or store the content of user data entries (such as personal medication records) for analytics or marketing purposes.**
-
----
-
-## Sharing Your Information
-
-We do not sell or rent your personal information. We may share information with trusted service providers who help us operate the Service, subject to strict confidentiality agreements.
-
-We may also disclose your information:
-
-- To comply with legal obligations
-- To protect and defend our rights or property
-- To prevent or investigate possible wrongdoing
-- To protect the safety of users or the public
+**Our commitment:** We anonymize all data and never share medical information with third parties.
 
 ---
 
-## Data Security
+## Medical Disclaimers
 
-We take reasonable measures to protect your personal information. However, no method of transmission over the Internet or method of electronic storage is 100% secure.
+**RxLedger is not a medical device or healthcare provider:**
+
+- This app is for **personal tracking only** - not medical diagnosis
+- **Always consult** your healthcare provider for medical decisions
+- **Do not stop** or change medications without doctor approval
+- **Emergency situations** - contact emergency services, not the app
+- **Accuracy not guaranteed** - verify all information with healthcare providers
 
 ---
 
-## Your Rights
+## Your Rights & Data Control
 
-Depending on your location, you may have certain rights regarding your personal information, including:
+You have complete control over your data:
 
-- The right to access or update your data
-- The right to request deletion of your data
-- The right to object to certain uses of your data
+### **Access Rights:**
 
-To exercise these rights, please contact us.
+- View all your data through the app
+- Export your medication history
+- Request data deletion
+
+### **Privacy Controls:**
+
+- Turn community sharing on/off
+- Control what demographics you share
+- Manage notification preferences
+- Delete your account and all data
+
+### **GDPR Compliance:**
+
+- Right to access your data
+- Right to correct inaccurate data
+- Right to delete your data
+- Right to data portability
+- Right to object to processing
+
+---
+
+## Data Retention & Deletion
+
+- **Active accounts**: Data retained while account is active
+- **Inactive accounts**: Automatic deletion after 7 years of inactivity
+- **Account deletion**: Immediate removal of all personal data
+- **Community data**: Anonymous contributions remain (cannot be traced back)
+- **Legal retention**: Some anonymized data may be retained for legal compliance
+
+---
+
+## International Data Transfers
+
+Your encrypted data may be stored and processed in:
+
+- United States (primary servers)
+- European Union (backup servers)
+- All transfers comply with GDPR and privacy shield frameworks
 
 ---
 
 ## Children's Privacy
 
-Our Service is not directed to anyone under the age of 13. We do not knowingly collect personal information from children under 13.
+- **Age restriction**: Service not intended for anyone under 13
+- **Parental consent**: Required for users 13-17 in applicable jurisdictions
+- **No targeting**: We do not market to children
 
 ---
 
 ## Changes to This Privacy Policy
 
-We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page.
+- **Notification**: We'll email registered users about significant changes
+- **Effective date**: Changes take effect 30 days after notification
+- **Continued use**: Using the service after changes constitutes acceptance
 
 ---
 
-## Contact Us
+## Data Breach Notification
 
-If you have any questions about this Privacy Policy, please contact us:
+In the unlikely event of a data breach:
 
-**Email:** privacypolicy@rxledger.app
+- **Immediate action**: We'll secure systems and investigate
+- **User notification**: Within 72 hours via email and app notification
+- **Regulatory notification**: Authorities notified as required by law
+- **Transparency**: We'll explain what happened and our response
+
+---
+
+## Contact Us & Data Protection Officer
+
+**For privacy questions or to exercise your rights:**
+
+- **Email**: privacy@rxledger.app
+- **Data Protection Officer**: dpo@rxledger.app
+- **Postal Address**: [Your Business Address]
+- **Response time**: We respond to privacy requests within 30 days
+
+**For medical emergencies**: Contact emergency services, not us.
+
+---
+
+## Additional Protections
+
+- **Two-factor authentication** available for enhanced security
+- **Regular security audits** of our systems
+- **Employee training** on medical data privacy
+- **Minimal data collection** - we only collect what's necessary
+- **No selling of data** - we never sell personal information
+
+---
+
+_This privacy policy is designed to exceed HIPAA, GDPR, and CCPA requirements for medical app data protection._
