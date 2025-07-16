@@ -1,4 +1,5 @@
-// src/context/AuthContext.js
+//src/context/AuthContext.jsx
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useEffect } from 'react';
 import {
   onAuthStateChanged,
@@ -7,6 +8,7 @@ import {
   signOut,
   sendPasswordResetEmail,
   signInWithPopup,
+  signInAnonymously,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../utils/firebase';
 
@@ -18,19 +20,52 @@ export function AuthProvider({ children }) {
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      // Check for auth bypass mode
-      if (import.meta.env.VITE_AUTH_BYPASS === 'true' && !user) {
-        setUser({
-          uid: 'bypass-user',
-          email: 'bypass@example.com',
-          displayName: 'Demo User',
-          emailVerified: true,
-        });
-      } else {
-        setUser(user);
-      }
+    // Handle bypass mode with real Firebase anonymous authentication
+    if (import.meta.env.VITE_AUTH_BYPASS === 'true') {
+      const createBypassUser = async () => {
+        try {
+          console.log('🔄 Creating bypass user with anonymous auth...');
 
+          // Sign in anonymously to get real Firebase auth context
+          const userCredential = await signInAnonymously(auth);
+
+          // Create consistent bypass user object
+          const bypassUser = {
+            uid: 'bypass-user', // Consistent ID for data storage
+            email: 'bypass@example.com',
+            displayName: 'Demo User',
+            emailVerified: true,
+            isAnonymous: true,
+            // Keep the real Firebase user properties for auth context
+            ...userCredential.user,
+          };
+
+          console.log('✅ Bypass user created successfully');
+          setUser(bypassUser);
+          setLoading(false);
+          setInitializing(false);
+        } catch (error) {
+          console.error('❌ Bypass auth error:', error);
+
+          // Fallback to fake user if anonymous auth fails
+          setUser({
+            uid: 'bypass-user',
+            email: 'bypass@example.com',
+            displayName: 'Demo User',
+            emailVerified: true,
+          });
+          setLoading(false);
+          setInitializing(false);
+        }
+      };
+
+      createBypassUser();
+      return; // Don't set up the auth state listener in bypass mode
+    }
+
+    // Regular Firebase auth state listener for non-bypass mode
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
       setLoading(false);
       setInitializing(false);
     });
@@ -85,7 +120,17 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     setLoading(true);
     try {
-      await signOut(auth);
+      // In bypass mode, just reset to bypass user instead of signing out
+      if (import.meta.env.VITE_AUTH_BYPASS === 'true') {
+        setUser({
+          uid: 'bypass-user',
+          email: 'bypass@example.com',
+          displayName: 'Demo User',
+          emailVerified: true,
+        });
+      } else {
+        await signOut(auth);
+      }
     } catch (error) {
       throw error;
     } finally {
