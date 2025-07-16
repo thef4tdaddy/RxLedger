@@ -1,6 +1,6 @@
 // pages/LogEntryPage.jsx - Componentized version using individual components
 import { useState, useEffect } from 'react';
-import { useMedications } from '../context/MedicationContext';
+import { useMedications } from '../context/useMedications';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 

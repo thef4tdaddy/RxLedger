@@ -172,7 +172,7 @@ export const isProfileComplete = async (userId) => {
 /**
  * Get user's medication statistics
  */
-export const getUserStats = async (userId) => {
+export const getUserStats = async () => {
   try {
     // This would typically query the medication collections
     // For now, return basic structure

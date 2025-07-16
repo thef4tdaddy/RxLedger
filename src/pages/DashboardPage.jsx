@@ -1,6 +1,6 @@
 // pages/DashboardPage.jsx - Enhanced with Firebase integration
 import React from 'react';
-import { useMedications } from '../context/MedicationContext';
+import { useMedications } from '../context/useMedications';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
 import StatsRow from '../components/dashboard/StatsRow';
 import ManufacturerChart from '../components/dashboard/ManufacturerChart';

@@ -5,7 +5,7 @@ import AddMedicationForm from '../components/medications/AddMedicationForm';
 import MedicationsTable from '../components/medications/MedicationsTable';
 import SummaryCards from '../components/medications/SummaryCards';
 import MedicationSettings from '../components/medications/MedicationSettings';
-import { useMedications } from '../context/MedicationContext';
+import { useMedications } from '../context/useMedications';
 
 export default function EnhancedMedicationsPage() {
   const [showAddForm, setShowAddForm] = useState(false);

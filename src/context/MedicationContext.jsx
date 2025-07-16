@@ -1,17 +1,8 @@
 // context/MedicationContext.js
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MedicationService } from '../services/medicationService';
 import useAuth from '../hooks/useAuth';
-
-const MedicationContext = createContext();
-
-export const useMedications = () => {
-  const context = useContext(MedicationContext);
-  if (!context) {
-    throw new Error('useMedications must be used within a MedicationProvider');
-  }
-  return context;
-};
+import { MedicationContext } from './MedicationContextBase';
 
 export const MedicationProvider = ({ children }) => {
   const { user } = useAuth();

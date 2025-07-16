@@ -46,8 +46,8 @@ function ErrorBoundary({ children }) {
             Something went wrong
           </h2>
           <p className="text-gray-600 mb-4">
-            We're having trouble loading the app. Please refresh the page and
-            try again.
+            We&apos;re having trouble loading the app. Please refresh the page
+            and try again.
           </p>
           <button
             onClick={() => window.location.reload()}
@@ -65,7 +65,7 @@ function ErrorBoundary({ children }) {
 function AuthenticatedApp({ user }) {
   return (
     <MedicationProvider>
-      <Header />
+      <Header user={user} />
       <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<DashboardPage />} />

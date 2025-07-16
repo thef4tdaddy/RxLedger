@@ -1,6 +1,6 @@
 // pages/CommunityPage.jsx - Enhanced with components and Firebase integration
 import { useState, useEffect } from 'react';
-import { useMedications } from '../context/MedicationContext';
+import { useMedications } from '../context/useMedications';
 import CommunityHeader from '../components/community/CommunityHeader';
 import BroadInsights from '../components/community/BroadInsights';
 import TailoredInsights from '../components/community/TailoredInsights';
