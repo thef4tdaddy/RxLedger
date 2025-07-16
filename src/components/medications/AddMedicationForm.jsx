@@ -17,7 +17,7 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
     doseAmount: '',
     schedule: '',
     refillSchedule: '',
-    brandGeneric: '',
+    brandGeneric: 'Generic',
   });
   const [suggestions, setSuggestions] = useState([]);
   const [suggestedFields, setSuggestedFields] = useState({});
@@ -29,6 +29,8 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
     commonName: false,
     medicalName: false,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
     const demo = getRandomDemoMedication();
@@ -47,9 +49,72 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
   // Debounce logic for both name fields
   const debounceTimeout = useRef(null);
 
+  const validateForm = () => {
+    const errors = {};
+
+    // Required fields
+    if (!formData.commonName.trim()) {
+      errors.commonName = 'Common name is required';
+    }
+    if (!formData.doseAmount.trim()) {
+      errors.doseAmount = 'Dose amount is required';
+    }
+    if (!formData.schedule.trim()) {
+      errors.schedule = 'Schedule is required';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Ensure we have both names (fallback to commonName if medicalName is missing)
+      const submissionData = {
+        ...formData,
+        medicalName: formData.medicalName.trim() || formData.commonName.trim(),
+        commonName: formData.commonName.trim(),
+        manufacturer: formData.manufacturer.trim(),
+        pharmacy: formData.pharmacy.trim(),
+        doseAmount: formData.doseAmount.trim(),
+        schedule: formData.schedule.trim(),
+        refillSchedule: formData.refillSchedule.trim(),
+        brandGeneric: formData.brandGeneric || 'Generic',
+      };
+
+      await onSubmit(submissionData);
+
+      // Only close if submission was successful
+      onClose();
+    } catch (error) {
+      console.error('Failed to add medication:', error);
+      // Keep form open so user can try again
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear validation error for this field
+    if (validationErrors[name]) {
+      setValidationErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+
     if (suggestedFields[name]) {
       setSuggestedFields((prev) => ({ ...prev, [name]: false }));
     }
@@ -65,18 +130,18 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
           try {
             fetchedSuggestions = await fetchMedicationSuggestions(value);
           } catch (err) {
-            // handle fetch error
             console.error('Error fetching suggestions:', err);
             fetchedSuggestions = [];
           }
-          // Filter out empty/incomplete suggestions before displaying
+
+          // Filter and sort suggestions
           let filtered = (fetchedSuggestions || []).filter(
             (suggestion) =>
               suggestion &&
               (suggestion.commonName || suggestion.medicalName) &&
               (suggestion.commonName || suggestion.medicalName).trim() !== '',
           );
-          // Sort suggestions: those with both commonName and medicalName first, then those with only one
+
           filtered.sort((a, b) => {
             const aHasBoth = a.commonName && a.medicalName;
             const bHasBoth = b.commonName && b.medicalName;
@@ -84,51 +149,41 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
             if (!aHasBoth && bHasBoth) return 1;
             return 0;
           });
-          // Remove duplicate suggestions (same commonName and medicalName), keeping only the first/highest ranked occurrence
+
+          // Remove duplicates
           const seen = new Set();
           filtered = filtered.filter((suggestion) => {
-            const key =
-              (suggestion.commonName || '').toLowerCase().trim() +
-              '||' +
-              (suggestion.medicalName || '').toLowerCase().trim();
-            if (seen.has(key)) {
-              return false;
-            }
+            const key = `${suggestion.commonName || ''}-${suggestion.medicalName || ''}`;
+            if (seen.has(key)) return false;
             seen.add(key);
             return true;
           });
-          // If no matches, show a "No matches found" entry
-          if (filtered.length === 0) {
-            setSuggestions([
-              {
-                commonName: 'No matches found',
-                medicalName: '',
-                isNoMatch: true,
-              },
-            ]);
-          } else {
-            setSuggestions(filtered);
-          }
-        }, 350);
+
+          setSuggestions(
+            filtered.length > 0 ? filtered : [{ isNoMatch: true }],
+          );
+        }, 300);
       } else {
         setSuggestions([]);
       }
     }
   };
 
-  // Enhanced fallback handling for suggestion select
   const handleSuggestionSelect = async (suggestion) => {
     if (suggestion.isNoMatch) return;
-    let commonName = suggestion.commonName || '';
-    let medicalName = suggestion.medicalName || '';
-    let manufacturer = suggestion.manufacturer || '';
-    let pharmacy = suggestion.pharmacy || '';
-    let doseAmount = suggestion.doseAmount || '';
-    let schedule = suggestion.schedule || '';
-    let refillSchedule = suggestion.refillSchedule || '';
-    let brandGeneric = suggestion.brandGeneric || '';
 
-    // If both names present, just use them
+    const {
+      commonName = '',
+      medicalName = '',
+      manufacturer = '',
+      pharmacy = '',
+      doseAmount = '',
+      schedule = '',
+      refillSchedule = '',
+      brandGeneric = 'Generic',
+    } = suggestion;
+
+    // Auto-fill logic similar to your existing code
     if (commonName && medicalName) {
       setFormData({
         commonName,
@@ -153,20 +208,17 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
       return;
     }
 
-    // If only one name is present, try to fetch the other by querying the API
+    // Handle cases with only one name - similar to your existing logic
     let filled = false;
-    // Try to fill missing medicalName if only commonName present
     if (commonName && !medicalName) {
       try {
         const fetched = await fetchMedicationSuggestions(commonName);
-        // Prefer a suggestion that has both names and matches this commonName
         let match = (fetched || []).find(
           (s) =>
             s.commonName &&
             s.medicalName &&
             s.commonName.toLowerCase() === commonName.toLowerCase(),
         );
-        // If not found, prefer any suggestion with a medicalName
         if (!match) {
           match = (fetched || []).find((s) => s.medicalName);
         }
@@ -182,109 +234,16 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
             brandGeneric: match.brandGeneric || brandGeneric,
           });
           filled = true;
-        } else {
-          // No match with both names nor any with medicalName; fallback
-          console.warn(
-            'Fallback: no match with both names, using provided name as both.',
-          );
-          setFormData({
-            commonName: commonName,
-            medicalName: commonName,
-            manufacturer,
-            pharmacy,
-            doseAmount,
-            schedule,
-            refillSchedule,
-            brandGeneric,
-          });
-          filled = true;
         }
       } catch (err) {
-        // Error fetching medical name suggestion; fallback
         console.error('Error fetching medical name suggestion:', err);
-        console.warn(
-          'Fallback: no match with both names, using provided name as both.',
-        );
-        setFormData({
-          commonName: commonName,
-          medicalName: commonName,
-          manufacturer,
-          pharmacy,
-          doseAmount,
-          schedule,
-          refillSchedule,
-          brandGeneric,
-        });
-        filled = true;
       }
     }
-    // Try to fill missing commonName if only medicalName present
-    else if (!commonName && medicalName) {
-      try {
-        const fetched = await fetchMedicationSuggestions(medicalName);
-        let match = (fetched || []).find(
-          (s) =>
-            s.commonName &&
-            s.medicalName &&
-            s.medicalName.toLowerCase() === medicalName.toLowerCase(),
-        );
-        // If not found, prefer any suggestion with a commonName
-        if (!match) {
-          match = (fetched || []).find((s) => s.commonName);
-        }
-        if (match) {
-          setFormData({
-            commonName: match.commonName || medicalName,
-            medicalName: match.medicalName || medicalName,
-            manufacturer: match.manufacturer || manufacturer,
-            pharmacy: match.pharmacy || pharmacy,
-            doseAmount: match.doseAmount || doseAmount,
-            schedule: match.schedule || schedule,
-            refillSchedule: match.refillSchedule || refillSchedule,
-            brandGeneric: match.brandGeneric || brandGeneric,
-          });
-          filled = true;
-        } else {
-          // No match with both names nor any with commonName; fallback
-          console.warn(
-            'Fallback: no match with both names, using provided name as both.',
-          );
-          setFormData({
-            commonName: medicalName,
-            medicalName: medicalName,
-            manufacturer,
-            pharmacy,
-            doseAmount,
-            schedule,
-            refillSchedule,
-            brandGeneric,
-          });
-          filled = true;
-        }
-      } catch (err) {
-        // Error fetching common name suggestion; fallback
-        console.error('Error fetching common name suggestion:', err);
-        console.warn(
-          'Fallback: no match with both names, using provided name as both.',
-        );
-        setFormData({
-          commonName: medicalName,
-          medicalName: medicalName,
-          manufacturer,
-          pharmacy,
-          doseAmount,
-          schedule,
-          refillSchedule,
-          brandGeneric,
-        });
-        filled = true;
-      }
-    }
+
     if (!filled) {
-      // If couldn't fill the other name, just use what we have (shouldn't usually happen)
       setFormData({
-        commonName,
-        medicalName,
+        commonName: commonName || medicalName,
+        medicalName: medicalName || commonName,
         manufacturer,
         pharmacy,
         doseAmount,
@@ -293,6 +252,7 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
         brandGeneric,
       });
     }
+
     setSuggestedFields({
       commonName: true,
       medicalName: true,
@@ -310,28 +270,37 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
   };
 
   const handleBlur = (field) => {
-    // Delay hiding suggestions to allow click on suggestion
     setTimeout(() => {
       setInputFocused((prev) => ({ ...prev, [field]: false }));
     }, 150);
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6"
+    >
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-[#1B59AE]">
           Add New Medication
         </h2>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+        <button
+          type="button"
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600"
+          disabled={isSubmitting}
+        >
           ✕
         </button>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {[
           {
-            label: 'Common Name',
+            label: 'Common Name *',
             key: 'commonName',
             placeholder: placeholders.commonName,
+            required: true,
           },
           {
             label: 'Medical Name',
@@ -343,13 +312,23 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
             key: 'manufacturer',
             placeholder: 'e.g. Johnson & Johnson',
           },
-          { label: 'Pharmacy', key: 'pharmacy', placeholder: 'e.g. Walgreens' },
           {
-            label: 'Dose Amount',
+            label: 'Pharmacy',
+            key: 'pharmacy',
+            placeholder: 'e.g. Walgreens',
+          },
+          {
+            label: 'Dose Amount *',
             key: 'doseAmount',
             placeholder: 'e.g. 500mg',
+            required: true,
           },
-          { label: 'Schedule', key: 'schedule', placeholder: 'e.g. 2x daily' },
+          {
+            label: 'Schedule *',
+            key: 'schedule',
+            placeholder: 'e.g. 2x daily',
+            required: true,
+          },
           {
             label: 'Refill Schedule',
             key: 'refillSchedule',
@@ -364,7 +343,11 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
                 </label>
                 <input
                   type="text"
-                  className={`w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1B59AE] focus:border-transparent ${
+                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#1B59AE] focus:border-transparent ${
+                    validationErrors[field.key]
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } ${
                     suggestedFields[field.key] ? 'text-gray-400' : 'text-black'
                   }`}
                   name={field.key}
@@ -374,8 +357,16 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
                   onChange={handleInputChange}
                   onFocus={() => handleFocus(field.key)}
                   onBlur={() => handleBlur(field.key)}
+                  required={field.required}
+                  disabled={isSubmitting}
                 />
-                {/* Show suggestions only when input is focused and has 2+ chars */}
+                {validationErrors[field.key] && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors[field.key]}
+                  </p>
+                )}
+
+                {/* Suggestions dropdown */}
                 {inputFocused[field.key] &&
                   formData[field.key].length >= 2 &&
                   suggestions.length > 0 && (
@@ -398,11 +389,7 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
                               {suggestion.commonName || 'Unknown'}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {suggestion.medicalName
-                                ? suggestion.medicalName
-                                : suggestion.commonName
-                                  ? ''
-                                  : ''}
+                              {suggestion.medicalName || ''}
                             </span>
                           </li>
                         ),
@@ -419,7 +406,11 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
                 </label>
                 <input
                   type="text"
-                  className={`w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1B59AE] focus:border-transparent ${
+                  className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#1B59AE] focus:border-transparent ${
+                    validationErrors[field.key]
+                      ? 'border-red-500'
+                      : 'border-gray-300'
+                  } ${
                     suggestedFields[field.key] ? 'text-gray-400' : 'text-black'
                   }`}
                   name={field.key}
@@ -427,11 +418,19 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
                   value={formData[field.key] || ''}
                   placeholder={field.placeholder}
                   onChange={handleInputChange}
+                  required={field.required}
+                  disabled={isSubmitting}
                 />
+                {validationErrors[field.key] && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {validationErrors[field.key]}
+                  </p>
+                )}
               </div>
             );
           }
         })}
+
         <div>
           <label className="block text-sm font-medium text-[#1B59AE] mb-2">
             Brand/Generic
@@ -441,30 +440,33 @@ export default function AddMedicationForm({ onClose, onSubmit }) {
               suggestedFields.brandGeneric ? 'text-gray-400' : 'text-black'
             }`}
             name="brandGeneric"
-            value={formData.brandGeneric || ''}
+            value={formData.brandGeneric || 'Generic'}
             onChange={handleInputChange}
+            disabled={isSubmitting}
           >
             <option value="Generic">Generic</option>
             <option value="Brand">Brand</option>
           </select>
         </div>
       </div>
+
       <div className="flex gap-3 mt-6">
         <button
-          onClick={() => onSubmit(formData)}
-          className="px-6 py-3 bg-[#1B59AE] text-white rounded-lg font-medium hover:bg-[#48B4A2] transition-colors"
+          type="submit"
+          className="px-6 py-3 bg-[#1B59AE] text-white rounded-lg font-medium hover:bg-[#48B4A2] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isSubmitting}
         >
-          Add Medication
+          {isSubmitting ? 'Adding...' : 'Add Medication'}
         </button>
         <button
-          onClick={() => {
-            onClose();
-          }}
-          className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+          type="button"
+          onClick={onClose}
+          className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors disabled:opacity-50"
+          disabled={isSubmitting}
         >
           Cancel
         </button>
       </div>
-    </div>
+    </form>
   );
 }

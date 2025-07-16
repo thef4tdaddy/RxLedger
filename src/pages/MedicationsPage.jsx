@@ -1,11 +1,10 @@
-// pages/MedicationsPage.jsx - Updated with Firebase integration
 import React, { useState } from 'react';
 import MedicationsHeader from '../components/medications/MedicationsHeader';
 import AddMedicationForm from '../components/medications/AddMedicationForm';
 import MedicationsTable from '../components/medications/MedicationsTable';
 import SummaryCards from '../components/medications/SummaryCards';
 import MedicationSettings from '../components/medications/MedicationSettings';
-import { useMedications } from '../context/useMedications';
+import { useMedications } from '../context/MedicationContext';
 
 export default function EnhancedMedicationsPage() {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -14,23 +13,21 @@ export default function EnhancedMedicationsPage() {
 
   const handleAddMedication = async (formData) => {
     try {
+      console.log('Adding medication with data:', formData);
       await addMedication(formData);
       setShowAddForm(false);
-      // Optional: Show success message
+      console.log('✅ Medication added successfully');
     } catch (error) {
-      console.error('Failed to add medication:', error);
-      // Optional: Show error message to user
+      console.error('❌ Failed to add medication:', error);
       alert('Failed to add medication. Please try again.');
     }
   };
 
   const handleToggleTaken = async (medicationId) => {
-    // Find the medication
     const medication = medications.find((med) => med.id === medicationId);
     if (!medication) return;
 
     try {
-      // Update the taken status
       await updateMedication(medicationId, {
         takenToday: !medication.takenToday,
         lastTaken: !medication.takenToday ? new Date() : null,
@@ -42,12 +39,10 @@ export default function EnhancedMedicationsPage() {
   };
 
   const handleToggleReminders = async (medicationId) => {
-    // Find the medication
     const medication = medications.find((med) => med.id === medicationId);
     if (!medication) return;
 
     try {
-      // Update the reminders status
       await updateMedication(medicationId, {
         remindersOn: !medication.remindersOn,
       });
@@ -56,6 +51,43 @@ export default function EnhancedMedicationsPage() {
       alert('Failed to update reminder settings.');
     }
   };
+
+  // Show loading state while Firebase initializes
+  if (loading) {
+    return (
+      <div className="p-6 max-w-6xl mx-auto relative">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1B59AE] mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading your medications...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state if Firebase fails
+  if (error) {
+    return (
+      <div className="p-6 max-w-6xl mx-auto relative">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-center mb-4">
+            <div className="text-red-500 text-2xl mr-3">⚠️</div>
+            <h3 className="text-lg font-semibold text-red-900">
+              Error Loading Medications
+            </h3>
+          </div>
+          <p className="text-red-800 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto relative">
@@ -72,27 +104,14 @@ export default function EnhancedMedicationsPage() {
         </div>
       )}
 
-      {loading ? (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
-          <div className="flex items-center justify-center h-32">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1B59AE]"></div>
-            <span className="ml-2 text-gray-600">Loading medications...</span>
-          </div>
-        </div>
-      ) : error ? (
-        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
-          <div className="bg-red-50 border border-red-200 rounded p-4">
-            <p className="text-red-800">Error loading medications: {error}</p>
-          </div>
-        </div>
-      ) : (
-        <MedicationsTable
-          medications={medications}
-          onToggleTaken={handleToggleTaken}
-          onToggleReminders={handleToggleReminders}
-        />
-      )}
+      {/* Pass real Firebase data and handlers to MedicationsTable */}
+      <MedicationsTable
+        medications={medications}
+        onToggleTaken={handleToggleTaken}
+        onToggleReminders={handleToggleReminders}
+      />
 
+      {/* Pass real Firebase data to SummaryCards */}
       <SummaryCards medications={medications} />
 
       <MedicationSettings />
