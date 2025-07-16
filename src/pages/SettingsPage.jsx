@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../utils/firebase';
-import ProfileSection from '../components/settings/ProfileSection';
-import NotificationSettings from '../components/settings/NotificationSettings';
-import CommunitySettings from '../components/settings/CommunitySettings';
-import IntegrationSettings from '../components/settings/IntegrationSettings';
-import DangerZone from '../components/settings/DangerZone';
+import ProfileSection from '../component/account/ProfileSection';
+import NotificationSettings from '../component/account//NotificationSettings';
+import CommunitySettings from '../component/account/CommunitySettings';
+import IntegrationSettings from '../component/account/IntegrationSettings';
+import DangerZone from '../component/account/DangerZone';
 import useAuth from '../hooks/useAuth';
 
 export default function SettingsPage() {
