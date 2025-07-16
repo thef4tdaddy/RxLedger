@@ -22,6 +22,7 @@
     "@sentry/tracing": "^7.120.3",
     "@tailwindcss/vite": "^4.1.11",
     "@vercel/analytics": "^1.5.0",
+    "crypto-js": "^4.2.0",
     "firebase": "^11.10.0",
     "marked": "^16.0.0",
     "react": "^19.1.0",
