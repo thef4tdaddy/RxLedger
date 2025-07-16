@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db, createAnonymousShare } from '../../utils/firebase';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 
 export default function ShareProgressModal({
   medications,

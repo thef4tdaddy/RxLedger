@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 
 export function NotificationSettings() {
   const { user } = useAuth();

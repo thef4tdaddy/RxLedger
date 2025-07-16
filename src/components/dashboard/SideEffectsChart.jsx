@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 import { encryptionService } from '../../services/encryptionService';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 import {
   BarChart,
   Bar,

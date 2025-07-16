@@ -1,4 +1,7 @@
 // components/shared/TermsOfService.jsx - Enhanced
+import { useState, useEffect } from 'react';
+import { marked } from 'marked';
+
 export function TermsOfService() {
   const [content, setContent] = useState('Loading...');
   const [loading, setLoading] = useState(true);

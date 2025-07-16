@@ -1,6 +1,6 @@
 // src/context/useMedications.js
 import { useContext } from 'react';
-import { MedicationContext } from './MedicationContext';
+import MedicationContext from './MedicationContextBase';
 
 export const useMedications = () => {
   const context = useContext(MedicationContext);

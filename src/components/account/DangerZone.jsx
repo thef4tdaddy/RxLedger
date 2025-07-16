@@ -1,6 +1,6 @@
 // components/settings/DangerZone.jsx
 import { useState } from 'react';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 
 export default function DangerZone() {
   const { user } = useAuth();

@@ -1,6 +1,6 @@
 // components/medications/SummaryCards.jsx - Enhanced with real-time Firebase data
 import { useMemo } from 'react';
-import { useMedications } from '../../context/MedicationContext';
+import { useMedications } from '../../context/useMedications';
 
 export default function SummaryCards() {
   const { medications, loading, error } = useMedications();

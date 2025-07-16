@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 export function Footer() {
   const [version, setVersion] = useState('Loading...');
 

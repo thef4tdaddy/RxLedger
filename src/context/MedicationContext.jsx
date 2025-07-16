@@ -1,7 +1,7 @@
 // context/MedicationContext.js
 import React, { useState, useEffect } from 'react';
 import { MedicationService } from '../services/medicationService';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from './useAuth';
 import MedicationContext from './MedicationContextBase';
 
 export const MedicationProvider = ({ children }) => {

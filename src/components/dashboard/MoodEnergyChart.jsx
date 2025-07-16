@@ -9,7 +9,7 @@ import {
   getDocs,
 } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 import { encryptionService } from '../../services/encryptionService';
 import {
   LineChart,

@@ -1,6 +1,6 @@
 // components/dashboard/StatsRow.jsx - Enhanced with Firebase integration
-import { useMedications } from '../../context/MedicationContext';
-import useAuth from '../../hooks/useAuth';
+import { useMedications } from '../../context/useMedications';
+import { useAuth } from '../../context/useAuth';
 
 export default function StatsRow() {
   const { medications, loading } = useMedications();

@@ -7,7 +7,7 @@ import TailoredInsights from '../components/community/TailoredInsights';
 import CommunityActions from '../components/community/CommunityActions';
 import ShareProgressModal from '../components/community/ShareProgressModal';
 import CommunityTrendsModal from '../components/community/CommunityTrendsModal';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../context/useAuth';
 
 export default function CommunityPage() {
   const { user } = useAuth();

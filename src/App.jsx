@@ -12,10 +12,10 @@ import SettingsPage from './pages/SettingsPage';
 import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/shared/Header';
-import Footer from './components/shared/Footer';
+import { Footer } from './components/shared/Footer';
 import PrivacyPolicy from './components/shared/PrivacyPolicy';
-import TermsOfService from './components/shared/TOS';
-import useAuth from './hooks/useAuth';
+import { TermsOfService } from './components/shared/TOS';
+import { useAuth } from './context/useAuth';
 
 // Loading component
 function LoadingScreen() {

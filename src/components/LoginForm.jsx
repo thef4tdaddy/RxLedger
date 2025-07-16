@@ -5,15 +5,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   sendPasswordResetEmail,
-  updateDoc,
-  doc,
-  serverTimestamp,
 } from 'firebase/auth';
-import {
-  updateDoc as updateFirestoreDoc,
-  doc as firestoreDoc,
-  serverTimestamp as firestoreServerTimestamp,
-} from 'firebase/firestore';
+import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { auth, googleProvider, db } from '../utils/firebase';
 
 export default function LoginForm({ onRegister }) {

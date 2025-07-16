@@ -2,9 +2,9 @@
 import { useState } from 'react';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
-import { useMedications } from '../../context/MedicationContext';
+import { useMedications } from '../../context/useMedications';
 import { encryptionService } from '../../services/encryptionService';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 

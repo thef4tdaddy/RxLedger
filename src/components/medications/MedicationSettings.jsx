@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 
 export default function MedicationSettings() {
   const { user } = useAuth();

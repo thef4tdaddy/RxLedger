@@ -2,9 +2,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
-import { useMedications } from '../../context/MedicationContext';
+import { useMedications } from '../../context/useMedications';
 import { encryptionService } from '../../services/encryptionService';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../context/useAuth';
 
 export default function RecentActivity() {
   const { user } = useAuth();

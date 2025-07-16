@@ -1,7 +1,7 @@
 // components/dashboard/ManufacturerChart.jsx - Enhanced with Firebase integration
 import { useState, useMemo } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { useMedications } from '../../context/MedicationContext';
+import { useMedications } from '../../context/useMedications';
 
 export default function ManufacturerChart() {
   const { medications, loading, error } = useMedications();

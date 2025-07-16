@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
-import useAuth from '../../hooks/useAuth';
-import { useMedications } from '../../context/MedicationContext';
+import { useAuth } from '../../context/useAuth';
+import { useMedications } from '../../context/useMedications';
 
 export default function DashboardHeader() {
   const { user } = useAuth();

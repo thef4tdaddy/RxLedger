@@ -1,13 +1,13 @@
 // pages/AdminPage.jsx - Enhanced with components and Firebase integration
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../utils/firebase';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../context/useAuth';
 import AdminMetrics from '../components/admin/AdminMetrics';
-import UserManagement from '../components/admin/UserManagement';
-import ContentModeration from '../components/admin/ContentModeration';
-import SystemMonitoring from '../components/admin/SystemMonitoring';
-import DataPrivacy from '../components/admin/DataPrivacy';
+import { UserManagement } from '../components/admin/UserManagement';
+import { ContentModeration } from '../components/admin/ContentModeration';
+import { SystemMonitoring } from '../components/admin/SystemMonitoring';
+import { DataPrivacy } from '../components/admin/DataPrivacy';
 import AuditLogs from '../components/admin/AuditLogs';
 
 export default function AdminPage() {
@@ -16,13 +16,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [adminLevel, setAdminLevel] = useState(null);
 
-  useEffect(() => {
-    if (user?.uid) {
-      checkAdminAccess();
-    }
-  }, [user]);
-
-  const checkAdminAccess = async () => {
+  const checkAdminAccess = useCallback(async () => {
     try {
       // Check if user has admin privileges
       const userRef = doc(db, 'users', user.uid);
@@ -48,7 +42,13 @@ export default function AdminPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user?.uid) {
+      checkAdminAccess();
+    }
+  }, [user, checkAdminAccess]);
 
   if (loading) {
     return (
@@ -77,7 +77,7 @@ export default function AdminPage() {
             Access Denied
           </h1>
           <p className="text-red-800 mb-4">
-            You don't have permission to access the admin dashboard.
+            You don&apos;t have permission to access the admin dashboard.
           </p>
           <a
             href="#/dashboard"

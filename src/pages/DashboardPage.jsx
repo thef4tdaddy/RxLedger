@@ -8,7 +8,7 @@ import MoodEnergyChart from '../components/dashboard/MoodEnergyChart';
 import SideEffectsChart from '../components/dashboard/SideEffectsChart';
 import QuickLogEntry from '../components/dashboard/QuickLogEntry';
 import RecentActivity from '../components/dashboard/RecentActivity';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../context/useAuth';
 
 // Error boundary for dashboard components
 function DashboardError({ error, retry }) {
