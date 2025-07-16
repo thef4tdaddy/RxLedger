@@ -1,6 +1,6 @@
 // components/medications/MedicationsTable.jsx - Firebase integrated
 import { useState } from 'react';
-import { useMedications } from '../../context/MedicationContext';
+import { useMedications } from '../../context/useMedications';
 
 export default function MedicationsTable() {
   const { medications, loading, error, updateMedication, deleteMedication } =
