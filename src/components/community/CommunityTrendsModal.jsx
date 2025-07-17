@@ -1,5 +1,5 @@
 // components/community/CommunityTrendsModal.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   BarChart,
   Bar,
@@ -20,16 +20,11 @@ export default function CommunityTrendsModal({ onClose }) {
   const [communityData, setCommunityData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadCommunityTrends();
-  }, []);
-
-  const loadCommunityTrends = async () => {
+  const loadCommunityTrends = useCallback(async () => {
     try {
       setLoading(true);
 
       // In a real implementation, this would query the communityShares collection
-      // For now, we'll generate realistic demo data
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const demoTrends = generateDemoTrends();
@@ -39,7 +34,11 @@ export default function CommunityTrendsModal({ onClose }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadCommunityTrends();
+  }, [loadCommunityTrends]);
 
   const generateDemoTrends = () => {
     return {

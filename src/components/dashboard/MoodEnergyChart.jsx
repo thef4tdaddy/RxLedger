@@ -103,36 +103,35 @@ export default function MoodEnergyChart() {
     loadHealthData();
   }, [user]);
 
-  // Generate mock data when no real data exists
-  const generateMockData = () => {
-    const mockData = [];
-    const today = new Date();
-
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
-      const seed = (user?.uid ? user.uid.charCodeAt(0) : 5) + i;
-
-      mockData.push({
-        date: dateStr,
-        dateISO: dateStr,
-        mood: Math.max(1, Math.min(10, 6 + (seed % 5))),
-        energy: Math.max(10, Math.min(100, 60 + ((seed * 7) % 40))),
-        parsedDate: date,
-      });
-    }
-
-    return mockData;
-  };
-
   const chartData = useMemo(() => {
+    const generateMockData = () => {
+      const mockData = [];
+      const today = new Date();
+
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toISOString().split('T')[0];
+        const seed = (user?.uid ? user.uid.charCodeAt(0) : 5) + i;
+
+        mockData.push({
+          date: dateStr,
+          dateISO: dateStr,
+          mood: Math.max(1, Math.min(10, 6 + (seed % 5))),
+          energy: Math.max(10, Math.min(100, 60 + ((seed * 7) % 40))),
+          parsedDate: date,
+        });
+      }
+
+      return mockData;
+    };
+
     let dataToUse = healthData.length > 0 ? healthData : generateMockData();
 
     const parsedData = dataToUse
       .map((entry) => ({
         ...entry,
-        mood: entry.mood ? entry.mood * 10 : null, // Convert 1-10 to 10-100
+        mood: entry.mood ? entry.mood * 10 : null,
         feeling:
           entry.mood && entry.energy
             ? Math.round((entry.mood * 10 + entry.energy) / 2)
