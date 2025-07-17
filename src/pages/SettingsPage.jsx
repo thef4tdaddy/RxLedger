@@ -1,4 +1,4 @@
-// pages/SettingsPage.jsx - Complete with real Firebase integration
+// pages/SettingsPage.jsx - Enhanced with comprehensive implementation status
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -14,6 +14,8 @@ export default function SettingsPage() {
   const { user } = useAuth();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [showImplementationDetails, setShowImplementationDetails] =
+    useState(false);
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -44,20 +46,196 @@ export default function SettingsPage() {
         </p>
       </div>
 
-      {/* Profile Section */}
-      <ProfileSection />
+      {/* Implementation Status Warning */}
+      <div className="mb-8 p-5 bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-amber-400 rounded-lg shadow-sm">
+        <div className="flex items-start">
+          <div className="text-amber-500 text-xl mr-3">🚧</div>
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-lg font-semibold text-amber-900">
+                Settings Implementation Status
+              </h2>
+              <button
+                onClick={() =>
+                  setShowImplementationDetails(!showImplementationDetails)
+                }
+                className="text-xs text-amber-700 hover:text-amber-800 font-medium px-2 py-1 border border-amber-300 rounded transition-colors"
+              >
+                {showImplementationDetails ? 'Hide Details' : 'Show Details'}
+              </button>
+            </div>
 
-      {/* Notification Settings */}
-      <NotificationSettings />
+            <p className="text-amber-800 mb-3">
+              Settings sections are in various stages of development. Core
+              functionality is working, while advanced features are being
+              progressively implemented.
+            </p>
 
-      {/* Community Settings */}
-      <CommunitySettings />
+            {/* Quick Status Overview */}
+            <div className="flex flex-wrap gap-4 text-sm mb-3">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-green-500 rounded-full"></span>
+                <span className="text-green-700 font-medium">3 Functional</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                <span className="text-yellow-700 font-medium">
+                  2 In Progress
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                <span className="text-blue-700 font-medium">3 Planned</span>
+              </div>
+            </div>
 
-      {/* Integration Settings */}
-      <IntegrationSettings />
+            {/* Detailed Implementation Status */}
+            {showImplementationDetails && (
+              <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Functional Components */}
+                <div className="bg-white p-4 rounded-lg border border-green-200">
+                  <h3 className="font-semibold text-green-800 mb-3 flex items-center">
+                    <span className="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                    ✅ Fully Functional
+                  </h3>
+                  <ul className="space-y-2 text-sm text-green-700">
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                      Profile Display & Authentication
+                    </li>
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                      Data Encryption & Security
+                    </li>
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                      Account Deletion & Sign Out
+                    </li>
+                  </ul>
+                </div>
 
-      {/* Danger Zone */}
-      <DangerZone />
+                {/* In Development */}
+                <div className="bg-white p-4 rounded-lg border border-yellow-200">
+                  <h3 className="font-semibold text-yellow-800 mb-3 flex items-center">
+                    <span className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></span>
+                    🔄 In Development
+                  </h3>
+                  <ul className="space-y-2 text-sm text-yellow-700">
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
+                      Notification Preferences
+                    </li>
+                    <li className="flex items-center">
+                      <span className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
+                      Community Privacy Controls
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Planned Features */}
+                <div className="bg-white p-4 rounded-lg border border-blue-200 md:col-span-2">
+                  <h3 className="font-semibold text-blue-800 mb-3 flex items-center">
+                    <span className="w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+                    📋 Planned Features
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <ul className="space-y-2 text-sm text-blue-700">
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        Profile Photo Upload
+                      </li>
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        Health App Integrations
+                      </li>
+                    </ul>
+                    <ul className="space-y-2 text-sm text-blue-700">
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        Pharmacy Sync
+                      </li>
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        Data Export Tools
+                      </li>
+                    </ul>
+                    <ul className="space-y-2 text-sm text-blue-700">
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        Advanced Analytics
+                      </li>
+                      <li className="flex items-center">
+                        <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                        Doctor Portal Access
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Development Timeline */}
+            <div className="mt-4 p-3 bg-amber-100 rounded-lg">
+              <h4 className="font-medium text-amber-900 mb-2 flex items-center">
+                <svg
+                  className="w-4 h-4 mr-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                Development Progress
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-amber-800">
+                <div>
+                  <div className="font-medium">✅ Completed</div>
+                  <div>
+                    Core medication tracking, Firebase integration, user
+                    authentication
+                  </div>
+                </div>
+                <div>
+                  <div className="font-medium">🔄 Current Sprint</div>
+                  <div>
+                    Notification system, advanced profile settings, community
+                    features
+                  </div>
+                </div>
+                <div>
+                  <div className="font-medium">📅 Next Up</div>
+                  <div>
+                    Health integrations, data analytics, export functionality
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Settings Sections */}
+      <div className="space-y-6">
+        {/* Profile Section */}
+        <ProfileSection />
+
+        {/* Notification Settings */}
+        <NotificationSettings />
+
+        {/* Community Settings */}
+        <CommunitySettings />
+
+        {/* Integration Settings */}
+        <IntegrationSettings />
+
+        {/* Danger Zone */}
+        <DangerZone />
+      </div>
 
       {/* Footer Actions */}
       <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">

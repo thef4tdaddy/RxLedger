@@ -1,118 +1,137 @@
-// components/medications/MedicationsTable.jsx - Firebase integrated
+//src/components/medications/MedicationsTable.jsx
 import { useState } from 'react';
 import { useMedications } from '../../context/useMedications';
+import { demoMedications } from '../../demo-data/medications/Medications';
 
-export default function MedicationsTable() {
-  const { medications, loading, error, updateMedication, deleteMedication } =
-    useMedications();
+export default function MedicationsTable({
+  medications,
+  onToggleTaken,
+  onToggleReminders,
+}) {
+  const {
+    medications: contextMedications,
+    loading,
+    error,
+    markMedicationTaken,
+    toggleMedicationReminders,
+    deleteMedication,
+    archiveMedication,
+    isFirebaseEnabled,
+  } = useMedications();
 
-  const [deletingId, setDeletingId] = useState(null);
-  const [updatingId, setUpdatingId] = useState(null);
+  const [localLoading, setLocalLoading] = useState({});
+
+  // Use Firebase data if available, fall back to props or demo data
+  const meds =
+    isFirebaseEnabled && contextMedications && contextMedications.length > 0
+      ? contextMedications
+      : Array.isArray(medications) && medications.length > 0
+        ? medications
+        : demoMedications;
 
   // Handle marking medication as taken
   const handleToggleTaken = async (medicationId) => {
-    const medication = medications.find((med) => med.id === medicationId);
-    if (!medication) return;
+    if (!isFirebaseEnabled || !markMedicationTaken) {
+      // Fall back to prop function for demo mode
+      onToggleTaken?.(medicationId);
+      return;
+    }
 
-    setUpdatingId(medicationId);
+    setLocalLoading((prev) => ({ ...prev, [medicationId]: true }));
     try {
-      await updateMedication(medicationId, {
-        takenToday: !medication.takenToday,
-        lastTaken: !medication.takenToday ? new Date() : null,
-      });
+      await markMedicationTaken(medicationId);
     } catch (error) {
-      console.error('Failed to update medication:', error);
-      alert('Failed to update medication status. Please try again.');
+      console.error('Error marking medication as taken:', error);
     } finally {
-      setUpdatingId(null);
+      setLocalLoading((prev) => ({ ...prev, [medicationId]: false }));
     }
   };
 
   // Handle toggling reminders
   const handleToggleReminders = async (medicationId) => {
-    const medication = medications.find((med) => med.id === medicationId);
-    if (!medication) return;
+    if (!isFirebaseEnabled || !toggleMedicationReminders) {
+      // Fall back to prop function for demo mode
+      onToggleReminders?.(medicationId);
+      return;
+    }
 
-    setUpdatingId(medicationId);
+    setLocalLoading((prev) => ({
+      ...prev,
+      [`${medicationId}_reminders`]: true,
+    }));
     try {
-      await updateMedication(medicationId, {
-        remindersOn: !medication.remindersOn,
-      });
+      await toggleMedicationReminders(medicationId);
     } catch (error) {
-      console.error('Failed to update reminders:', error);
-      alert('Failed to update reminder settings. Please try again.');
+      console.error('Error toggling reminders:', error);
     } finally {
-      setUpdatingId(null);
+      setLocalLoading((prev) => ({
+        ...prev,
+        [`${medicationId}_reminders`]: false,
+      }));
     }
   };
 
-  // Handle medication deletion
-  const handleDelete = async (medicationId, medicationName) => {
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${medicationName}"? This action cannot be undone.`,
+  // Handle archiving medication
+  const handleArchive = async (medicationId) => {
+    if (!isFirebaseEnabled || !archiveMedication) {
+      console.log(
+        'Archive functionality only available with Firebase integration',
+      );
+      return;
+    }
+
+    const confirmed = window.confirm(
+      'Are you sure you want to archive this medication? You can restore it later from settings.',
     );
+    if (!confirmed) return;
 
-    if (!confirmDelete) return;
+    setLocalLoading((prev) => ({ ...prev, [`${medicationId}_archive`]: true }));
+    try {
+      await archiveMedication(medicationId);
+    } catch (error) {
+      console.error('Error archiving medication:', error);
+    } finally {
+      setLocalLoading((prev) => ({
+        ...prev,
+        [`${medicationId}_archive`]: false,
+      }));
+    }
+  };
 
-    setDeletingId(medicationId);
+  // Handle deleting medication
+  const handleDelete = async (medicationId) => {
+    if (!isFirebaseEnabled || !deleteMedication) {
+      console.log(
+        'Delete functionality only available with Firebase integration',
+      );
+      return;
+    }
+
+    const confirmed = window.confirm(
+      'Are you sure you want to permanently delete this medication? This action cannot be undone.',
+    );
+    if (!confirmed) return;
+
+    setLocalLoading((prev) => ({ ...prev, [`${medicationId}_delete`]: true }));
     try {
       await deleteMedication(medicationId);
     } catch (error) {
-      console.error('Failed to delete medication:', error);
-      alert('Failed to delete medication. Please try again.');
+      console.error('Error deleting medication:', error);
     } finally {
-      setDeletingId(null);
+      setLocalLoading((prev) => ({
+        ...prev,
+        [`${medicationId}_delete`]: false,
+      }));
     }
-  };
-
-  // Format last taken date
-  const formatLastTaken = (lastTaken) => {
-    if (!lastTaken) return 'Never';
-
-    const date =
-      lastTaken instanceof Date
-        ? lastTaken
-        : lastTaken.toDate
-          ? lastTaken.toDate()
-          : new Date(lastTaken);
-
-    const now = new Date();
-    const diffHours = Math.floor((now - date) / (1000 * 60 * 60));
-
-    if (diffHours < 1) return 'Just now';
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffHours < 48) return 'Yesterday';
-
-    return date.toLocaleDateString();
   };
 
   // Loading state
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="animate-pulse">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="h-6 bg-gray-200 rounded w-32"></div>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between p-4 border rounded-lg"
-                >
-                  <div className="flex-1">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="h-8 w-16 bg-gray-200 rounded"></div>
-                    <div className="h-8 w-16 bg-gray-200 rounded"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div className="p-8 text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p className="mt-2 text-gray-600">Loading your medications...</p>
         </div>
       </div>
     );
@@ -121,205 +140,202 @@ export default function MedicationsTable() {
   // Error state
   if (error) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="text-center py-8">
-          <div className="text-red-500 text-2xl mb-4">⚠️</div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Unable to Load Medications
-          </h3>
-          <p className="text-gray-600 mb-4">{error}</p>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div className="p-8 text-center">
+          <div className="text-red-600 mb-2">⚠️</div>
+          <p className="text-red-600 font-medium">Error loading medications</p>
+          <p className="text-gray-600 text-sm mt-1">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Try Again
+            Retry
           </button>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-      {/* Table Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-900">
-          My Medications ({medications.length})
-        </h2>
+  // Empty state
+  if (!meds || meds.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div className="p-8 text-center">
+          <div className="text-gray-400 mb-2">💊</div>
+          <p className="text-gray-600 font-medium">No medications added yet</p>
+          <p className="text-gray-500 text-sm mt-1">
+            Add your first medication to get started
+          </p>
+        </div>
       </div>
+    );
+  }
 
-      {/* Table Content */}
-      <div className="p-6">
-        {medications.length === 0 ? (
-          // Empty state
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">💊</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No medications yet
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Add your first medication to start tracking your health journey
-            </p>
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
-              Add Medication
-            </button>
-          </div>
-        ) : (
-          // Medications table
-          <div className="space-y-4">
-            {medications.map((medication) => (
-              <div
-                key={medication.id}
-                className={`border rounded-lg p-4 transition-all ${
-                  medication.takenToday
-                    ? 'bg-green-50 border-green-200'
-                    : 'bg-white border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  {/* Medication Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3
-                        className={`font-semibold ${
-                          medication.takenToday
-                            ? 'text-green-900'
-                            : 'text-gray-900'
-                        }`}
-                      >
-                        {medication.commonName || medication.medicalName}
-                      </h3>
-                      {medication.takenToday && (
-                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">
-                          ✓ Taken Today
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Dosage:</span>
-                        <span className="ml-1 font-medium">
-                          {medication.dosage || 'Not specified'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Frequency:</span>
-                        <span className="ml-1 font-medium">
-                          {medication.frequency || 'Not specified'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Manufacturer:</span>
-                        <span className="ml-1 font-medium">
-                          {medication.manufacturer || 'Unknown'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Last Taken:</span>
-                        <span className="ml-1 font-medium">
-                          {formatLastTaken(medication.lastTaken)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-2 ml-6">
-                    {/* Mark as Taken Toggle */}
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50">
+            <tr>
+              {[
+                'Common Name',
+                'Medical Name',
+                'Brand/Generic',
+                'Manufacturer',
+                'Pharmacy',
+                'Dose Amount',
+                'Schedule',
+                'Refill Schedule',
+                'Actions',
+              ].map((h) => (
+                <th
+                  key={h}
+                  className="px-6 py-4 text-left text-sm font-medium text-gray-700"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {meds.map((med) => (
+              <tr key={med.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                  {med.commonName || med.name}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {med.medicalName}
+                </td>
+                <td className="px-6 py-4 text-sm">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      med.brandGeneric === 'Generic'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-purple-100 text-purple-800'
+                    }`}
+                  >
+                    {med.brandGeneric}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {med.manufacturers?.[0]?.name || med.manufacturer || '—'}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {med.pharmacy || '—'}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {med.doseAmount || med.dosage || '—'}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {med.schedule || med.frequency || '—'}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {med.refillSchedule || '—'}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex flex-col gap-2">
+                    {/* Mark as Taken Button */}
                     <button
-                      onClick={() => handleToggleTaken(medication.id)}
-                      disabled={updatingId === medication.id}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                        medication.takenToday
-                          ? 'bg-green-600 text-white hover:bg-green-700'
+                      onClick={() => handleToggleTaken(med.id)}
+                      disabled={localLoading[med.id]}
+                      className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                        med.takenToday || med.taken
+                          ? 'bg-green-100 text-green-700'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                      } ${localLoading[med.id] ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      {updatingId === medication.id ? (
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
-                          Updating...
-                        </div>
-                      ) : medication.takenToday ? (
-                        'Taken ✓'
+                      {localLoading[med.id] ? (
+                        <div className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin"></div>
                       ) : (
-                        'Mark Taken'
+                        <span className="text-sm">
+                          {med.takenToday || med.taken ? '✓' : '○'}
+                        </span>
                       )}
+                      {med.takenToday || med.taken ? 'Taken' : 'Mark taken'}
                     </button>
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        View History
+                      </button>
+
+                      {isFirebaseEnabled && (
+                        <>
+                          <button
+                            onClick={() => handleArchive(med.id)}
+                            disabled={localLoading[`${med.id}_archive`]}
+                            className={`text-gray-600 hover:text-gray-700 text-sm font-medium ${
+                              localLoading[`${med.id}_archive`]
+                                ? 'opacity-50 cursor-not-allowed'
+                                : ''
+                            }`}
+                          >
+                            {localLoading[`${med.id}_archive`]
+                              ? 'Archiving...'
+                              : 'Archive'}
+                          </button>
+
+                          <button
+                            onClick={() => handleDelete(med.id)}
+                            disabled={localLoading[`${med.id}_delete`]}
+                            className={`text-red-600 hover:text-red-700 text-sm font-medium ${
+                              localLoading[`${med.id}_delete`]
+                                ? 'opacity-50 cursor-not-allowed'
+                                : ''
+                            }`}
+                          >
+                            {localLoading[`${med.id}_delete`]
+                              ? 'Deleting...'
+                              : 'Delete'}
+                          </button>
+                        </>
+                      )}
+                    </div>
 
                     {/* Reminders Toggle */}
-                    <button
-                      onClick={() => handleToggleReminders(medication.id)}
-                      disabled={updatingId === medication.id}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                        medication.remindersOn
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {medication.remindersOn
-                        ? 'Reminders On'
-                        : 'Reminders Off'}
-                    </button>
-
-                    {/* Delete Button */}
-                    <button
-                      onClick={() =>
-                        handleDelete(
-                          medication.id,
-                          medication.commonName || medication.medicalName,
-                        )
-                      }
-                      disabled={deletingId === medication.id}
-                      className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {deletingId === medication.id ? (
-                        <div className="w-4 h-4 border border-red-600 border-t-transparent rounded-full animate-spin"></div>
-                      ) : (
-                        '🗑️'
-                      )}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500">Reminders:</span>
+                      <button
+                        onClick={() => handleToggleReminders(med.id)}
+                        disabled={localLoading[`${med.id}_reminders`]}
+                        className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors ${
+                          med.remindersOn || med.reminders
+                            ? 'bg-blue-600'
+                            : 'bg-gray-300'
+                        } ${localLoading[`${med.id}_reminders`] ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        <span className="sr-only">Toggle reminders</span>
+                        {localLoading[`${med.id}_reminders`] ? (
+                          <div className="inline-block h-2 w-2 transform rounded-full bg-white animate-pulse translate-x-2.5"></div>
+                        ) : (
+                          <span
+                            className={`inline-block h-2 w-2 transform rounded-full bg-white transition-transform ${
+                              med.remindersOn || med.reminders
+                                ? 'translate-x-4'
+                                : 'translate-x-1'
+                            }`}
+                          />
+                        )}
+                      </button>
+                    </div>
                   </div>
-                </div>
-
-                {/* Additional Info */}
-                {medication.notes && (
-                  <div className="mt-3 pt-3 border-t border-gray-200">
-                    <p className="text-sm text-gray-600">
-                      <span className="font-medium">Notes:</span>{' '}
-                      {medication.notes}
-                    </p>
-                  </div>
-                )}
-              </div>
+                </td>
+              </tr>
             ))}
-          </div>
-        )}
+          </tbody>
+        </table>
       </div>
 
-      {/* Footer with summary */}
-      {medications.length > 0 && (
-        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-6">
-              <span className="text-gray-600">
-                <span className="font-medium text-green-600">
-                  {medications.filter((med) => med.takenToday).length}
-                </span>{' '}
-                taken today
-              </span>
-              <span className="text-gray-600">
-                <span className="font-medium text-blue-600">
-                  {medications.filter((med) => med.remindersOn).length}
-                </span>{' '}
-                with reminders
-              </span>
-            </div>
-            <div className="text-gray-500">
-              Total: {medications.length} medication
-              {medications.length !== 1 ? 's' : ''}
-            </div>
+      {/* Subtle Firebase Status Indicator */}
+      {isFirebaseEnabled && contextMedications?.length > 0 && (
+        <div className="bg-gray-50 border-t border-gray-200 px-6 py-2">
+          <div className="flex items-center justify-between text-xs text-gray-500">
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              Real-time sync enabled
+            </span>
+            <span>{meds.length} medications</span>
           </div>
         </div>
       )}
