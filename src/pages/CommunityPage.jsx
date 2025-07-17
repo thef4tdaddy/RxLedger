@@ -1,7 +1,7 @@
 // Enhanced CommunityPage.jsx with integrated warning
 import { useState, useEffect } from 'react';
-import { useMedications } from '../context/MedicationContext';
-import { CommunityHeader } from '../components/community/CommunityHeader';
+import { useMedications } from '../context/useMedications';
+import CommunityHeader from '../components/community/CommunityHeader';
 import BroadInsights from '../components/community/BroadInsights';
 import TailoredInsights from '../components/community/TailoredInsights';
 import CommunityActions from '../components/community/CommunityActions';

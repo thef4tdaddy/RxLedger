@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 import { encryptionService } from '../services/encryptionService';
-import { useMedications } from '../context/MedicationContext';
+import { useMedications } from '../context/useMedications';
 import useAuth from '../hooks/useAuth';
 import MoodTrendChart from '../components/trends/MoodTrendChart';
 import SleepTrendChart from '../components/trends/SleepTrendChart';

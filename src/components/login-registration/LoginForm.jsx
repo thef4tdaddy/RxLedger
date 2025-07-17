@@ -7,6 +7,7 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth, googleProvider, db } from '../../utils/firebase';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function LoginForm({ onRegister }) {
   const [email, setEmail] = useState('');
@@ -21,10 +22,10 @@ export default function LoginForm({ onRegister }) {
   // Update user's last login timestamp
   const updateLastLogin = async (userId) => {
     try {
-      const userRef = firestoreDoc(db, 'users', userId);
-      await updateFirestoreDoc(userRef, {
-        'profile.lastLoginAt': firestoreServerTimestamp(),
-        updatedAt: firestoreServerTimestamp(),
+      const userRef = doc(db, 'users', userId);
+      await updateDoc(userRef, {
+        'profile.lastLoginAt': serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
     } catch (error) {
       console.warn('Could not update last login timestamp:', error);

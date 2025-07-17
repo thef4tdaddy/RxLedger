@@ -1,7 +1,7 @@
 // pages/LoginPage.jsx - Updated to use enhanced auth components
 import { useState } from 'react';
-import LoginForm from '../components/LoginForm';
-import RegisterForm from '../components/RegisterForm';
+import LoginForm from '../components/login-registration/LoginForm';
+import RegisterForm from '../components/login-registration/RegisterForm';
 
 export default function LoginPage() {
   const [mode, setMode] = useState('login');

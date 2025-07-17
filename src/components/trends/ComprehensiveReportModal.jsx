@@ -1,6 +1,6 @@
 // components/trends/ComprehensiveReportModal.jsx - Detailed medical report modal
 import { useState, useMemo } from 'react';
-import { useMedications } from '../../context/MedicationContext';
+import { useMedications } from '../../context/useMedications';
 import {
   LineChart,
   Line,
