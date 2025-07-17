@@ -25,7 +25,7 @@ export default function MoodEnergyChart() {
   const { user } = useAuth();
   const [healthData, setHealthData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error] = useState(null);
+  const [_error] = useState(null);
 
   // Load health data from Firebase
   useEffect(() => {
