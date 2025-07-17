@@ -233,7 +233,7 @@ export default function SideEffectsChart() {
                 />
                 <YAxis />
                 <Tooltip
-                  formatter={(value, name) => [
+                  formatter={(value) => [
                     `${value} occurrence${value !== 1 ? 's' : ''}`,
                     'Count',
                   ]}

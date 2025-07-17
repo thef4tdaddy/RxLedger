@@ -1,16 +1,9 @@
+// components/admin/UserManagement.jsx - Using your existing secure implementation
 import { useState, useEffect } from 'react';
-import {
-  collection,
-  query,
-  orderBy,
-  limit,
-  getDocs,
-  doc,
-  updateDoc,
-} from 'firebase/firestore';
+import { collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 
-export function UserManagement({ adminLevel }) {
+export function UserManagement() {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -42,7 +35,7 @@ export function UserManagement({ adminLevel }) {
 
   useEffect(() => {
     loadUsers();
-  }, [adminLevel]);
+  }, []);
 
   const filteredUsers = users.filter(
     (user) =>

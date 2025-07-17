@@ -7,10 +7,10 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { auth, googleProvider, db } from '../utils/firebase';
-import { encryptionService } from '../services/encryptionService';
+import { auth, googleProvider, db } from '../../utils/firebase';
+import { encryptionService } from '../../services/encryptionService';
 import Turnstile from './Turnstile';
-import { verifyTurnstile } from '../utils/turnstile';
+import { verifyTurnstile } from '../../utils/turnstile';
 
 export default function RegisterForm({ onLogin }) {
   const [name, setName] = useState('');

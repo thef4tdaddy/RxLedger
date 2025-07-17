@@ -6,8 +6,7 @@ import {
   signInWithPopup,
   sendPasswordResetEmail,
 } from 'firebase/auth';
-import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { auth, googleProvider, db } from '../utils/firebase';
+import { auth, googleProvider, db } from '../../utils/firebase';
 
 export default function LoginForm({ onRegister }) {
   const [email, setEmail] = useState('');
@@ -158,7 +157,7 @@ export default function LoginForm({ onRegister }) {
         <div className="text-center mb-6">
           <h2 className="text-2xl font-bold text-[#1B59AE]">Reset Password</h2>
           <p className="text-gray-600 mt-2">
-            Enter your email address and we'll send you a reset link
+            Enter your email address and we&apos;ll send you a reset link
           </p>
         </div>
 
@@ -330,7 +329,7 @@ export default function LoginForm({ onRegister }) {
       </div>
 
       <p className="mt-6 text-center text-sm text-gray-600">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <button
           type="button"
           onClick={onRegister}

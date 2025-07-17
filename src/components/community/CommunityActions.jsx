@@ -112,12 +112,12 @@ export default function CommunityActions({
             <ul className="space-y-1">
               <li>• Share honest experiences</li>
               <li>• Report accurate side effects</li>
-              <li>• Respect others' experiences</li>
+              <li>• Respect others&apos; experiences</li>
               <li>• Follow medical advice</li>
             </ul>
           </div>
           <div>
-            <h4 className="font-medium mb-2">❌ Please Don't:</h4>
+            <h4 className="font-medium mb-2">❌ Please Don&apos;t:</h4>
             <ul className="space-y-1">
               <li>• Give medical advice</li>
               <li>• Share personal information</li>

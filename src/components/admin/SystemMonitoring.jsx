@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-export function SystemMonitoring({ adminLevel }) {
-  const [systemStats, setSystemStats] = useState({
+export function SystemMonitoring() {
+  const [systemStats] = useState({
     uptime: '99.9%',
     responseTime: '245ms',
     errorRate: '0.02%',

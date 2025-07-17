@@ -1,7 +1,5 @@
 // components/community/BroadInsights.jsx
 import { useState, useEffect } from 'react';
-import { collection, query, limit, getDocs, where } from 'firebase/firestore';
-import { db } from '../../utils/firebase';
 
 export default function BroadInsights() {
   const [insights, setInsights] = useState([]);

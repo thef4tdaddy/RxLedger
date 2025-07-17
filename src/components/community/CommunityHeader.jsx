@@ -19,7 +19,7 @@ export default function CommunityHeader() {
           <div className="text-blue-500 text-xl">💡</div>
           <div>
             <p className="text-blue-900 italic font-medium">
-              "{communityQuote}"
+              &ldquo;{communityQuote}&rdquo;
             </p>
             <p className="text-blue-700 text-sm mt-2">
               🔒 Your personal information is never shared. All insights are

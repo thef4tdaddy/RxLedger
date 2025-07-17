@@ -1,16 +1,16 @@
-// pages/CommunityPage.jsx - Enhanced with components and Firebase integration
+// Enhanced CommunityPage.jsx with integrated warning
 import { useState, useEffect } from 'react';
-import { useMedications } from '../context/useMedications';
-import CommunityHeader from '../components/community/CommunityHeader';
+import { useMedications } from '../context/MedicationContext';
+import { CommunityHeader } from '../components/community/CommunityHeader';
 import BroadInsights from '../components/community/BroadInsights';
 import TailoredInsights from '../components/community/TailoredInsights';
 import CommunityActions from '../components/community/CommunityActions';
 import ShareProgressModal from '../components/community/ShareProgressModal';
 import CommunityTrendsModal from '../components/community/CommunityTrendsModal';
-import { useAuth } from '../context/useAuth';
+import useAuth from '../hooks/useAuth';
 
 export default function CommunityPage() {
-  const { user } = useAuth();
+  useAuth();
   const { medications, loading } = useMedications();
   const [selectedMedication, setSelectedMedication] = useState(null);
   const [showShareModal, setShowShareModal] = useState(false);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function AuditLogs({ adminLevel }) {
+export default function AuditLogs() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState('all');

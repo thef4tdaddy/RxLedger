@@ -1,29 +1,25 @@
-// components/trends/SleepTrendChart.jsx - Enhanced with Firebase integration
+// components/trends/LibidoTrendChart.jsx - New component for libido tracking
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { demoSleepData } from '../../demo-data/trends/personalTrends';
 
-export default function SleepTrendChart({ data, loading }) {
-  // Use real data if available, otherwise fall back to demo data
+export default function LibidoTrendChart({ data, loading }) {
+  // Use real data if available, otherwise show empty state
   const chartData =
     data && data.length > 0
       ? data
-          .filter((d) => d.sleepHours !== null && d.sleepHours !== undefined)
+          .filter((d) => d.libido !== null && d.libido !== undefined)
           .map((d) => ({
             date: d.dateISO,
-            hours: d.sleepHours,
+            libido: d.libido,
           }))
-      : demoSleepData.map((d) => ({
-          date: d.dateISO,
-          hours: d.hours,
-        }));
+      : [];
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -36,8 +32,8 @@ export default function SleepTrendChart({ data, loading }) {
               day: 'numeric',
             })}
           </p>
-          <p className="text-sm font-medium text-[#10B981]">
-            Sleep: {payload[0].value} hours
+          <p className="text-sm font-medium text-[#EC4899]">
+            Libido: {payload[0].value}/10
           </p>
         </div>
       );
@@ -56,18 +52,18 @@ export default function SleepTrendChart({ data, loading }) {
     );
   }
 
-  const avgSleep =
+  const avgLibido =
     chartData.length > 0
-      ? chartData.reduce((sum, d) => sum + d.hours, 0) / chartData.length
+      ? chartData.reduce((sum, d) => sum + d.libido, 0) / chartData.length
       : 0;
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-lg font-semibold text-gray-800">Sleep Duration</h2>
+        <h2 className="text-lg font-semibold text-gray-800">Sexual Health</h2>
         {chartData.length > 0 && (
-          <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-            Avg: {avgSleep.toFixed(1)}h
+          <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded">
+            Avg: {avgLibido.toFixed(1)}/10
           </span>
         )}
       </div>
@@ -75,15 +71,15 @@ export default function SleepTrendChart({ data, loading }) {
       {chartData.length === 0 ? (
         <div className="h-56 flex items-center justify-center text-gray-500">
           <div className="text-center">
-            <div className="text-3xl mb-2">😴</div>
-            <p className="text-sm">No sleep data available</p>
-            <p className="text-xs">Start logging your sleep hours</p>
+            <div className="text-3xl mb-2">💖</div>
+            <p className="text-sm">No sexual health data available</p>
+            <p className="text-xs">Start tracking for better insights</p>
           </div>
         </div>
       ) : (
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
+            <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis
                 dataKey="date"
@@ -96,10 +92,17 @@ export default function SleepTrendChart({ data, loading }) {
                 tick={{ fontSize: 12 }}
                 stroke="#666"
               />
-              <YAxis tick={{ fontSize: 12 }} stroke="#666" />
+              <YAxis domain={[0, 10]} tick={{ fontSize: 12 }} stroke="#666" />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="hours" fill="#10B981" radius={[4, 4, 0, 0]} />
-            </BarChart>
+              <Line
+                type="monotone"
+                dataKey="libido"
+                stroke="#EC4899"
+                strokeWidth={3}
+                dot={{ fill: '#EC4899', strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, stroke: '#EC4899', strokeWidth: 2 }}
+              />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       )}

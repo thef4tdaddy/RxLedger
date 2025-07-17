@@ -322,8 +322,8 @@ export default function ShareProgressModal({
                   className="rounded border-gray-300 text-[#1B59AE] focus:ring-[#1B59AE]"
                 />
                 <span className="ml-2 text-sm text-blue-800">
-                  Share my age range (e.g., "25-35") - helps others find
-                  relevant experiences
+                  Share my age range (e.g., &ldquo;25-35&rdquo;) - helps others
+                  find relevant experiences
                 </span>
               </label>
             </div>

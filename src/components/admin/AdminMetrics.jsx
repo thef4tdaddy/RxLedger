@@ -1,134 +1,181 @@
-// components/admin/AdminMetrics.jsx
+// components/admin/AdminMetrics.jsx - Real Firebase integration
 import { useState, useEffect } from 'react';
-import {
-  collection,
-  getCountFromServer,
-  query,
-  where,
-  Timestamp,
-} from 'firebase/firestore';
+import { collection, getDocs, query, where, limit } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
+import useAuth from '../../hooks/useAuth';
 
-export default function AdminMetrics({ adminLevel }) {
+export default function AdminMetrics() {
+  const { user } = useAuth();
   const [metrics, setMetrics] = useState({
     totalUsers: 0,
     activeUsers: 0,
-    logsRecorded: 0,
-    reportsReviewed: 0,
-    pendingReports: 0,
+    totalMedications: 0,
+    totalHealthLogs: 0,
+    communityShares: 0,
+    lastUpdated: null,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Check if user is admin
+  const [isAdmin, setIsAdmin] = useState(false);
+
   useEffect(() => {
-    loadMetrics();
-  }, []);
+    const checkAdminStatus = async () => {
+      if (!user?.uid) return;
 
-  const loadMetrics = async () => {
-    try {
+      try {
+        // Check if user has admin role
+        // In a real app, this would be stored in a custom claims or admin collection
+        const adminEmails = ['admin@rxledger.com', 'admin@example.com']; // Configure admin emails
+        setIsAdmin(
+          adminEmails.includes(user.email) || user.email?.includes('admin'),
+        );
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        setIsAdmin(false);
+      }
+    };
+
+    checkAdminStatus();
+  }, [user]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const loadMetrics = async () => {
       setLoading(true);
-      setError(null);
+      try {
+        // Get total users count
+        const usersRef = collection(db, 'users');
+        const usersSnap = await getDocs(usersRef);
+        const totalUsers = usersSnap.size;
 
-      // Get total users count
-      const usersRef = collection(db, 'users');
-      const totalUsersSnapshot = await getCountFromServer(usersRef);
-      const totalUsers = totalUsersSnapshot.data().count;
+        // Get active users (users with activity in last 30 days)
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-      // Get active users (logged in within last 30 days)
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        let activeUsers = 0;
+        let totalMedications = 0;
+        let totalHealthLogs = 0;
+        let communityShares = 0;
 
-      const activeUsersQuery = query(
-        usersRef,
-        where('profile.lastLoginAt', '>=', Timestamp.fromDate(thirtyDaysAgo)),
-      );
-      const activeUsersSnapshot = await getCountFromServer(activeUsersQuery);
-      const activeUsers = activeUsersSnapshot.data().count;
+        // Aggregate data from all users
+        for (const userDoc of usersSnap.docs) {
+          const userId = userDoc.id;
 
-      // Get community reports count
-      const reportsRef = collection(db, 'moderationQueue');
-      const pendingReportsQuery = query(
-        reportsRef,
-        where('status', '==', 'pending'),
-      );
-      const pendingReportsSnapshot =
-        await getCountFromServer(pendingReportsQuery);
-      const pendingReports = pendingReportsSnapshot.data().count;
+          try {
+            // Check if user has recent activity
+            const healthStatsRef = collection(
+              db,
+              'users',
+              userId,
+              'healthStats',
+            );
+            const recentHealthQuery = query(
+              healthStatsRef,
+              where(
+                '__name__',
+                '>=',
+                thirtyDaysAgo.toISOString().split('T')[0],
+              ),
+              limit(1),
+            );
+            const recentHealthSnap = await getDocs(recentHealthQuery);
 
-      // Calculate estimated logs (this would be more complex in a real implementation)
-      const estimatedLogs = Math.floor(totalUsers * 25.5); // Rough estimate
+            if (recentHealthSnap.size > 0) {
+              activeUsers++;
+            }
 
-      setMetrics({
-        totalUsers,
-        activeUsers,
-        logsRecorded: estimatedLogs,
-        reportsReviewed: Math.floor(pendingReports * 0.8),
-        pendingReports,
-      });
-    } catch (err) {
-      console.error('Error loading admin metrics:', err);
-      setError('Failed to load metrics');
+            // Count medications
+            const medicationsRef = collection(
+              db,
+              'users',
+              userId,
+              'medications',
+            );
+            const medicationsSnap = await getDocs(medicationsRef);
+            totalMedications += medicationsSnap.size;
 
-      // Fallback to demo data on error
-      setMetrics({
-        totalUsers: 1247,
-        activeUsers: 892,
-        logsRecorded: 15673,
-        reportsReviewed: 23,
-        pendingReports: 5,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+            // Count health logs
+            const healthLogsRef = collection(
+              db,
+              'users',
+              userId,
+              'healthStats',
+            );
+            const healthLogsSnap = await getDocs(healthLogsRef);
+            totalHealthLogs += healthLogsSnap.size;
 
-  const metricCards = [
-    {
-      label: 'Total Users',
-      value: metrics.totalUsers,
-      icon: '👥',
-      color: 'text-[#1B59AE]',
-      bgColor: 'bg-blue-50',
-      description: 'Registered accounts',
-    },
-    {
-      label: 'Active This Month',
-      value: metrics.activeUsers,
-      icon: '✅',
-      color: 'text-[#10B981]',
-      bgColor: 'bg-green-50',
-      description: 'Users with recent activity',
-    },
-    {
-      label: 'Logs Recorded',
-      value: metrics.logsRecorded.toLocaleString(),
-      icon: '📝',
-      color: 'text-[#F59E0B]',
-      bgColor: 'bg-yellow-50',
-      description: 'Total medication logs',
-    },
-    {
-      label: 'Reports Reviewed',
-      value: metrics.reportsReviewed,
-      icon: '🔍',
-      color: 'text-[#8B5CF6]',
-      bgColor: 'bg-purple-50',
-      description: 'Community reports processed',
-    },
-  ];
+            // Count community shares
+            const communityRef = collection(db, 'users', userId, 'settings');
+            const communitySnap = await getDocs(communityRef);
+            communitySnap.docs.forEach((doc) => {
+              const data = doc.data();
+              if (data.shareAnonymizedData) {
+                communityShares++;
+              }
+            });
+          } catch (userError) {
+            console.warn(`Error processing user ${userId}:`, userError);
+          }
+        }
+
+        setMetrics({
+          totalUsers,
+          activeUsers,
+          totalMedications,
+          totalHealthLogs,
+          communityShares,
+          lastUpdated: new Date(),
+        });
+      } catch (error) {
+        console.error('Error loading admin metrics:', error);
+        setError('Failed to load metrics');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMetrics();
+  }, [isAdmin]);
+
+  if (!isAdmin) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+        <div className="flex items-center gap-3">
+          <svg
+            className="w-6 h-6 text-red-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+            />
+          </svg>
+          <div>
+            <h3 className="font-semibold text-red-900">Access Denied</h3>
+            <p className="text-red-700">
+              You don&apos;t have permission to access admin features.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {[1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-200"
-          >
+          <div key={i} className="bg-white p-4 rounded-lg shadow text-center">
             <div className="animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-20 mb-2"></div>
-              <div className="h-8 bg-gray-200 rounded w-16 mb-1"></div>
-              <div className="h-3 bg-gray-200 rounded w-24"></div>
+              <div className="h-4 bg-gray-200 rounded w-16 mx-auto mb-2"></div>
+              <div className="h-8 bg-gray-200 rounded w-12 mx-auto"></div>
             </div>
           </div>
         ))}
@@ -136,73 +183,83 @@ export default function AdminMetrics({ adminLevel }) {
     );
   }
 
+  if (error) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <p className="text-red-700">{error}</p>
+      </div>
+    );
+  }
+
+  const metricCards = [
+    {
+      title: 'Total Users',
+      value: metrics.totalUsers.toLocaleString(),
+      icon: '👥',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+    },
+    {
+      title: 'Active Users',
+      value: metrics.activeUsers.toLocaleString(),
+      icon: '🟢',
+      color: 'text-green-600',
+      bgColor: 'bg-green-50',
+      subtitle: 'Last 30 days',
+    },
+    {
+      title: 'Total Medications',
+      value: metrics.totalMedications.toLocaleString(),
+      icon: '💊',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+    },
+    {
+      title: 'Health Logs',
+      value: metrics.totalHealthLogs.toLocaleString(),
+      icon: '📊',
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50',
+    },
+    {
+      title: 'Community Participants',
+      value: metrics.communityShares.toLocaleString(),
+      icon: '🤝',
+      color: 'text-teal-600',
+      bgColor: 'bg-teal-50',
+    },
+  ];
+
   return (
     <div className="mb-6">
-      {error && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-yellow-600">⚠️</span>
-            <p className="text-yellow-800 text-sm">
-              {error} - Showing cached data
-            </p>
-          </div>
-        </div>
-      )}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-gray-800">System Metrics</h2>
+        {metrics.lastUpdated && (
+          <p className="text-sm text-gray-500">
+            Last updated: {metrics.lastUpdated.toLocaleTimeString()}
+          </p>
+        )}
+      </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {metricCards.map((metric, index) => (
           <div
-            key={metric.label}
-            className={`bg-white p-6 rounded-lg shadow-sm border border-gray-200 ${metric.bgColor}/30 hover:shadow-md transition-shadow`}
+            key={index}
+            className={`${metric.bgColor} p-4 rounded-lg shadow-sm border text-center`}
           >
-            <div className="flex items-center justify-between mb-3">
-              <div className="text-2xl">{metric.icon}</div>
-              <div className={`text-2xl font-bold ${metric.color}`}>
-                {metric.value}
-              </div>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-gray-600 mb-1">
-                {metric.label}
-              </p>
-              <p className="text-xs text-gray-500">{metric.description}</p>
-            </div>
+            <div className="text-2xl mb-2">{metric.icon}</div>
+            <p className="text-sm font-medium text-gray-700 mb-1">
+              {metric.title}
+            </p>
+            <p className={`text-2xl font-bold ${metric.color}`}>
+              {metric.value}
+            </p>
+            {metric.subtitle && (
+              <p className="text-xs text-gray-600 mt-1">{metric.subtitle}</p>
+            )}
           </div>
         ))}
       </div>
-
-      {/* Additional metrics for high-level admins */}
-      {(adminLevel === 'super' || adminLevel === 'dev') && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="font-medium text-gray-900 mb-2">User Growth</h3>
-            <div className="text-sm text-gray-600">
-              <p>This month: +{Math.floor(metrics.totalUsers * 0.08)} users</p>
-              <p>
-                Growth rate:{' '}
-                {((metrics.activeUsers / metrics.totalUsers) * 100).toFixed(1)}%
-                active
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="font-medium text-gray-900 mb-2">System Health</h3>
-            <div className="text-sm text-gray-600">
-              <p>Uptime: 99.9%</p>
-              <p>Avg response: 245ms</p>
-            </div>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            <h3 className="font-medium text-gray-900 mb-2">Security</h3>
-            <div className="text-sm text-gray-600">
-              <p>Failed logins: 12 (24h)</p>
-              <p>Blocked IPs: 3</p>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

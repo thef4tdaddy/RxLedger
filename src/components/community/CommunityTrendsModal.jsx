@@ -1,15 +1,6 @@
 // components/community/CommunityTrendsModal.jsx
 import { useState, useEffect } from 'react';
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  orderBy,
-  limit,
-} from 'firebase/firestore';
-import { db } from '../../utils/firebase';
-import {
   BarChart,
   Bar,
   XAxis,
@@ -24,11 +15,10 @@ import {
   Cell,
 } from 'recharts';
 
-export default function CommunityTrendsModal({ medications, onClose }) {
+export default function CommunityTrendsModal({ onClose }) {
   const [activeTab, setActiveTab] = useState('effectiveness');
   const [communityData, setCommunityData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMedication, setSelectedMedication] = useState('all');
 
   useEffect(() => {
     loadCommunityTrends();
@@ -215,7 +205,7 @@ export default function CommunityTrendsModal({ medications, onClose }) {
             </p>
             {renderSideEffectsChart()}
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              {communityData.sideEffects?.map((effect, index) => (
+              {communityData.sideEffects?.map((effect) => (
                 <div key={effect.effect} className="bg-gray-50 p-3 rounded">
                   <div className="font-medium">{effect.effect}</div>
                   <div className="text-gray-600">

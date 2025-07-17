@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function ContentModeration({ adminLevel }) {
+export function ContentModeration() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(false);
 

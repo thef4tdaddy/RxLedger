@@ -1,5 +1,5 @@
 // components/admin/DataPrivacy.jsx (Complete)
-export function DataPrivacy({ adminLevel }) {
+export function DataPrivacy() {
   const handleDataExport = () => {
     alert(
       'Data export functionality would be implemented via Cloud Functions for security',
