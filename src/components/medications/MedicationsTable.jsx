@@ -65,54 +65,81 @@ export default function MedicationsTable() {
     }
   };
 
-  // Format last taken date
-  const formatLastTaken = (lastTaken) => {
-    if (!lastTaken) return 'Never';
+  // Handle archive action (placeholder for now)
+  const handleArchive = (medicationId, medicationName) => {
+    alert(`Archive functionality for "${medicationName}" coming soon!`);
+  };
 
-    const date =
-      lastTaken instanceof Date
-        ? lastTaken
-        : lastTaken.toDate
-          ? lastTaken.toDate()
-          : new Date(lastTaken);
-
-    const now = new Date();
-    const diffHours = Math.floor((now - date) / (1000 * 60 * 60));
-
-    if (diffHours < 1) return 'Just now';
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffHours < 48) return 'Yesterday';
-
-    return date.toLocaleDateString();
+  // Handle view history action (placeholder for now)
+  const handleViewHistory = (medicationId, medicationName) => {
+    alert(`History view for "${medicationName}" coming soon!`);
   };
 
   // Loading state
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="animate-pulse">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="h-6 bg-gray-200 rounded w-32"></div>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                {[
+                  'Common Name',
+                  'Medical Name',
+                  'Brand/Generic',
+                  'Manufacturer',
+                  'Pharmacy',
+                  'Dose Amount',
+                  'Schedule',
+                  'Refill Schedule',
+                  'Actions',
+                ].map((h) => (
+                  <th
+                    key={h}
+                    className="px-6 py-4 text-left text-sm font-medium text-gray-700"
+                  >
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
               {[1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between p-4 border rounded-lg"
-                >
-                  <div className="flex-1">
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="h-8 w-16 bg-gray-200 rounded"></div>
-                    <div className="h-8 w-16 bg-gray-200 rounded"></div>
-                  </div>
-                </div>
+                <tr key={i} className="animate-pulse">
+                  <td className="px-6 py-4">
+                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-6 bg-gray-200 rounded-full w-16"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="space-y-2">
+                      <div className="h-8 bg-gray-200 rounded w-20"></div>
+                      <div className="h-6 bg-gray-200 rounded w-16"></div>
+                    </div>
+                  </td>
+                </tr>
               ))}
-            </div>
-          </div>
+            </tbody>
+          </table>
         </div>
       </div>
     );
@@ -121,9 +148,9 @@ export default function MedicationsTable() {
   // Error state
   if (error) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="text-center py-8">
-          <div className="text-red-500 text-2xl mb-4">⚠️</div>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div className="p-8 text-center">
+          <div className="text-red-500 text-4xl mb-4">⚠️</div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             Unable to Load Medications
           </h3>
@@ -139,190 +166,204 @@ export default function MedicationsTable() {
     );
   }
 
-  return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-      {/* Table Header */}
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-lg font-semibold text-gray-900">
-          My Medications ({medications.length})
-        </h2>
+  // Empty state
+  if (medications.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+        <div className="p-12 text-center">
+          <div className="text-6xl mb-4">💊</div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            No medications yet
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Add your first medication to start tracking your health journey
+          </p>
+          <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+            Add Medication
+          </button>
+        </div>
       </div>
+    );
+  }
 
-      {/* Table Content */}
-      <div className="p-6">
-        {medications.length === 0 ? (
-          // Empty state
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">💊</div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              No medications yet
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Add your first medication to start tracking your health journey
-            </p>
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
-              Add Medication
-            </button>
-          </div>
-        ) : (
-          // Medications table
-          <div className="space-y-4">
+  // Main table render
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-6">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50">
+            <tr>
+              {[
+                'Common Name',
+                'Medical Name',
+                'Brand/Generic',
+                'Manufacturer',
+                'Pharmacy',
+                'Dose Amount',
+                'Schedule',
+                'Refill Schedule',
+                'Actions',
+              ].map((h) => (
+                <th
+                  key={h}
+                  className="px-6 py-4 text-left text-sm font-medium text-gray-700"
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
             {medications.map((medication) => (
-              <div
-                key={medication.id}
-                className={`border rounded-lg p-4 transition-all ${
-                  medication.takenToday
-                    ? 'bg-green-50 border-green-200'
-                    : 'bg-white border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  {/* Medication Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h3
-                        className={`font-semibold ${
-                          medication.takenToday
-                            ? 'text-green-900'
-                            : 'text-gray-900'
-                        }`}
-                      >
-                        {medication.commonName || medication.medicalName}
-                      </h3>
-                      {medication.takenToday && (
-                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full font-medium">
-                          ✓ Taken Today
-                        </span>
-                      )}
-                    </div>
+              <tr key={medication.id} className="hover:bg-gray-50">
+                {/* Common Name */}
+                <td className="px-6 py-4 text-sm text-gray-900 font-medium">
+                  {medication.commonName || medication.medicalName || '—'}
+                </td>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-500">Dosage:</span>
-                        <span className="ml-1 font-medium">
-                          {medication.dosage || 'Not specified'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Frequency:</span>
-                        <span className="ml-1 font-medium">
-                          {medication.frequency || 'Not specified'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Manufacturer:</span>
-                        <span className="ml-1 font-medium">
-                          {medication.manufacturer || 'Unknown'}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500">Last Taken:</span>
-                        <span className="ml-1 font-medium">
-                          {formatLastTaken(medication.lastTaken)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                {/* Medical Name */}
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {medication.medicalName || medication.commonName || '—'}
+                </td>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-2 ml-6">
-                    {/* Mark as Taken Toggle */}
+                {/* Brand/Generic */}
+                <td className="px-6 py-4 text-sm">
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      medication.brandGeneric === 'Generic' ||
+                      medication.type === 'Generic'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-purple-100 text-purple-800'
+                    }`}
+                  >
+                    {medication.brandGeneric || medication.type || 'Unknown'}
+                  </span>
+                </td>
+
+                {/* Manufacturer */}
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {medication.manufacturer ||
+                    medication.manufacturers?.[0]?.name ||
+                    '—'}
+                </td>
+
+                {/* Pharmacy */}
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {medication.pharmacy || '—'}
+                </td>
+
+                {/* Dose Amount */}
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {medication.doseAmount || medication.dosage || '—'}
+                </td>
+
+                {/* Schedule */}
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {medication.schedule || medication.frequency || '—'}
+                </td>
+
+                {/* Refill Schedule */}
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {medication.refillSchedule || '—'}
+                </td>
+
+                {/* Actions */}
+                <td className="px-6 py-4">
+                  <div className="flex flex-col gap-2">
+                    {/* Mark as Taken Button */}
                     <button
                       onClick={() => handleToggleTaken(medication.id)}
                       disabled={updatingId === medication.id}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                      className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                         medication.takenToday
-                          ? 'bg-green-600 text-white hover:bg-green-700'
+                          ? 'bg-green-100 text-green-700'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
                       {updatingId === medication.id ? (
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+                        <>
+                          <div className="w-3 h-3 border border-gray-500 border-t-transparent rounded-full animate-spin"></div>
                           Updating...
-                        </div>
-                      ) : medication.takenToday ? (
-                        'Taken ✓'
+                        </>
                       ) : (
-                        'Mark Taken'
+                        <>
+                          <span className="text-sm">
+                            {medication.takenToday ? '✓' : '○'}
+                          </span>
+                          {medication.takenToday ? 'Taken' : 'Mark taken'}
+                        </>
                       )}
                     </button>
+
+                    {/* Action Links */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() =>
+                          handleViewHistory(
+                            medication.id,
+                            medication.commonName || medication.medicalName,
+                          )
+                        }
+                        className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                      >
+                        View History
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleArchive(
+                            medication.id,
+                            medication.commonName || medication.medicalName,
+                          )
+                        }
+                        className="text-gray-600 hover:text-gray-700 text-sm font-medium"
+                      >
+                        Archive
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleDelete(
+                            medication.id,
+                            medication.commonName || medication.medicalName,
+                          )
+                        }
+                        disabled={deletingId === medication.id}
+                        className="text-red-600 hover:text-red-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {deletingId === medication.id ? (
+                          <div className="w-4 h-4 border border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          'Delete'
+                        )}
+                      </button>
+                    </div>
 
                     {/* Reminders Toggle */}
-                    <button
-                      onClick={() => handleToggleReminders(medication.id)}
-                      disabled={updatingId === medication.id}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                        medication.remindersOn
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {medication.remindersOn
-                        ? 'Reminders On'
-                        : 'Reminders Off'}
-                    </button>
-
-                    {/* Delete Button */}
-                    <button
-                      onClick={() =>
-                        handleDelete(
-                          medication.id,
-                          medication.commonName || medication.medicalName,
-                        )
-                      }
-                      disabled={deletingId === medication.id}
-                      className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {deletingId === medication.id ? (
-                        <div className="w-4 h-4 border border-red-600 border-t-transparent rounded-full animate-spin"></div>
-                      ) : (
-                        '🗑️'
-                      )}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500">Reminders:</span>
+                      <button
+                        onClick={() => handleToggleReminders(medication.id)}
+                        disabled={updatingId === medication.id}
+                        className={`relative inline-flex h-4 w-7 items-center rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                          medication.remindersOn ? 'bg-blue-600' : 'bg-gray-300'
+                        }`}
+                      >
+                        <span className="sr-only">Toggle reminders</span>
+                        <span
+                          className={`inline-block h-2 w-2 transform rounded-full bg-white transition-transform ${
+                            medication.remindersOn
+                              ? 'translate-x-4'
+                              : 'translate-x-1'
+                          }`}
+                        />
+                      </button>
+                    </div>
                   </div>
-                </div>
-
-                {/* Additional Info */}
-                {medication.notes && (
-                  <div className="mt-3 pt-3 border-t border-gray-200">
-                    <p className="text-sm text-gray-600">
-                      <span className="font-medium">Notes:</span>{' '}
-                      {medication.notes}
-                    </p>
-                  </div>
-                )}
-              </div>
+                </td>
+              </tr>
             ))}
-          </div>
-        )}
+          </tbody>
+        </table>
       </div>
-
-      {/* Footer with summary */}
-      {medications.length > 0 && (
-        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center gap-6">
-              <span className="text-gray-600">
-                <span className="font-medium text-green-600">
-                  {medications.filter((med) => med.takenToday).length}
-                </span>{' '}
-                taken today
-              </span>
-              <span className="text-gray-600">
-                <span className="font-medium text-blue-600">
-                  {medications.filter((med) => med.remindersOn).length}
-                </span>{' '}
-                with reminders
-              </span>
-            </div>
-            <div className="text-gray-500">
-              Total: {medications.length} medication
-              {medications.length !== 1 ? 's' : ''}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 // components/community/CommunityTrendsModal.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   BarChart,
   Bar,
@@ -20,11 +20,7 @@ export default function CommunityTrendsModal({ onClose }) {
   const [communityData, setCommunityData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadCommunityTrends();
-  }, []);
-
-  const loadCommunityTrends = async () => {
+  const loadCommunityTrends = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -39,7 +35,11 @@ export default function CommunityTrendsModal({ onClose }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadCommunityTrends();
+  }, [loadCommunityTrends]);
 
   const generateDemoTrends = () => {
     return {

@@ -42,7 +42,7 @@ class EncryptionService {
 
     try {
       return JSON.parse(jsonString);
-    } catch (error) {
+    } catch {
       throw new Error('Failed to decrypt data');
     }
   }
