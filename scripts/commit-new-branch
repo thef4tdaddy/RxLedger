@@ -37,6 +37,13 @@ if ! git diff --quiet origin/main..HEAD; then
   git add .
   git commit --amend --no-edit
 
+  # Squash all local commits into one
+  echo -e "${YELLOW}🔧 Squashing commits...${NC}"
+  git reset --soft "$first_commit^"
+  git commit -m "$last_msg"
+  echo -e "${YELLOW}💾 Saving commit messages...${NC}"
+  git log "$commit_range" --pretty=format:"%s" > /tmp/saved_commit_messages.txt
+
   # Create patch branch
   echo -e "${YELLOW}📦 Stashing local commits...${NC}"
   git checkout -b _temp_branch_with_commits
@@ -63,7 +70,20 @@ if ! git diff --quiet origin/main..HEAD; then
   # Push the new branch
   git push -u origin "$branch"
 
+  # Switch back to main and hard reset
+  git checkout main
+  git fetch origin
+  git reset --hard origin/main
+  echo -e "${GREEN}✅ Main hard reset to match origin/main.${NC}"
+
+  # Switch to the new branch after pushing
+  git checkout "$branch"
+
   echo -e "${GREEN}✅ Branch '$branch' created with local commits rebased and pushed.${NC}"
+
+  # Show saved commit messages before cleanup
+  echo -e "${GREEN}📝 Saved commit messages:${NC}"
+  cat /tmp/saved_commit_messages.txt
 
   # Clean up temp branch
   git branch -D _temp_branch_with_commits
@@ -82,11 +102,15 @@ else
 
   git checkout -b "$branch"
   git push -u origin "$branch"
+
+  # Switch back to main and hard reset
+  git checkout main
+  git fetch origin
+  git reset --hard origin/main
+  echo -e "${GREEN}✅ Main hard reset to match origin/main.${NC}"
+
+  # Switch to the new branch after pushing
+  git checkout "$branch"
+
   echo -e "${GREEN}✅ Empty branch '$branch' created and pushed.${NC}"
 fi
-
-# Switch back to main and hard reset
-git checkout main
-git fetch origin
-git reset --hard origin/main
-echo -e "${GREEN}✅ Main hard reset to match origin/main.${NC}"
