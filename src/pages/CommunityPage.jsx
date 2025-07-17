@@ -1,63 +1,98 @@
-import { useState } from 'react';
-import {
-  communityQuote,
-  broadInsights,
-  medicationInsights,
-} from '../demo-data/community/communityInsights';
-import { demoMedications } from '../demo-data/medications/Medications';
+// Enhanced CommunityPage.jsx with integrated warning
+import { useState, useEffect } from 'react';
+import { useMedications } from '../context/useMedications';
+import CommunityHeader from '../components/community/CommunityHeader';
+import BroadInsights from '../components/community/BroadInsights';
+import TailoredInsights from '../components/community/TailoredInsights';
+import CommunityActions from '../components/community/CommunityActions';
+import ShareProgressModal from '../components/community/ShareProgressModal';
+import CommunityTrendsModal from '../components/community/CommunityTrendsModal';
+import useAuth from '../hooks/useAuth';
 
 export default function CommunityPage() {
-  const [selected, setSelected] = useState('adderall');
-  const meds = demoMedications.map((m) => m.commonName.toLowerCase());
-  const insight = medicationInsights[selected];
+  useAuth();
+  const { medications, loading } = useMedications();
+  const [selectedMedication, setSelectedMedication] = useState(null);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [showTrendsModal, setShowTrendsModal] = useState(false);
+
+  // Set initial medication selection when medications load
+  useEffect(() => {
+    if (medications && medications.length > 0 && !selectedMedication) {
+      setSelectedMedication(medications[0]);
+    }
+  }, [medications, selectedMedication]);
+
+  const handleMedicationSelect = (medication) => {
+    setSelectedMedication(medication);
+  };
+
+  const handleShareProgress = () => {
+    setShowShareModal(true);
+  };
+
+  const handleViewTrends = () => {
+    setShowTrendsModal(true);
+  };
+
+  if (loading) {
+    return (
+      <div className="p-6 max-w-4xl mx-auto">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-64 mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-96 mb-6"></div>
+          <div className="space-y-6">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="bg-white p-4 rounded-lg border border-gray-200"
+              >
+                <div className="h-6 bg-gray-200 rounded w-32 mb-4"></div>
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Community Insights</h1>
-      <p className="mb-6 italic text-gray-700">{communityQuote}</p>
+      <CommunityHeader />
 
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6">
-        <h2 className="text-xl font-semibold mb-2">Broad Insights</h2>
-        <ul className="list-disc list-inside space-y-1">
-          {broadInsights.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </div>
+      <BroadInsights />
 
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6">
-        <h2 className="text-xl font-semibold mb-2">Tailored Insights</h2>
-        <div className="mb-3">
-          <label className="mr-2 font-medium">Medication:</label>
-          <select
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-            className="border rounded px-2 py-1"
-          >
-            {meds.map((name) => (
-              <option key={name} value={name}>
-                {name.charAt(0).toUpperCase() + name.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div>
-        {insight && (
-          <ul className="list-disc list-inside space-y-1">
-            {insight.insights.map((i) => (
-              <li key={i}>{i}</li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <TailoredInsights
+        medications={medications}
+        selectedMedication={selectedMedication}
+        onMedicationSelect={handleMedicationSelect}
+      />
 
-      <div className="flex gap-4">
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700">
-          View Community Trends
-        </button>
-        <button className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700">
-          Share My Progress
-        </button>
-      </div>
+      <CommunityActions
+        onShareProgress={handleShareProgress}
+        onViewTrends={handleViewTrends}
+        hasMedications={medications && medications.length > 0}
+      />
+
+      {/* Modals */}
+      {showShareModal && (
+        <ShareProgressModal
+          medications={medications}
+          selectedMedication={selectedMedication}
+          onClose={() => setShowShareModal(false)}
+        />
+      )}
+
+      {showTrendsModal && (
+        <CommunityTrendsModal
+          medications={medications}
+          onClose={() => setShowTrendsModal(false)}
+        />
+      )}
     </div>
   );
 }

@@ -136,8 +136,8 @@ The Trends screen now includes detailed visualizations of user health and medica
 -------------------------------------------------------
 |  Community Insights                                |
 -------------------------------------------------------
-|  “Users who log side effects weekly see 20% more   |
-|   consistent mood scores.”                         |
+|  "Users who log side effects weekly see 20% more   |
+|   consistent mood scores."                         |
 -------------------------------------------------------
 |  Broad Insights                                    |
 |  - 78% took all doses last week                    |

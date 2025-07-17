@@ -3,32 +3,29 @@ import { BrowserTracing } from '@sentry/tracing';
 import { Replay } from '@sentry/replay';
 
 Sentry.init({
-  dsn: import.meta.env.VITE_SENTRY_DSN, // Replace with your actual DSN
-  release: 'rxledger@' + __APP_VERSION__,
-  environment: 'production',
-  _experiments: {
-    profilesSampleRate: 1.0,
-  },
+  dsn: import.meta.env.VITE_SENTRY_DSN,
+  release: 'rxledger@1.0.0',
+  environment: import.meta.env.MODE || 'production',
+
+  // ✅ FIXED: Use new configuration format
   replaysSessionSampleRate: 0.02,
   replaysOnErrorSampleRate: 1.0,
+
   beforeSend(event) {
-    // Remove any sensitive data manually if needed
-    if (event.request && event.request.headers) {
+    if (event.request?.headers) {
       delete event.request.headers['authorization'];
     }
     return event;
   },
-  beforeSendTransaction(event) {
-    return event;
-  },
+
   integrations: [
     new BrowserTracing(),
     new Replay({
       maskAllText: true,
       blockAllMedia: true,
-      sessionSampleRate: 0.02,
-      errorSampleRate: 1.0,
+      // ❌ REMOVED: deprecated options
     }),
   ],
+
   tracesSampleRate: 0.1,
 });
