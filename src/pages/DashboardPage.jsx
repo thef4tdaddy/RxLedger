@@ -11,7 +11,7 @@ import RecentActivity from '../components/dashboard/RecentActivity';
 import { useAuth } from '../context/useAuth';
 
 // Error boundary for dashboard components
-function DashboardError({ error, retry }) {
+function DashboardError({ retry }) {
   return (
     <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
       <div className="flex items-center mb-4">
@@ -19,8 +19,8 @@ function DashboardError({ error, retry }) {
         <h3 className="text-lg font-semibold text-red-900">Dashboard Error</h3>
       </div>
       <p className="text-red-800 mb-4">
-        We're having trouble loading your dashboard. This might be a temporary
-        issue.
+        We&apos;re having trouble loading your dashboard. This might be a
+        temporary issue.
       </p>
       <button
         onClick={retry}
