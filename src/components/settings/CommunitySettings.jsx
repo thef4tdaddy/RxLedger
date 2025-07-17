@@ -1,4 +1,4 @@
-// components/settings/CommunitySettings.jsx - Real Firebase integration
+// components/settings/CommunitySettings.jsx - Enhanced with implementation status
 import { useState, useEffect } from 'react';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
@@ -86,43 +86,66 @@ export default function CommunitySettings() {
       title: 'Share Anonymized Health Data',
       description:
         'Contribute to community insights while keeping your identity private',
+      status: 'coming-soon',
     },
     {
       key: 'shareEffectivenessData',
       title: 'Share Medication Effectiveness',
       description:
         'Help others understand how medications work for different people',
+      status: 'planned',
     },
     {
       key: 'shareSideEffectsData',
       title: 'Share Side Effects Data',
       description: 'Contribute to side effect frequency and severity insights',
+      status: 'planned',
     },
     {
       key: 'shareAdherenceData',
       title: 'Share Adherence Patterns',
       description: 'Help identify factors that improve medication adherence',
+      status: 'planned',
     },
     {
       key: 'shareDemographics',
       title: 'Share Basic Demographics',
       description: 'Age range and gender only (no personal identifiers)',
+      status: 'coming-soon',
     },
     {
       key: 'participateInResearch',
       title: 'Participate in Research Studies',
       description: 'Opt-in to anonymous research opportunities',
+      status: 'planned',
     },
     {
       key: 'allowInsightGeneration',
       title: 'Allow AI Insight Generation',
       description:
         'Let RxLedger analyze patterns to generate personalized insights',
+      status: 'coming-soon',
     },
   ];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6">
+      {/* Implementation Status Banner */}
+      <div className="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg">
+        <div className="flex items-center">
+          <span className="text-yellow-600 text-sm mr-2">🔄</span>
+          <div>
+            <p className="text-yellow-800 font-medium text-sm">
+              In Development
+            </p>
+            <p className="text-yellow-700 text-xs">
+              Privacy settings save to Firebase, community features launching
+              soon
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-2">
           Community & Privacy Settings
@@ -161,7 +184,24 @@ export default function CommunitySettings() {
             className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
           >
             <div className="flex-1">
-              <h3 className="font-medium text-gray-800">{option.title}</h3>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-medium text-gray-800">{option.title}</h3>
+                <span
+                  className={`text-xs px-2 py-1 rounded-full font-medium ${
+                    option.status === 'functional'
+                      ? 'bg-green-100 text-green-700'
+                      : option.status === 'coming-soon'
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : 'bg-blue-100 text-blue-700'
+                  }`}
+                >
+                  {option.status === 'functional'
+                    ? 'Working'
+                    : option.status === 'coming-soon'
+                      ? 'Coming Soon'
+                      : 'Planned'}
+                </span>
+              </div>
               <p className="text-sm text-gray-600">{option.description}</p>
             </div>
             <button
@@ -183,9 +223,12 @@ export default function CommunitySettings() {
 
       {/* Data Retention Settings */}
       <div className="mt-6 p-4 border border-gray-200 rounded-lg">
-        <h3 className="font-medium text-gray-800 mb-3">
-          Data Retention Period
-        </h3>
+        <div className="flex items-center gap-2 mb-3">
+          <h3 className="font-medium text-gray-800">Data Retention Period</h3>
+          <span className="text-xs px-2 py-1 rounded-full font-medium bg-green-100 text-green-700">
+            Working
+          </span>
+        </div>
         <p className="text-sm text-gray-600 mb-4">
           How long should your shared data remain in community insights?
         </p>
@@ -217,6 +260,23 @@ export default function CommunitySettings() {
           Saving preferences...
         </div>
       )}
+
+      {/* Development Timeline */}
+      <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="flex items-start">
+          <div className="text-amber-500 text-xl mr-3">🗓️</div>
+          <div>
+            <h4 className="font-medium text-amber-900">
+              Community Features Timeline
+            </h4>
+            <p className="text-sm text-amber-800 mt-1">
+              Your privacy preferences are saved and ready. Community data
+              sharing will be enabled progressively as anonymization systems and
+              insight generation features are completed.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

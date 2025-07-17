@@ -134,20 +134,23 @@ export default function MedicationSettings() {
     {
       key: 'medicationReminders',
       title: 'Medication Reminders',
-      desc: "Get notifications when it's time to take your medications",
+      desc: 'Get notifications when it&apos;s time to take your medications',
       enabled: settings.medicationReminders,
+      status: 'coming-soon',
     },
     {
       key: 'refillReminders',
       title: 'Refill Reminders',
-      desc: "Get notified when it's time to refill your prescriptions",
+      desc: 'Get notified when it&apos;s time to refill your prescriptions',
       enabled: settings.refillReminders,
+      status: 'coming-soon',
     },
     {
       key: 'manufacturerAlerts',
       title: 'Manufacturer Change Alerts',
       desc: 'Get notified when your medication manufacturer changes',
       enabled: settings.manufacturerAlerts,
+      status: 'planned',
     },
     {
       key: 'reminderSound',
@@ -155,6 +158,7 @@ export default function MedicationSettings() {
       desc: 'Play sound notifications for medication reminders',
       enabled: settings.reminderSound,
       dependsOn: 'medicationReminders',
+      status: 'coming-soon',
     },
     {
       key: 'reminderVibration',
@@ -162,11 +166,51 @@ export default function MedicationSettings() {
       desc: 'Vibrate device for medication reminders (mobile only)',
       enabled: settings.reminderVibration,
       dependsOn: 'medicationReminders',
+      status: 'coming-soon',
     },
   ];
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      {/* Implementation Status Warning */}
+      <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="flex items-start">
+          <div className="text-amber-500 text-xl mr-3">⚠️</div>
+          <div className="flex-1">
+            <h4 className="font-medium text-amber-900 mb-1">
+              Settings Under Development
+            </h4>
+            <p className="text-sm text-amber-800 mb-2">
+              These settings are currently placeholders and are being gradually
+              implemented. Changes you make here may not affect the application
+              yet. We&apos;re working to add full functionality to all settings
+              options.
+            </p>
+            <div className="flex flex-wrap gap-4 text-xs">
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span className="text-green-700 font-medium">Functional:</span>
+                <span className="text-green-600">Core medication tracking</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                <span className="text-yellow-700 font-medium">
+                  Coming Soon:
+                </span>
+                <span className="text-yellow-600">Notification settings</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                <span className="text-blue-700 font-medium">
+                  In Development:
+                </span>
+                <span className="text-blue-600">Privacy controls</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-[#1B59AE]">
           Medication Settings
@@ -206,7 +250,28 @@ export default function MedicationSettings() {
                 }`}
               >
                 <div className={isDependentDisabled ? 'opacity-50' : ''}>
-                  <h4 className="font-medium text-gray-900">{setting.title}</h4>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h4 className="font-medium text-gray-900">
+                      {setting.title}
+                    </h4>
+                    {setting.status && (
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full font-medium ${
+                          setting.status === 'coming-soon'
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : setting.status === 'planned'
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-gray-100 text-gray-600'
+                        }`}
+                      >
+                        {setting.status === 'coming-soon'
+                          ? 'Coming Soon'
+                          : setting.status === 'planned'
+                            ? 'Planned'
+                            : 'Placeholder'}
+                      </span>
+                    )}
+                  </div>
                   <p className="text-sm text-gray-600">{setting.desc}</p>
                   {isDependentDisabled && (
                     <p className="text-xs text-gray-500 mt-1">
@@ -238,7 +303,12 @@ export default function MedicationSettings() {
           <div className="p-3 rounded-lg border border-gray-200 hover:border-[#1B59AE]/30 transition-colors">
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-medium text-gray-900">Privacy Level</h4>
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-medium text-gray-900">Privacy Level</h4>
+                  <span className="text-xs px-2 py-1 rounded-full font-medium bg-blue-100 text-blue-700">
+                    In Development
+                  </span>
+                </div>
                 <p className="text-sm text-gray-600">
                   Control how your data is used for community insights
                 </p>
@@ -270,6 +340,36 @@ export default function MedicationSettings() {
                 Community features use anonymous data only, and you control what
                 gets shared.
               </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Development Roadmap */}
+        <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+          <div className="flex items-start">
+            <div className="text-gray-500 text-xl mr-3">🚧</div>
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2">
+                Development Roadmap
+              </h4>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span>✅ Core medication tracking and Firebase sync</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                  <span>🔄 Push notifications and reminder system</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <span>📋 Advanced privacy controls and data export</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                  <span>🔮 Community insights and trend analysis</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
