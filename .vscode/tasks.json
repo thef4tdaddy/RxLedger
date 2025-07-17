@@ -33,18 +33,19 @@
       "group": "build"
     },
     {
-      "label": "✨ Finalize Edits on Branch",
-      "type": "shell",
-      "command": "${workspaceFolder}/scripts/edits-on-branch",
-      "problemMatcher": [],
-      "group": "build"
-    },
-    {
       "label": "🚀 Create & Push Branch",
       "type": "shell",
       "command": "${workspaceFolder}/scripts/commit-new-branch",
       "problemMatcher": [],
       "group": "build"
+    },
+    {
+      "label": "🧼 Tidy & Rebase Branch",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/rebase-super-script",
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Checks for local commits, ensures Conventional Commits, squashes them, prettifies, rebases onto main, and pushes safely."
     }
   ]
 }
