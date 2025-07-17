@@ -30,6 +30,13 @@ if ! git diff --quiet origin/main..HEAD; then
   # Save commit messages
   last_msg=$(git log -1 --pretty=%B)
 
+  echo -e "${YELLOW}📦 Stashing local commits...${NC}"
+  git checkout -b _temp_branch_with_commits
+  if [ $? -ne 0 ]; then
+    echo -e "${RED}❌ Failed to switch to _temp_branch_with_commits. Please resolve and re-run.${NC}"
+    exit 1
+  fi
+
   echo -e "${YELLOW}✨ Running Prettier and ESLint autofix...${NC}"
   npx prettier --write "src/**/*.{js,jsx,ts,tsx,json,css,md}"
   npx eslint --fix "src/**/*.{js,jsx,ts,tsx}"
@@ -43,10 +50,6 @@ if ! git diff --quiet origin/main..HEAD; then
   git commit -m "$last_msg"
   echo -e "${YELLOW}💾 Saving commit messages...${NC}"
   git log "$commit_range" --pretty=format:"%s" > /tmp/saved_commit_messages.txt
-
-  # Create patch branch
-  echo -e "${YELLOW}📦 Stashing local commits...${NC}"
-  git checkout -b _temp_branch_with_commits
 
   # Move back to main and reset
   git checkout main
