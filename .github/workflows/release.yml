@@ -4,10 +4,11 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - '**' # Watch all branches
 
 jobs:
   release:
+    if: github.ref != 'refs/heads/main' # Avoid running on main itself
     runs-on: ubuntu-latest
     permissions:
       contents: write
