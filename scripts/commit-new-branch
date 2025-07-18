@@ -13,8 +13,8 @@ if [ "$current_branch" != "main" ]; then
   exit 1
 fi
 
-# Check for uncommitted changes
-if ! git diff-index --quiet HEAD --; then
+# Check for any changes in working directory (staged, unstaged, or untracked)
+if [[ -n $(git status --porcelain) ]]; then
   echo -e "${RED}❌ You have uncommitted changes. Please commit or stash them before running this script.${NC}"
   exit 1
 fi
