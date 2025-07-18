@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.7.0...v1.0.0) (2025-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **medication:** Requires Firebase backend with encryption
+
+### Features
+
+* **medication:** optimize suggestion services and form with Firebase integration  ([9937d76](https://github.com/thef4tdaddy/RxLedger/commit/9937d765caf3633ebbcdfa528279ba7968b18c12))
+
+
+### Bug Fixes
+
+* community demo warning ([361b60d](https://github.com/thef4tdaddy/RxLedger/commit/361b60d24d64ed3cf90c66f47e4ac7618b79577f))
+* implementation warnings and some mediction graphical fixes ([#90](https://github.com/thef4tdaddy/RxLedger/issues/90)) ([8caa9d8](https://github.com/thef4tdaddy/RxLedger/commit/8caa9d89b8d686368e5ff2b877a3eb4633e25cad))
+
 ## [0.7.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.6.0...v0.7.0) (2025-07-14)
 
 ### Features
