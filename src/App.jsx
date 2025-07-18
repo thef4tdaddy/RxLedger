@@ -1,6 +1,7 @@
 // App.jsx - Complete integration with Firebase and medication system
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { MedicationProvider } from './context/MedicationContext';
+import { ThemeProvider } from './context/ThemeContext';
 import DashboardPage from './pages/DashboardPage';
 import MedicationsPage from './pages/MedicationsPage';
 import LogEntryPage from './pages/LogEntryPage';
@@ -114,11 +115,13 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-[#A3B5AC] text-gray-800 font-sans antialiased">
-        <HashRouter>
-          {user ? <AuthenticatedApp user={user} /> : <UnauthenticatedApp />}
-        </HashRouter>
-      </div>
+      <ThemeProvider>
+        <div className="min-h-screen bg-[#A3B5AC] dark:bg-dark-bg text-gray-800 dark:text-dark-text font-sans antialiased transition-colors duration-300">
+          <HashRouter>
+            {user ? <AuthenticatedApp user={user} /> : <UnauthenticatedApp />}
+          </HashRouter>
+        </div>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

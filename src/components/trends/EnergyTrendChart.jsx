@@ -110,11 +110,13 @@ export default function EnergyTrendChart() {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const date = new Date(label);
-      const formattedDate = date.toLocaleDateString(undefined, {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-      });
+      const formattedDate = isNaN(date.getTime())
+        ? label
+        : date.toLocaleDateString(undefined, {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+          });
 
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
@@ -163,12 +165,14 @@ export default function EnergyTrendChart() {
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
             <XAxis
               dataKey="date"
-              tickFormatter={(date) =>
-                new Date(date).toLocaleDateString(undefined, {
+              tickFormatter={(date) => {
+                const parsedDate = new Date(date);
+                if (isNaN(parsedDate.getTime())) return date;
+                return parsedDate.toLocaleDateString(undefined, {
                   month: 'short',
                   day: 'numeric',
-                })
-              }
+                });
+              }}
               tick={{ fontSize: 12 }}
               axisLine={{ stroke: '#e0e0e0' }}
             />
