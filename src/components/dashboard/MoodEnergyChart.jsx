@@ -138,7 +138,11 @@ export default function MoodEnergyChart() {
             : null,
         parsedDate: entry.parsedDate || new Date(entry.dateISO),
       }))
-      .filter((entry) => !isNaN(entry.parsedDate))
+      .filter(
+        (entry) =>
+          entry.parsedDate instanceof Date &&
+          !isNaN(entry.parsedDate.getTime()),
+      )
       .sort((a, b) => a.parsedDate - b.parsedDate);
 
     return parsedData.slice(-7);
@@ -181,7 +185,8 @@ export default function MoodEnergyChart() {
               dataKey="dateISO"
               tickFormatter={(date) => {
                 const parsedDate = new Date(date);
-                if (isNaN(parsedDate.getTime())) return date;
+                if (!parsedDate || isNaN(parsedDate.getTime()))
+                  return String(date);
                 return parsedDate.toLocaleDateString(undefined, {
                   month: 'short',
                   day: 'numeric',
@@ -192,7 +197,8 @@ export default function MoodEnergyChart() {
             <Tooltip
               labelFormatter={(date) => {
                 const parsedDate = new Date(date);
-                if (isNaN(parsedDate.getTime())) return date;
+                if (!parsedDate || isNaN(parsedDate.getTime()))
+                  return String(date);
                 return parsedDate.toLocaleDateString(undefined, {
                   weekday: 'long',
                   month: 'short',

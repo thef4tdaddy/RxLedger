@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   createUserWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
   updateProfile,
 } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
@@ -156,18 +156,8 @@ export default function RegisterForm({ onLogin }) {
         return;
       }
 
-      // Sign in with Google
-      const cred = await signInWithPopup(auth, googleProvider);
-
-      // Create user profile with medication system setup
-      await createUserProfile(cred.user.uid, cred.user.email, {
-        name: cred.user.displayName || '',
-        age: '', // Google doesn't provide age
-        email: cred.user.email || '',
-      });
-
-      // Navigate to dashboard
-      navigate('/dashboard');
+      // Sign in with Google - redirect will handle navigation
+      await signInWithRedirect(auth, googleProvider);
     } catch (err) {
       console.error('Google registration error:', err);
 

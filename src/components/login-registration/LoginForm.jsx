@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth, googleProvider, db } from '../../utils/firebase';
@@ -96,14 +96,8 @@ export default function LoginForm({ onRegister }) {
     setLoading(true);
 
     try {
-      // Sign in with Google
-      const userCredential = await signInWithPopup(auth, googleProvider);
-
-      // Update last login timestamp
-      await updateLastLogin(userCredential.user.uid);
-
-      // Navigate to dashboard
-      navigate('/dashboard');
+      // Sign in with Google - redirect will handle navigation
+      await signInWithRedirect(auth, googleProvider);
     } catch (err) {
       console.error('Google login error:', err);
 
