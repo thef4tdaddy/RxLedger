@@ -14,6 +14,7 @@ import AdminPage from './pages/AdminPage';
 import LoginPage from './pages/LoginPage';
 import Header from './components/shared/Header';
 import { Footer } from './components/shared/Footer';
+import MobileNavigation from './components/mobile/MobileNavigation';
 import PrivacyPolicy from './components/shared/PrivacyPolicy';
 import { TermsOfService } from './components/shared/TOS';
 import { useAuth } from './context/useAuth';
@@ -66,25 +67,35 @@ function ErrorBoundary({ children }) {
 function AuthenticatedApp({ user }) {
   return (
     <MedicationProvider>
-      <Header user={user} />
-      <main className="min-h-screen">
-        <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/medications" element={<MedicationsPage />} />
-          <Route path="/log" element={<LogEntryPage />} />
-          <Route path="/trends" element={<TrendsPage />} />
-          <Route path="/community" element={<CommunityPage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          {/* Catch-all route for authenticated users */}
-          <Route path="*" element={<DashboardPage />} />
-        </Routes>
-      </main>
+      <div className="lg:flex lg:min-h-screen">
+        {/* Desktop Header */}
+        <div className="hidden lg:block">
+          <Header user={user} />
+        </div>
+
+        {/* Mobile Navigation */}
+        <MobileNavigation />
+
+        {/* Main Content */}
+        <main className="flex-1 min-h-screen lg:ml-0">
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/medications" element={<MedicationsPage />} />
+            <Route path="/log" element={<LogEntryPage />} />
+            <Route path="/trends" element={<TrendsPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            {/* Catch-all route for authenticated users */}
+            <Route path="*" element={<DashboardPage />} />
+          </Routes>
+        </main>
+      </div>
       <Footer />
     </MedicationProvider>
   );

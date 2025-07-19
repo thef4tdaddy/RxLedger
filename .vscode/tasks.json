@@ -37,7 +37,8 @@
       "type": "shell",
       "command": "${workspaceFolder}/scripts/commit-new-branch",
       "problemMatcher": [],
-      "group": "build"
+      "group": "build",
+      "detail": "Prompts for a new branch name, commits staged changes, and pushes the branch to origin."
     },
     {
       "label": "🧼 Tidy & Rebase Branch",
@@ -46,6 +47,14 @@
       "group": "build",
       "problemMatcher": [],
       "detail": "Checks for local commits, ensures Conventional Commits, squashes them, prettifies, rebases onto main, and pushes safely."
+    },
+    {
+      "label": "🧹 Prune Remote Branches",
+      "type": "shell",
+      "command": "git remote prune origin",
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Cleans up deleted remote branches from your local Git reference list."
     }
   ]
 }
