@@ -25,7 +25,7 @@ export default function MoodEnergyChart() {
   const { user } = useAuth();
   const [healthData, setHealthData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [_error] = useState(null);
+  const [_error, setError] = useState(null);
 
   // Load health data from Firebase
   useEffect(() => {
@@ -138,7 +138,11 @@ export default function MoodEnergyChart() {
             : null,
         parsedDate: entry.parsedDate || new Date(entry.dateISO),
       }))
-      .filter((entry) => !isNaN(entry.parsedDate))
+      .filter(
+        (entry) =>
+          entry.parsedDate instanceof Date &&
+          !isNaN(entry.parsedDate.getTime()),
+      )
       .sort((a, b) => a.parsedDate - b.parsedDate);
 
     return parsedData.slice(-7);
@@ -179,22 +183,28 @@ export default function MoodEnergyChart() {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="dateISO"
-              tickFormatter={(date) =>
-                new Date(date).toLocaleDateString(undefined, {
+              tickFormatter={(date) => {
+                const parsedDate = new Date(date);
+                if (!parsedDate || isNaN(parsedDate.getTime()))
+                  return String(date);
+                return parsedDate.toLocaleDateString(undefined, {
                   month: 'short',
                   day: 'numeric',
-                })
-              }
+                });
+              }}
             />
             <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
             <Tooltip
-              labelFormatter={(date) =>
-                new Date(date).toLocaleDateString(undefined, {
+              labelFormatter={(date) => {
+                const parsedDate = new Date(date);
+                if (!parsedDate || isNaN(parsedDate.getTime()))
+                  return String(date);
+                return parsedDate.toLocaleDateString(undefined, {
                   weekday: 'long',
                   month: 'short',
                   day: 'numeric',
-                })
-              }
+                });
+              }}
               formatter={(value, name) => {
                 if (value === null || value === undefined)
                   return ['No data', name];

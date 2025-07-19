@@ -6,15 +6,12 @@ import { Bars3Icon, XMarkIcon, UserIcon } from '@heroicons/react/24/solid';
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <header
-      className="relative flex items-center justify-between px-4 py-4 border-b shadow-sm"
-      style={{ backgroundColor: '#A3B5AC' }}
-    >
+    <header className="relative flex items-center justify-between px-4 py-4 border-b shadow-sm bg-[#A3B5AC] dark:bg-dark-surface border-gray-200 dark:border-dark-border transition-colors">
       <div className="flex items-center space-x-3">
         <img src={logoIcon} alt="RxLedger Logo" className="h-16 w-16" />
         <a
           href="https://rxledger.app"
-          className="text-2xl font-semibold text-[#1B59AE]"
+          className="text-2xl font-semibold text-[#1B59AE] dark:text-dark-accent"
         >
           RxLedger
         </a>
@@ -26,40 +23,40 @@ export default function Header() {
           aria-label="Toggle menu"
         >
           {menuOpen ? (
-            <XMarkIcon className="w-6 h-6 text-[#1B59AE]" />
+            <XMarkIcon className="w-6 h-6 text-[#1B59AE] dark:text-dark-accent" />
           ) : (
-            <Bars3Icon className="w-6 h-6 text-[#1B59AE]" />
+            <Bars3Icon className="w-6 h-6 text-[#1B59AE] dark:text-dark-accent" />
           )}
         </button>
 
         <nav className="hidden md:flex space-x-3 ml-auto">
           <Link
             to="/dashboard"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] dark:text-dark-accent border-2 border-[#1B59AE] dark:border-dark-accent hover:bg-teal-500 hover:text-white transition"
           >
             Dashboard
           </Link>
           <Link
             to="/log"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] dark:text-dark-accent border-2 border-[#1B59AE] dark:border-dark-accent hover:bg-teal-500 hover:text-white transition"
           >
             Log Entry
           </Link>
           <Link
             to="/medications"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] dark:text-dark-accent border-2 border-[#1B59AE] dark:border-dark-accent hover:bg-teal-500 hover:text-white transition"
           >
             My Medications
           </Link>
           <Link
             to="/trends"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] dark:text-dark-accent border-2 border-[#1B59AE] dark:border-dark-accent hover:bg-teal-500 hover:text-white transition"
           >
             Trends
           </Link>
           <Link
             to="/community"
-            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] border-2 border-[#1B59AE] hover:bg-teal-500 hover:text-white transition"
+            className="px-3 py-2 rounded text-sm md:text-base font-semibold text-[#1B59AE] dark:text-dark-accent border-2 border-[#1B59AE] dark:border-dark-accent hover:bg-teal-500 hover:text-white transition"
           >
             Community
           </Link>

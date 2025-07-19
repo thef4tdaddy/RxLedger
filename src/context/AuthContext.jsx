@@ -7,7 +7,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signInAnonymously,
 } from 'firebase/auth';
 import { auth, googleProvider } from '../utils/firebase';
@@ -63,12 +64,26 @@ export function AuthProvider({ children }) {
       return; // Don't set up the auth state listener in bypass mode
     }
 
+    // Handle redirect result from Google sign-in
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          console.log('Google sign-in redirect result:', result);
+        }
+      } catch (error) {
+        console.error('Error handling redirect result:', error);
+      }
+    };
+
     // Regular Firebase auth state listener for non-bypass mode
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
       setInitializing(false);
     });
+
+    handleRedirectResult();
 
     return unsubscribe;
   }, []);
@@ -107,8 +122,7 @@ export function AuthProvider({ children }) {
   const loginWithGoogle = async () => {
     setLoading(true);
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      return result;
+      await signInWithRedirect(auth, googleProvider);
     } catch (error) {
       throw error;
     } finally {

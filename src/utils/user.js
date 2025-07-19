@@ -139,10 +139,16 @@ export const updateUserProfile = async (userId, updates) => {
 export const updateLastLogin = async (userId) => {
   try {
     const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, {
-      'profile.lastLoginAt': serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    });
+    await setDoc(
+      userRef,
+      {
+        profile: {
+          lastLoginAt: serverTimestamp(),
+        },
+        updatedAt: serverTimestamp(),
+      },
+      { merge: true },
+    );
   } catch (error) {
     console.warn('Could not update last login timestamp:', error);
     // Non-critical error, don't throw

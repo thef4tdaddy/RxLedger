@@ -7,6 +7,7 @@ import ProfileSection from '../components/settings/ProfileSection';
 import NotificationSettings from '../components/settings/NotificationSettings';
 import CommunitySettings from '../components/settings/CommunitySettings';
 import IntegrationSettings from '../components/settings/IntegrationSettings';
+import ThemeSettings from '../components/settings/ThemeSettings';
 import DangerZone from '../components/settings/DangerZone';
 import useAuth from '../hooks/useAuth';
 
@@ -37,10 +38,10 @@ export default function SettingsPage() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1B59AE] mb-2">
+        <h1 className="text-3xl font-bold text-[#1B59AE] dark:text-dark-accent mb-2">
           Account Settings
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-dark-text-secondary">
           Manage your profile, notifications, privacy preferences, and
           integrations
         </p>
@@ -223,6 +224,9 @@ export default function SettingsPage() {
       <div className="space-y-6">
         {/* Profile Section */}
         <ProfileSection />
+
+        {/* Theme Settings */}
+        <ThemeSettings />
 
         {/* Notification Settings */}
         <NotificationSettings />
