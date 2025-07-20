@@ -659,19 +659,25 @@ export default function ComprehensiveReportModal({
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis
                       dataKey="dateISO"
-                      tickFormatter={(date) =>
-                        new Date(date).toLocaleDateString(undefined, {
+                      tickFormatter={(date) => {
+                        if (!date) return '';
+                        const parsedDate = new Date(date);
+                        if (isNaN(parsedDate.getTime())) return String(date);
+                        return parsedDate.toLocaleDateString(undefined, {
                           month: 'short',
                           day: 'numeric',
-                        })
-                      }
+                        });
+                      }}
                       tick={{ fontSize: 10 }}
                     />
                     <YAxis />
                     <Tooltip
-                      labelFormatter={(date) =>
-                        new Date(date).toLocaleDateString()
-                      }
+                      labelFormatter={(date) => {
+                        if (!date) return 'No date';
+                        const parsedDate = new Date(date);
+                        if (isNaN(parsedDate.getTime())) return String(date);
+                        return parsedDate.toLocaleDateString();
+                      }}
                       formatter={(value, name) => [
                         `${value}${name === 'sleep' ? 'h' : name === 'libido' ? '/10' : '/5'}`,
                         name.charAt(0).toUpperCase() + name.slice(1),
@@ -722,7 +728,13 @@ export default function ComprehensiveReportModal({
                       <div key={index} className="bg-white p-3 rounded border">
                         <div className="flex justify-between items-center mb-2">
                           <span className="font-medium text-sm">
-                            {new Date(entry.dateISO).toLocaleDateString()}
+                            {(() => {
+                              if (!entry.dateISO) return 'No date';
+                              const parsedDate = new Date(entry.dateISO);
+                              return isNaN(parsedDate.getTime())
+                                ? String(entry.dateISO)
+                                : parsedDate.toLocaleDateString();
+                            })()}
                           </span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 text-xs">

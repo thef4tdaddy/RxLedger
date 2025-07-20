@@ -192,8 +192,14 @@ export default function LogEntryPage() {
             <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-blue-800 text-sm">
                 📅 Logging entry for{' '}
-                {new Date(formData.entryDate).toLocaleDateString()} - This
-                won&apos;t update today&apos;s medication status
+                {(() => {
+                  if (!formData.entryDate) return 'No date';
+                  const parsedDate = new Date(formData.entryDate);
+                  return isNaN(parsedDate.getTime())
+                    ? String(formData.entryDate)
+                    : parsedDate.toLocaleDateString();
+                })()}{' '}
+                - This won&apos;t update today&apos;s medication status
               </p>
             </div>
           )}

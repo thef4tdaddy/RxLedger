@@ -143,6 +143,11 @@ export default function MoodEnergyChart() {
           entry.parsedDate instanceof Date &&
           !isNaN(entry.parsedDate.getTime()),
       )
+      .map((entry) => ({
+        ...entry,
+        // Ensure dateISO is always a valid date string for chart formatting
+        dateISO: entry.parsedDate.toISOString().split('T')[0],
+      }))
       .sort((a, b) => a.parsedDate - b.parsedDate);
 
     return parsedData.slice(-7);
@@ -184,6 +189,8 @@ export default function MoodEnergyChart() {
             <XAxis
               dataKey="dateISO"
               tickFormatter={(date) => {
+                // Extra safety check for null/undefined dates
+                if (!date) return '';
                 const parsedDate = new Date(date);
                 if (!parsedDate || isNaN(parsedDate.getTime()))
                   return String(date);
@@ -196,6 +203,8 @@ export default function MoodEnergyChart() {
             <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
             <Tooltip
               labelFormatter={(date) => {
+                // Extra safety check for null/undefined dates
+                if (!date) return 'No date';
                 const parsedDate = new Date(date);
                 if (!parsedDate || isNaN(parsedDate.getTime()))
                   return String(date);

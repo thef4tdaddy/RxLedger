@@ -33,11 +33,18 @@ export default function MoodTrendChart({ data, loading }) {
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="text-sm text-gray-600 mb-1">
-            {new Date(label).toLocaleDateString(undefined, {
-              weekday: 'short',
-              month: 'short',
-              day: 'numeric',
-            })}
+            {!label
+              ? 'No date'
+              : (() => {
+                  const parsedDate = new Date(label);
+                  return isNaN(parsedDate.getTime())
+                    ? String(label)
+                    : parsedDate.toLocaleDateString(undefined, {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
+                      });
+                })()}
           </p>
           <p className="text-sm font-medium text-[#1B59AE]">
             Mood: {data.moodRaw}/5
@@ -85,12 +92,15 @@ export default function MoodTrendChart({ data, loading }) {
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis
                 dataKey="date"
-                tickFormatter={(date) =>
-                  new Date(date).toLocaleDateString(undefined, {
+                tickFormatter={(date) => {
+                  if (!date) return '';
+                  const parsedDate = new Date(date);
+                  if (isNaN(parsedDate.getTime())) return String(date);
+                  return parsedDate.toLocaleDateString(undefined, {
                     month: 'short',
                     day: 'numeric',
-                  })
-                }
+                  });
+                }}
                 tick={{ fontSize: 12 }}
                 stroke="#666"
               />

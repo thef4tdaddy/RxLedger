@@ -110,10 +110,16 @@ export default function SideEffectsHeatmap({ data, loading }) {
                     key={d}
                     className="px-2 py-2 text-center font-medium text-gray-700"
                   >
-                    {new Date(d).toLocaleDateString(undefined, {
-                      month: 'short',
-                      day: 'numeric',
-                    })}
+                    {(() => {
+                      if (!d) return 'No date';
+                      const parsedDate = new Date(d);
+                      return isNaN(parsedDate.getTime())
+                        ? String(d)
+                        : parsedDate.toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                          });
+                    })()}
                   </th>
                 ))}
               </tr>

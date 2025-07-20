@@ -110,13 +110,14 @@ export default function EnergyTrendChart() {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const date = new Date(label);
-      const formattedDate = isNaN(date.getTime())
-        ? label
-        : date.toLocaleDateString(undefined, {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-          });
+      const formattedDate =
+        !label || isNaN(date.getTime())
+          ? label || 'No date'
+          : date.toLocaleDateString(undefined, {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric',
+            });
 
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
@@ -166,8 +167,9 @@ export default function EnergyTrendChart() {
             <XAxis
               dataKey="date"
               tickFormatter={(date) => {
+                if (!date) return '';
                 const parsedDate = new Date(date);
-                if (isNaN(parsedDate.getTime())) return date;
+                if (isNaN(parsedDate.getTime())) return String(date);
                 return parsedDate.toLocaleDateString(undefined, {
                   month: 'short',
                   day: 'numeric',
