@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/thef4tdaddy/RxLedger/compare/v1.0.0...v1.1.0) (2025-07-20)
+
+
+### Features
+
+* darkmode support ([#91](https://github.com/thef4tdaddy/RxLedger/issues/91)) ([5b8f0f9](https://github.com/thef4tdaddy/RxLedger/commit/5b8f0f934466cc02bd4d7aa77980d4b34240558c))
+
 ## [1.0.0](https://github.com/thef4tdaddy/RxLedger/compare/v0.7.0...v1.0.0) (2025-07-18)
 
 
